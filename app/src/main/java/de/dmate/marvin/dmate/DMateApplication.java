@@ -3,11 +3,8 @@ package de.dmate.marvin.dmate;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Marvin on 14.02.2018.
@@ -17,46 +14,45 @@ public class DMateApplication extends Application {
 
     private SharedPreferences prefs;
     private Context context;
-    private ArrayList<Value> values = new ArrayList<Value>();
-    private int valueCount = 0;
+    private int entryCount = 0;
 
     public void initialize(Context context) {
         //set app context
         this.context = context;
 
         //initialize prefs attribute for easier access
-        this.prefs = context.getSharedPreferences("values", Context.MODE_PRIVATE);
+        this.prefs = context.getSharedPreferences("entries", Context.MODE_PRIVATE);
 
-        //if valueCount has not been set yet, set it to 0
-        if (getValueCount()==-1) {
-            setValueCount(0);
+        //if entryCount has not been set yet, set it to 0
+        if (getEntryCount()==-1) {
+            setEntryCount(0);
         } else {
-            //else get valueCount from prefs and initialize the valueCount attribute of this class
-            this.valueCount = getValueCount();
+            //else get entryCount from prefs and initialize the entryCount attribute of this class
+            this.entryCount = getEntryCount();
         }
     }
 
     //only internal use
-    private int getValueCount(){
-        return this.prefs.getInt("valueCount", -1);
+    private int getEntryCount(){
+        return this.prefs.getInt("entryCount", -1);
     }
 
     //only internal use
-    private void setValueCount(int valueCount){
+    private void setEntryCount(int entryCount){
         SharedPreferences.Editor editor = this.prefs.edit();
-        editor.putInt("valueCount", valueCount);
+        editor.putInt("entryCount", entryCount);
         editor.commit();
     }
 
-    //Use this method to get IDs while creating Value Objects
+    //Use this method to get IDs while creating Entry Objects
     public int getNextID(){
-        //save new valueCount as temp and write it to prefs before returning it
-        int temp = this.prefs.getInt("valueCount", -1) + 1;
-        setValueCount(temp);
+        //save new entryCount as temp and write it to prefs before returning it
+        int temp = this.prefs.getInt("entryCount", -1) + 1;
+        setEntryCount(temp);
         return temp;
     }
 
-    public void putValue(Value v) {
+    public void putEntry(Entry v) {
         SharedPreferences.Editor editor = this.prefs.edit();
         if(v.bloodsugar!=null) editor.putInt(v.id + "bloodsugar", v.bloodsugar);
         if(v.breadunit!=null) editor.putFloat(v.id + "breadunit", v.breadunit);
@@ -66,10 +62,10 @@ public class DMateApplication extends Application {
         editor.commit();
     }
 
-    public ArrayList<Value> getValues(){
-        ArrayList<Value> list = new ArrayList<Value>();
+    public ArrayList<Entry> getEntries(){
+        ArrayList<Entry> list = new ArrayList<Entry>();
 
-        for (int i=0; i+1<valueCount; i++) {
+        for (int i = 0; i+1< entryCount; i++) {
             String is = Integer.toString(i);
             if (this.prefs.getInt(is + "bloodsugar", -1)!=-1 ||
                     this.prefs.getFloat(is + "breadunit", -1f)!=-1f ||
@@ -77,7 +73,7 @@ public class DMateApplication extends Application {
                     this.prefs.getFloat(is + "basal", -1f) !=-1f ||
                     this.prefs.getString(is + "note", null) !=null)  {
 
-                Value.ValueBuilder temp = Value.id(i);
+                Entry.EntryBuilder temp = Entry.id(i);
                 if (this.prefs.getInt(is + "bloodsugar", -1)!=-1) temp.bloodsugar(this.prefs.getInt(is + "bloodsugar", -1));
                 if(this.prefs.getFloat(is + "breadunit", -1f)!=-1f) temp.breadunit(this.prefs.getFloat(is + "breadunit", -1f));
                 if(this.prefs.getFloat(is + "bolus", -1f)!=-1f) temp.bolus(this.prefs.getFloat(is + "bolus", -1f));

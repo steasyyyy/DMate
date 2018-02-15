@@ -4,7 +4,7 @@ package de.dmate.marvin.dmate;
  * Created by Marvin on 14.02.2018.
  */
 
-public class Value {
+public class Entry {
 
     public Integer id = null;
     public Integer bloodsugar = null;
@@ -13,14 +13,14 @@ public class Value {
     public Float basal = null;
     public String note = null;
 
-    //Helper class ValueBuilder is used to build Value objects avoiding to implement all permutations of constructors
-    //USE LIKE THIS TO INSTANCIATE VALUE OBJECTS:
-    //Value a = Value.bloodsugar(122).build();
-    //Value b = Value.bloodsugar(100).bolus(15.0).note("testnote").build();
-    //OR IF NECESSARY SAVE AS TEMPORARY VALUEBUILDER OBJECT.
-    //Value.ValueBuilder temp = Value.id(i);
+    //Helper class EntryBuilder is used to build Entry objects avoiding to implement all permutations of constructors
+    //USE LIKE THIS TO INSTANCIATE ENTRY OBJECTS:
+    //Entry a = Entry.bloodsugar(122).build();
+    //Entry b = Entry.bloodsugar(100).bolus(15.0).note("testnote").build();
+    //OR IF NECESSARY SAVE AS TEMPORARY ENTRYBUILDER OBJECT.
+    //Entry.EntryBuilder temp = Entry.id(i);
     //temp.bloodsugar(97).build();
-    private Value(ValueBuilder vb) {
+    private Entry(EntryBuilder vb) {
         this.id=Helper.getInstance().getApplication().getNextID();
         this.bloodsugar=vb.bloodsugar;
         this.breadunit=vb.breadunit;
@@ -32,7 +32,7 @@ public class Value {
     //for testing purpose only
     @Override public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("-------------------------------------------------------------------------------------------------------\nNEXT VALUE:\n");
+        sb.append("-------------------------------------------------------------------------------------------------------\nNEXT ENTRY:\n");
         if (this.id!=null) sb.append("ID: " + this.id.toString() + "\n");
         if (this.bloodsugar!=null) sb.append("Bloodsugar: " + this.bloodsugar.toString() + "\n");
         if (this.breadunit!=null) sb.append("Breadunit: " + this.breadunit.toString() + "\n");
@@ -43,35 +43,35 @@ public class Value {
         return sb.toString();
     }
 
-    public static ValueBuilder id(Integer id) {
-        return new ValueBuilder().id(id);
+    public static EntryBuilder id(Integer id) {
+        return new EntryBuilder().id(id);
     }
 
-    public static ValueBuilder bloodsugar(Integer bloodsugar) {
-        return new ValueBuilder().bloodsugar(bloodsugar);
+    public static EntryBuilder bloodsugar(Integer bloodsugar) {
+        return new EntryBuilder().bloodsugar(bloodsugar);
     }
 
-    public static ValueBuilder breadunit(Float breadunit) {
-        return new ValueBuilder().breadunit(breadunit);
+    public static EntryBuilder breadunit(Float breadunit) {
+        return new EntryBuilder().breadunit(breadunit);
     }
 
-    public static ValueBuilder bolus(Float bolus) {
-        return new ValueBuilder().bolus(bolus);
+    public static EntryBuilder bolus(Float bolus) {
+        return new EntryBuilder().bolus(bolus);
     }
 
-    public static ValueBuilder basal(Float basal) {
-        return new ValueBuilder().basal(basal);
+    public static EntryBuilder basal(Float basal) {
+        return new EntryBuilder().basal(basal);
     }
 
-    public static ValueBuilder note(String note) {
-        return new ValueBuilder().note(note);
+    public static EntryBuilder note(String note) {
+        return new EntryBuilder().note(note);
     }
 
-    public static Value build() {
-        return new ValueBuilder().build();
+    public static Entry build() {
+        return new EntryBuilder().build();
     }
 
-    public static class ValueBuilder {
+    public static class EntryBuilder {
         private Integer id;
         private Integer bloodsugar;
         private Float breadunit;
@@ -79,43 +79,43 @@ public class Value {
         private Float basal;
         private String note;
 //
-//        public ValueBuilder id(Integer id) {
+//        public EntryBuilder id(Integer id) {
 //            this.id=id;
 //            return this;
 //        }
 
-        public ValueBuilder id(Integer id) {
+        public EntryBuilder id(Integer id) {
             this.id=id;
             return this;
         }
 
-        public ValueBuilder bloodsugar(Integer bloodsugar){
+        public EntryBuilder bloodsugar(Integer bloodsugar){
             this.bloodsugar=bloodsugar;
             return this;
         }
 
-        public ValueBuilder breadunit(Float breadunit) {
+        public EntryBuilder breadunit(Float breadunit) {
             this.breadunit=breadunit;
             return this;
         }
 
-        public ValueBuilder bolus(Float bolus) {
+        public EntryBuilder bolus(Float bolus) {
             this.bolus=bolus;
             return this;
         }
 
-        public ValueBuilder basal(Float basal) {
+        public EntryBuilder basal(Float basal) {
             this.basal=basal;
             return this;
         }
 
-        public ValueBuilder note(String note) {
+        public EntryBuilder note(String note) {
             this.note=note;
             return this;
         }
 
-        public Value build() {
-            return new Value(this);
+        public Entry build() {
+            return new Entry(this);
         }
     }
 }

@@ -54,19 +54,19 @@ public class MainActivity extends AppCompatActivity {
 
 //        testing stuff
 //        app.resetPrefs();
-//        Value a = Value.bolus(7f).build();
-//        Value b = Value.bloodsugar(100).breadunit(15.5f).bolus(31f).build();
-//        Value c = Value.bloodsugar(127).note("TestNote").basal(18f).bolus(27f).breadunit(13.5f).build();
+//        Entry a = Entry.bolus(7f).build();
+//        Entry b = Entry.bloodsugar(100).breadunit(15.5f).bolus(31f).build();
+//        Entry c = Entry.bloodsugar(127).note("TestNote").basal(18f).bolus(27f).breadunit(13.5f).build();
 //
-//        ArrayList<Value> valueList = new ArrayList<Value>();
-//        valueList.add(a);
-//        valueList.add(b);
-//        valueList.add(c);
+//        ArrayList<Entry> entryList = new ArrayList<Entry>();
+//        entryList.add(a);
+//        entryList.add(b);
+//        entryList.add(c);
 //
-//        for(Value v : valueList) {
-//            app.putValue(v);
+//        for(Entry v : entryList) {
+//            app.putEntry(v);
 //        }
-//        for (Value v : app.getValues()) {
+//        for (Entry v : app.getEntries()) {
 //            System.out.println(v.toString());
 //        }
     }
