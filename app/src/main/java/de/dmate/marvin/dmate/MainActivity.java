@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,22 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        testing stuff
-//        app.resetPrefs();
-//        Entry a = Entry.bolus(7f).build();
-//        Entry b = Entry.bloodsugar(100).breadunit(15.5f).bolus(31f).build();
-//        Entry c = Entry.bloodsugar(127).note("TestNote").basal(18f).bolus(27f).breadunit(13.5f).build();
-//
-//        ArrayList<Entry> entryList = new ArrayList<Entry>();
-//        entryList.add(a);
-//        entryList.add(b);
-//        entryList.add(c);
-//
-//        for(Entry v : entryList) {
-//            app.putEntry(v);
-//        }
-//        for (Entry v : app.getEntries()) {
-//            System.out.println(v.toString());
-//        }
+//        app.resetAllPrefs();
+        Entry a = Entry.bolus(7f).build();
+        Entry b = Entry.bloodsugar(100).breadunit(15.5f).bolus(31f).build();
+        Entry c = Entry.bloodsugar(127).note("TestNote").basal(18f).bolus(27f).breadunit(13.5f).build();
+        Entry d = Entry.bloodsugar(111).basal(7f).breadunit(7.5f).bolus(15f).note("Nooooooote").build();
     }
 
 }

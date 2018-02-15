@@ -4,7 +4,12 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Marvin on 14.02.2018.
@@ -12,85 +17,102 @@ import java.util.ArrayList;
 
 public class DMateApplication extends Application {
 
-    private SharedPreferences prefs;
+    private SharedPreferences miscPrefs;
+    private SharedPreferences entryPrefs;
     private Context context;
-    private int entryCount = 0;
 
     public void initialize(Context context) {
         //set app context
         this.context = context;
 
-        //initialize prefs attribute for easier access
-        this.prefs = context.getSharedPreferences("entries", Context.MODE_PRIVATE);
+        //initialize entryPrefs and miscPrefs attributes for easier access
+        this.entryPrefs = context.getSharedPreferences("entryPrefs", Context.MODE_PRIVATE);
+        this.miscPrefs = context.getSharedPreferences("miscPrefs", Context.MODE_PRIVATE);
 
-        //if entryCount has not been set yet, set it to 0
-        if (getEntryCount()==-1) {
+        //if entryCount does not exist, set it to 0
+        if (getEntryCount() == -1) {
             setEntryCount(0);
-        } else {
-            //else get entryCount from prefs and initialize the entryCount attribute of this class
-            this.entryCount = getEntryCount();
         }
     }
 
-    //only internal use
-    private int getEntryCount(){
-        return this.prefs.getInt("entryCount", -1);
+    public int getEntryCount() {
+        return miscPrefs.getInt("entryCount", -1);
     }
 
-    //only internal use
-    private void setEntryCount(int entryCount){
-        SharedPreferences.Editor editor = this.prefs.edit();
+    public void setEntryCount(Integer entryCount) {
+        SharedPreferences.Editor editor = miscPrefs.edit();
         editor.putInt("entryCount", entryCount);
         editor.commit();
     }
 
-    //Use this method to get IDs while creating Entry Objects
-    public int getNextID(){
-        //save new entryCount as temp and write it to prefs before returning it
-        int temp = this.prefs.getInt("entryCount", -1) + 1;
-        setEntryCount(temp);
-        return temp;
-    }
-
-    public void putEntry(Entry v) {
-        SharedPreferences.Editor editor = this.prefs.edit();
-        if(v.bloodsugar!=null) editor.putInt(v.id + "bloodsugar", v.bloodsugar);
-        if(v.breadunit!=null) editor.putFloat(v.id + "breadunit", v.breadunit);
-        if(v.bolus!=null) editor.putFloat(v.id + "bolus", v.bolus);
-        if(v.basal!=null) editor.putFloat(v.id + "basal", v.basal);
-        if(v.note!=null) editor.putString(v.id + "note", v.note);
+    //save new entry in entryPrefs
+    public void putEntry(Entry entry) {
+        SharedPreferences.Editor editor = entryPrefs.edit();
+        //use GSON library to convert Entry-Object to JSON and save it to entryPrefs as string
+        Gson gson = new Gson();
+        String json = gson.toJson(entry);
+        System.out.println(json);
+        editor.putString(entry.date.toString(), json);
         editor.commit();
+        updateEntryCount();
     }
 
-    public ArrayList<Entry> getEntries(){
-        ArrayList<Entry> list = new ArrayList<Entry>();
+    //update entryCount
+    //CALL WHEN PUTTING NEW ENTRIES OR DELETING ENTRIES
+    public void updateEntryCount() {
+        setEntryCount(getAllEntries().size());
+    }
 
-        for (int i = 0; i+1< entryCount; i++) {
-            String is = Integer.toString(i);
-            if (this.prefs.getInt(is + "bloodsugar", -1)!=-1 ||
-                    this.prefs.getFloat(is + "breadunit", -1f)!=-1f ||
-                    this.prefs.getFloat(is + "bolus", -1f)!=-1f ||
-                    this.prefs.getFloat(is + "basal", -1f) !=-1f ||
-                    this.prefs.getString(is + "note", null) !=null)  {
+    //get Entry by ID from entryPrefs
+    public Entry getEntry(String date) {
+        if (entryPrefs.getString(date, null) == null) return null;
 
-                Entry.EntryBuilder temp = Entry.id(i);
-                if (this.prefs.getInt(is + "bloodsugar", -1)!=-1) temp.bloodsugar(this.prefs.getInt(is + "bloodsugar", -1));
-                if(this.prefs.getFloat(is + "breadunit", -1f)!=-1f) temp.breadunit(this.prefs.getFloat(is + "breadunit", -1f));
-                if(this.prefs.getFloat(is + "bolus", -1f)!=-1f) temp.bolus(this.prefs.getFloat(is + "bolus", -1f));
-                if(this.prefs.getFloat(is + "basal", -1f)!=-1f) temp.basal(this.prefs.getFloat(is + "basal", -1f));
-                if(this.prefs.getString(is + "note", null)!=null) temp.note(this.prefs.getString(is + "note", null));
+        Gson gson = new Gson();
+        String json = entryPrefs.getString(date, null);
+        return gson.fromJson(json, Entry.class);
+    }
 
-                list.add(temp.build());
+    //get all entries from entryPrefs
+    public ArrayList<Entry> getAllEntries(){
+        final ArrayList<Entry> entries = new ArrayList<Entry>();
+
+        //run in thread to avoid problems with large collection of entries
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //use GSON library to read JSONs from entryPrefs and convert them to Entry-Objects
+                Gson gson = new Gson();
+
+                //get all keys from prefs before iterating through them
+                ArrayList<String> keyList = new ArrayList<String>();
+                keyList.addAll(entryPrefs.getAll().keySet());
+
+                //for each key in the keylist, extract json and convert it to an Entry-Object
+                for (String s : keyList) {
+                    System.out.println("Keylist value" + s);
+                    String json = entryPrefs.getString(s, null);
+                    Entry e = gson.fromJson(json, Entry.class);
+                    entries.add(e);
+                }
             }
+        });
+        System.out.println("SIZE:" + entries.size());
+        for (Entry e : entries) {
+            System.out.println(e.toString());
         }
-        return list;
+        return entries;
     }
 
     //for Testing purpose only
     //only internal use
-    public  void resetPrefs() {
-        prefs.edit().clear().commit();
+    public  void resetAllPrefs() {
+        entryPrefs.edit().clear().commit();
+        miscPrefs.edit().clear().commit();
     }
+
+
+
+
 
 
     //check for Internet connection (not needed atm)
