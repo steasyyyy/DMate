@@ -54,10 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
 //        testing stuff
 //        app.resetAllPrefs();
-        Entry a = Entry.bolus(7f).build();
+//        Entry a = Entry.bolus(7f).build();
         Entry b = Entry.bloodsugar(100).breadunit(15.5f).bolus(31f).build();
-        Entry c = Entry.bloodsugar(127).note("TestNote").basal(18f).bolus(27f).breadunit(13.5f).build();
-        Entry d = Entry.bloodsugar(111).basal(7f).breadunit(7.5f).bolus(15f).note("Nooooooote").build();
+//        Entry c = Entry.bloodsugar(127).note("TestNote").basal(18f).bolus(27f).breadunit(13.5f).build();
+//        Entry d = Entry.bloodsugar(111).basal(7f).breadunit(7.5f).bolus(15f).note("Nooooooote").build();
     }
 
 }

@@ -47,14 +47,15 @@ public class DMateApplication extends Application {
 
     //save new entry in entryPrefs
     public void putEntry(Entry entry) {
-        SharedPreferences.Editor editor = entryPrefs.edit();
-        //use GSON library to convert Entry-Object to JSON and save it to entryPrefs as string
-        Gson gson = new Gson();
-        String json = gson.toJson(entry);
-        System.out.println(json);
-        editor.putString(entry.date.toString(), json);
-        editor.commit();
-        updateEntryCount();
+        if (entryPrefs.getString(Long.toString(entry.date.getTime()), null) == null) {
+            SharedPreferences.Editor editor = entryPrefs.edit();
+            //use GSON library to convert Entry-Object to JSON and save it to entryPrefs as string
+            Gson gson = new Gson();
+            String json = gson.toJson(entry);
+            editor.putString(Long.toString(entry.date.getTime()), json);
+            editor.commit();
+            updateEntryCount();
+        }
     }
 
     //update entryCount
@@ -64,11 +65,11 @@ public class DMateApplication extends Application {
     }
 
     //get Entry by ID from entryPrefs
-    public Entry getEntry(String date) {
-        if (entryPrefs.getString(date, null) == null) return null;
+    public Entry getEntry(long timeMillis) {
+        if (entryPrefs.getString(Long.toString(timeMillis), null) == null) return null;
 
         Gson gson = new Gson();
-        String json = entryPrefs.getString(date, null);
+        String json = entryPrefs.getString(Long.toString(timeMillis), null);
         return gson.fromJson(json, Entry.class);
     }
 
@@ -76,26 +77,27 @@ public class DMateApplication extends Application {
     public ArrayList<Entry> getAllEntries(){
         final ArrayList<Entry> entries = new ArrayList<Entry>();
 
-        //run in thread to avoid problems with large collection of entries
+        //run in thread to avoid problems with large collections of entries
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                //use GSON library to read JSONs from entryPrefs and convert them to Entry-Objects
+                Map<String,?> keys = entryPrefs.getAll();
+
+                ArrayList<String> strings = new ArrayList<String>();
+                for(Map.Entry<String,?> entry : keys.entrySet()){
+                    if (entry.getValue() instanceof String) {
+                        strings.add((String) entry.getValue());
+                    }
+                }
+
                 Gson gson = new Gson();
-
-                //get all keys from prefs before iterating through them
-                ArrayList<String> keyList = new ArrayList<String>();
-                keyList.addAll(entryPrefs.getAll().keySet());
-
-                //for each key in the keylist, extract json and convert it to an Entry-Object
-                for (String s : keyList) {
-                    System.out.println("Keylist value" + s);
-                    String json = entryPrefs.getString(s, null);
+                for (String json : strings) {
                     Entry e = gson.fromJson(json, Entry.class);
                     entries.add(e);
                 }
             }
         });
+        t.start();
         System.out.println("SIZE:" + entries.size());
         for (Entry e : entries) {
             System.out.println(e.toString());
