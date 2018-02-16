@@ -64,7 +64,7 @@ public class DMateApplication extends Application {
         setEntryCount(getAllEntries().size());
     }
 
-    //get Entry by ID from entryPrefs
+    //get Entry by ID from entryPrefs (ID is defined by Date in millis)
     public Entry getEntry(long timeMillis) {
         if (entryPrefs.getString(Long.toString(timeMillis), null) == null) return null;
 
@@ -77,27 +77,21 @@ public class DMateApplication extends Application {
     public ArrayList<Entry> getAllEntries(){
         final ArrayList<Entry> entries = new ArrayList<Entry>();
 
-        //run in thread to avoid problems with large collections of entries
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Map<String,?> keys = entryPrefs.getAll();
+            Map<String,?> keys = entryPrefs.getAll();
 
-                ArrayList<String> strings = new ArrayList<String>();
-                for(Map.Entry<String,?> entry : keys.entrySet()){
-                    if (entry.getValue() instanceof String) {
-                        strings.add((String) entry.getValue());
-                    }
-                }
-
-                Gson gson = new Gson();
-                for (String json : strings) {
-                    Entry e = gson.fromJson(json, Entry.class);
-                    entries.add(e);
+            ArrayList<String> strings = new ArrayList<String>();
+            for(Map.Entry<String,?> entry : keys.entrySet()){
+                if (entry.getValue() instanceof String) {
+                    strings.add((String) entry.getValue());
                 }
             }
-        });
-        t.start();
+
+            Gson gson = new Gson();
+            for (String json : strings) {
+                Entry e = gson.fromJson(json, Entry.class);
+                entries.add(e);
+            }
+
         System.out.println("SIZE:" + entries.size());
         for (Entry e : entries) {
             System.out.println(e.toString());
