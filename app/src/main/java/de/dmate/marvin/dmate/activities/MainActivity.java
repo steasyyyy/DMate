@@ -124,9 +124,8 @@ public class MainActivity extends AppCompatActivity {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             //make sure there is a view
             //create a view, if there is none
-            View entryView = convertView;
-            if (entryView == null) {
-                entryView = getLayoutInflater().inflate(R.layout.entry_layout, parent, false);
+            if (convertView == null) {
+                convertView = getLayoutInflater().inflate(R.layout.entry_layout, parent, false);
             }
 
             //find entry to work with
@@ -136,29 +135,41 @@ public class MainActivity extends AppCompatActivity {
             Date date = currentEntry.getDate();
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
             String time = sdf.format(date);
-            TextView dateTextView = (TextView) entryView.findViewById(R.id.entry_date);
+            TextView dateTextView = (TextView) convertView.findViewById(R.id.entry_date);
             dateTextView.setText(time);
 
             if (currentEntry.getBloodsugar()!= null) {
-                TextView bloodsugarTextView = (TextView) entryView.findViewById(R.id.entry_bloodsugar);
+                TextView bloodsugarTextView = (TextView) convertView.findViewById(R.id.entry_bloodsugar);
                 bloodsugarTextView.setText(currentEntry.getBloodsugar().toString());
             }
 
             if (currentEntry.getBreadunit() != null) {
-                TextView breadunitTextView = (TextView) entryView.findViewById(R.id.entry_breadunit);
+                TextView breadunitTextView = (TextView) convertView.findViewById(R.id.entry_breadunit);
                 breadunitTextView.setText(currentEntry.getBreadunit().toString());
             }
 
             if (currentEntry.getBolus() != null) {
-                TextView bolusTextView = (TextView) entryView.findViewById(R.id.entry_bolus);
+                TextView bolusTextView = (TextView) convertView.findViewById(R.id.entry_bolus);
                 bolusTextView.setText(currentEntry.getBolus().toString());
             }
 
             if (currentEntry.getBasal() != null) {
-                TextView basalTextView = (TextView) entryView.findViewById(R.id.entry_basal);
+                TextView basalTextView = (TextView) convertView.findViewById(R.id.entry_basal);
                 basalTextView.setText(currentEntry.getBasal().toString());
             }
-            return entryView;
+            return convertView;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return super.getItemViewType(position);
+        }
+
+        //returns count of different Views that can be returned
+        //in this case 2, because Views are either entries or date separators
+        @Override
+        public int getViewTypeCount() {
+            return 2;
         }
     }
 }
