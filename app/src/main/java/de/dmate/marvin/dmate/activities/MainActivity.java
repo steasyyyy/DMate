@@ -9,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.internal.bind.ArrayTypeAdapter;
 
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         populateListView();
+        registerClickCallback();
     }
 
     private void populateListView() {
@@ -75,5 +79,20 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.listview_main);
         listView.setAdapter(adapter);
+    }
+
+    private void registerClickCallback() {
+        ListView listView = (ListView) findViewById(R.id.listview_main);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                TextView textView = (TextView) viewClicked;
+                //TODO: What happens when a certain item is clicked?
+                //note: position starts from 0 and increments while going down the list
+                //dummy:
+                String message = "You clicked position #" + position + textView.getText();
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
