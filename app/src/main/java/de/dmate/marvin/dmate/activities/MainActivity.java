@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,25 @@ public class MainActivity extends AppCompatActivity {
 //        Entry b = Entry.bloodsugar(100).breadunit(15.5f).bolus(31f).build();
 //        Entry c = Entry.bloodsugar(127).note("TestNote").basal(18f).bolus(27f).breadunit(13.5f).build();
 //        Entry d = Entry.bloodsugar(111).basal(7f).breadunit(7.5f).bolus(15f).note("Nooooooote").build();
+//        Entry ee = Entry.bloodsugar(55).basal(18f).breadunit(13.5f).bolus(15f).note("TestNote333333").build();
+//        Entry f = Entry.bloodsugar(87).basal(2f).breadunit(17f).bolus(25f).note("Nooooooote1532458415").build();
+//        Entry g = Entry.bloodsugar(139).basal(27f).breadunit(25.5f).bolus(30f).note("Test15").build();
+//        Entry h = Entry.bolus(3f).build();
+//        Entry i = Entry.bolus(5f).build();
+//        Entry j = Entry.bolus(13f).build();
+//        Entry k = Entry.bolus(20f).build();
+//        Entry l = Entry.bolus(30f).build();
+//        Entry m = Entry.bolus(27f).build();
+//        Entry o = Entry.bolus(15f).build();
+//        Entry p = Entry.bolus(1f).build();
+//        Entry q = Entry.bolus(3f).build();
+//        Entry r = Entry.bolus(9f).build();
+//        Entry s = Entry.bolus(11f).build();
+//        Entry t = Entry.bolus(7f).build();
+//        Entry u = Entry.bolus(18f).build();
+//        Entry v = Entry.bolus(32f).build();
+
+
         for (Entry e : app.getAllEntries()) {
             System.out.println(e.toString());
         }
@@ -79,10 +99,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        //get list with all entries
-        DMateApplication app = (DMateApplication)getApplication();
-        ArrayList<Entry> entries = app.getAllEntries();
-
         //instanciate an adapter and connect it to the listview
         ArrayAdapter<Entry> adapter = new CustomArrayAdapter();
         ListView listView = (ListView) findViewById(R.id.listview_main);
@@ -122,40 +138,69 @@ public class MainActivity extends AppCompatActivity {
         //returns a view for every entry there is in the list
         //position refers to positions in list of entries (app.getAllEntries())
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            ViewHolderItem viewHolderItem;
+
             //make sure there is a view
             //create a view, if there is none
             if (convertView == null) {
+                //inflate the layout
                 convertView = getLayoutInflater().inflate(R.layout.entry_layout, parent, false);
+
+                //set up viewholder
+                viewHolderItem = new ViewHolderItem();
+
+                viewHolderItem.dateTextView = (TextView) convertView.findViewById(R.id.entry_date);
+                viewHolderItem.bloodsugarTextView = (TextView) convertView.findViewById(R.id.entry_bloodsugar);
+                viewHolderItem.breadunitTextView = (TextView) convertView.findViewById(R.id.entry_breadunit);
+                viewHolderItem.bolusTextView = (TextView) convertView.findViewById(R.id.entry_bolus);
+                viewHolderItem.basalTextView = (TextView) convertView.findViewById(R.id.entry_basal);
+
+                viewHolderItem.staticdateTextView = (TextView) convertView.findViewById(R.id.static_date);
+                viewHolderItem.staticbloodsugarTextView = (TextView) convertView.findViewById(R.id.static_bloodsugar);
+                viewHolderItem.staticbreadunitTextView = (TextView) convertView.findViewById(R.id.static_breadunit);
+                viewHolderItem.staticbolusTextView = (TextView) convertView.findViewById(R.id.static_bolus);
+                viewHolderItem.staticbasalTextView = (TextView) convertView.findViewById(R.id.static_basal);
+
+                //store the holder with the view
+                convertView.setTag(viewHolderItem);
+            } else {
+                //if this is executed, one call of findViewById was avoided
+                viewHolderItem = (ViewHolderItem) convertView.getTag();
             }
+
+            //get all entries from prefs
+            ArrayList<Entry> entries = Helper.getInstance().getApplication().getAllEntries();
 
             //find entry to work with
-            Entry currentEntry = Helper.getInstance().getApplication().getAllEntries().get(position);
+            Entry currentEntry = entries.get(position);
 
-            //fill the view
-            Date date = currentEntry.getDate();
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            String time = sdf.format(date);
-            TextView dateTextView = (TextView) convertView.findViewById(R.id.entry_date);
-            dateTextView.setText(time);
+            if (currentEntry != null) {
+                //fill the view
+                Date date = currentEntry.getDate();
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                String time = sdf.format(date);
+                TextView dateTextView = (TextView) convertView.findViewById(R.id.entry_date);
+                viewHolderItem.dateTextView.setText(time);
 
-            if (currentEntry.getBloodsugar()!= null) {
-                TextView bloodsugarTextView = (TextView) convertView.findViewById(R.id.entry_bloodsugar);
-                bloodsugarTextView.setText(currentEntry.getBloodsugar().toString());
-            }
+                if (currentEntry.getBloodsugar()!= null) {
+//                    TextView bloodsugarTextView = (TextView) convertView.findViewById(R.id.entry_bloodsugar);
+                    viewHolderItem.bloodsugarTextView.setText(currentEntry.getBloodsugar().toString());
+                }
 
-            if (currentEntry.getBreadunit() != null) {
-                TextView breadunitTextView = (TextView) convertView.findViewById(R.id.entry_breadunit);
-                breadunitTextView.setText(currentEntry.getBreadunit().toString());
-            }
+                if (currentEntry.getBreadunit() != null) {
+//                    TextView breadunitTextView = (TextView) convertView.findViewById(R.id.entry_breadunit);
+                    viewHolderItem.breadunitTextView.setText(currentEntry.getBreadunit().toString());
+                }
 
-            if (currentEntry.getBolus() != null) {
-                TextView bolusTextView = (TextView) convertView.findViewById(R.id.entry_bolus);
-                bolusTextView.setText(currentEntry.getBolus().toString());
-            }
+                if (currentEntry.getBolus() != null) {
+//                    TextView bolusTextView = (TextView) convertView.findViewById(R.id.entry_bolus);
+                    viewHolderItem.bolusTextView.setText(currentEntry.getBolus().toString());
+                }
 
-            if (currentEntry.getBasal() != null) {
-                TextView basalTextView = (TextView) convertView.findViewById(R.id.entry_basal);
-                basalTextView.setText(currentEntry.getBasal().toString());
+                if (currentEntry.getBasal() != null) {
+//                    TextView basalTextView = (TextView) convertView.findViewById(R.id.entry_basal);
+                    viewHolderItem.basalTextView.setText(currentEntry.getBasal().toString());
+                }
             }
             return convertView;
         }
@@ -171,5 +216,19 @@ public class MainActivity extends AppCompatActivity {
         public int getViewTypeCount() {
             return 2;
         }
+    }
+
+    private static class ViewHolderItem {
+        TextView dateTextView;
+        TextView bloodsugarTextView;
+        TextView breadunitTextView;
+        TextView bolusTextView;
+        TextView basalTextView;
+
+        TextView staticdateTextView;
+        TextView staticbloodsugarTextView;
+        TextView staticbreadunitTextView;
+        TextView staticbolusTextView;
+        TextView staticbasalTextView;
     }
 }
