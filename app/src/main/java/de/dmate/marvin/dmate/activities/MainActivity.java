@@ -1,6 +1,7 @@
 package de.dmate.marvin.dmate.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -98,9 +99,12 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 //TODO: What happens when a certain item is clicked
                 //for now this is a dummy that displays a toast
-                Entry clickedEntry = Helper.getInstance().app.getAllEntries().get(position);
-                String message = "You clicked item #" + position + ".";
-                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+//                Entry clickedEntry = Helper.getInstance().app.getAllEntries().get(position);
+//                String message = "You clicked item #" + position + ".";
+//                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(MainActivity.this, UpdateEntryActivity.class);
+                startActivity(intent);
             }
         });
     }
