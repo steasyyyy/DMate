@@ -27,8 +27,8 @@ public class DMateApplication extends Application {
         this.context = context;
 
         //initialize entryPrefs and miscPrefs attributes for easier access
-        this.entryPrefs = context.getSharedPreferences("entryPrefs", Context.MODE_PRIVATE);
-        this.miscPrefs = context.getSharedPreferences("miscPrefs", Context.MODE_PRIVATE);
+        this.entryPrefs = context.getSharedPreferences("de.dmate.marvin.dmate.util.entryPrefs", Context.MODE_PRIVATE);
+        this.miscPrefs = context.getSharedPreferences("de.dmate.marvin.dmate.util.miscPrefs", Context.MODE_PRIVATE);
 
         //if entryCount does not exist, set it to 0
         if (getEntryCount() == -1) {

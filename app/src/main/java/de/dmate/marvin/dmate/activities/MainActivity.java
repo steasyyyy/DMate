@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(e.toString());
         }
 
+        //populate listView with entries and react to item clicks
         populateListView();
         registerClickCallback();
     }
