@@ -1,13 +1,26 @@
-package de.dmate.marvin.dmate;
+package de.dmate.marvin.dmate.activities;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 
-import java.util.Date;
+import com.google.gson.internal.bind.ArrayTypeAdapter;
+
+import java.util.ArrayList;
+
+import de.dmate.marvin.dmate.entities.Entry;
+import de.dmate.marvin.dmate.util.DMateApplication;
+import de.dmate.marvin.dmate.util.Helper;
+import de.dmate.marvin.dmate.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,13 +54,26 @@ public class MainActivity extends AppCompatActivity {
         //pass Application Object to Helper
         Helper.getInstance().setApplication(app);
 
-
 //        testing stuff
 //        app.resetAllPrefs();
 //        Entry a = Entry.bolus(7f).build();
 //        Entry b = Entry.bloodsugar(100).breadunit(15.5f).bolus(31f).build();
 //        Entry c = Entry.bloodsugar(127).note("TestNote").basal(18f).bolus(27f).breadunit(13.5f).build();
 //        Entry d = Entry.bloodsugar(111).basal(7f).breadunit(7.5f).bolus(15f).note("Nooooooote").build();
+        for (Entry e : app.getAllEntries()) {
+            System.out.println(e.toString());
+        }
+
+        populateListView();
     }
 
+    private void populateListView() {
+        DMateApplication app = (DMateApplication)getApplication();
+        ArrayList<Entry> entries = app.getAllEntries();
+
+        ArrayAdapter<Entry> adapter = new ArrayAdapter<Entry>(this, R.layout.entry, entries);
+
+        ListView listView = (ListView) findViewById(R.id.listview_main);
+        listView.setAdapter(adapter);
+    }
 }

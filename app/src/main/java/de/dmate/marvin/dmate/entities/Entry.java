@@ -1,6 +1,8 @@
-package de.dmate.marvin.dmate;
+package de.dmate.marvin.dmate.entities;
 
 import java.util.Date;
+
+import de.dmate.marvin.dmate.util.Helper;
 
 /**
  * Created by Marvin on 14.02.2018.
@@ -38,6 +40,8 @@ public class Entry {
         sb.append("-------------------------------------------------------------------------------------------------------\nENTRY:");
         sb.append("\n" + "Date: ");
         if (this.date !=null) sb.append(this.date.toString());
+        sb.append("\n" + "Date in millis: ");
+        if (this.date !=null) sb.append(this.date.getTime());
         sb.append("\n" + "Bloodsugar: ");
         if (this.bloodsugar!=null) sb.append(this.bloodsugar.toString());
         sb.append("\n" + "Breadunit: ");

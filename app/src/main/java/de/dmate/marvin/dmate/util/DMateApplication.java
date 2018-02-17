@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate;
+package de.dmate.marvin.dmate.util;
 
 import android.app.Application;
 import android.content.Context;
@@ -8,8 +8,9 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
+
+import de.dmate.marvin.dmate.entities.Entry;
 
 /**
  * Created by Marvin on 14.02.2018.
@@ -91,11 +92,7 @@ public class DMateApplication extends Application {
                 Entry e = gson.fromJson(json, Entry.class);
                 entries.add(e);
             }
-
-        System.out.println("SIZE:" + entries.size());
-        for (Entry e : entries) {
-            System.out.println(e.toString());
-        }
+        Collections.sort(entries, new EntryComparator());
         return entries;
     }
 

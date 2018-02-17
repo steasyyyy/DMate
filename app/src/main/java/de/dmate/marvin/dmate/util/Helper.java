@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate;
+package de.dmate.marvin.dmate.util;
 
 /**
  * Created by Marvin on 14.02.2018.

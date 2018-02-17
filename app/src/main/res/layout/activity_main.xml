@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="de.dmate.marvin.dmate.MainActivity">
+    tools:context="de.dmate.marvin.dmate.activities.MainActivity">
 
     <FrameLayout
         android:id="@+id/content"
@@ -15,7 +15,7 @@
         android:layout_weight="1">
 
         <ListView
-            android:id="@android:id/list"
+            android:id="@+id/listview_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
