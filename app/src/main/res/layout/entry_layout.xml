@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/entry_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/entry_bloodsugar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/entry_date"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/entry_breadunit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/entry_bloodsugar"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/entry_bolus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/entry_breadunit"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/entry_basal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/entry_bolus"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/static_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/entry_date"
+        android:text="Time" />
+
+    <TextView
+        android:id="@+id/static_bloodsugar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/entry_bloodsugar"
+        android:layout_toEndOf="@+id/entry_date"
+        android:text="Bloodsugar" />
+
+    <TextView
+        android:id="@+id/static_breadunit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/entry_breadunit"
+        android:layout_toEndOf="@+id/static_bloodsugar"
+        android:text="Breadunits" />
+
+    <TextView
+        android:id="@+id/static_bolus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/entry_bolus"
+        android:layout_toEndOf="@+id/static_breadunit"
+        android:text="Bolus" />
+
+    <TextView
+        android:id="@+id/static_basal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/entry_basal"
+        android:layout_toEndOf="@+id/static_bolus"
+        android:text="Basal" />
+
+</RelativeLayout>

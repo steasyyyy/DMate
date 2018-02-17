@@ -9,20 +9,19 @@ import de.dmate.marvin.dmate.util.Helper;
  */
 
 public class Entry {
-
-    public Date date = null;
-    public Integer bloodsugar = null;
-    public Float breadunit = null;
-    public Float bolus = null;
-    public Float basal = null;
-    public String note = null;
+    private Date date = null;
+    private Integer bloodsugar = null;
+    private Float breadunit = null;
+    private Float bolus = null;
+    private Float basal = null;
+    private String note = null;
 
     //Helper class EntryBuilder is used to build Entry objects avoiding to implement all permutations of constructors
     //USE LIKE THIS TO INSTANCIATE ENTRY OBJECTS:
     //Entry a = Entry.bloodsugar(122).build();
     //Entry b = Entry.bloodsugar(100).bolus(15.0).note("testnote").build();
-    //OR IF NECESSARY SAVE AS TEMPORARY ENTRYBUILDER OBJECT.
-    //Entry.EntryBuilder temp = Entry.id(i);
+    //OR IF NECESSARY SAVE AS TEMPORARY ENTRYBUILDER OBJECT:
+    //Entry.EntryBuilder temp = Entry.bolus(32.5);
     //temp.bloodsugar(97).build();
     private Entry(EntryBuilder vb) {
         this.date = new Date(System.currentTimeMillis());
@@ -57,6 +56,32 @@ public class Entry {
         return sb.toString();
     }
 
+    //getters for all attributes
+    public Date getDate() {
+        return date;
+    }
+
+    public Integer getBloodsugar() {
+        return bloodsugar;
+    }
+
+    public Float getBreadunit() {
+        return breadunit;
+    }
+
+    public Float getBolus() {
+        return bolus;
+    }
+
+    public Float getBasal() {
+        return basal;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    //static functions to call when creating an entry via EntryBuilder
     public static EntryBuilder bloodsugar(Integer bloodsugar) {
         return new EntryBuilder().bloodsugar(bloodsugar);
     }
@@ -81,8 +106,9 @@ public class Entry {
         return new EntryBuilder().build();
     }
 
+    //EntryBuilder to create instances of Entry
+    //usage explained above
     public static class EntryBuilder {
-//        private Date date;
         private Integer bloodsugar;
         private Float breadunit;
         private Float bolus;

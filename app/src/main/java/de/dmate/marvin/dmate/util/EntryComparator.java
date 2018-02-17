@@ -13,6 +13,6 @@ public class EntryComparator implements Comparator<Entry> {
     //compares dates and sorts entries (newest first)
     @Override
     public int compare(Entry e1, Entry e2) {
-        return e2.date.compareTo(e1.date);
+        return e2.getDate().compareTo(e1.getDate());
     }
 }

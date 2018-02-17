@@ -48,12 +48,12 @@ public class DMateApplication extends Application {
 
     //save new entry in entryPrefs
     public void putEntry(Entry entry) {
-        if (entryPrefs.getString(Long.toString(entry.date.getTime()), null) == null) {
+        if (entryPrefs.getString(Long.toString(entry.getDate().getTime()), null) == null) {
             SharedPreferences.Editor editor = entryPrefs.edit();
             //use GSON library to convert Entry-Object to JSON and save it to entryPrefs as string
             Gson gson = new Gson();
             String json = gson.toJson(entry);
-            editor.putString(Long.toString(entry.date.getTime()), json);
+            editor.putString(Long.toString(entry.getDate().getTime()), json);
             editor.commit();
             updateEntryCount();
         }
