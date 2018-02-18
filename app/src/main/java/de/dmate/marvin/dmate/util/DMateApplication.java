@@ -14,11 +14,8 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import de.dmate.marvin.dmate.entities.Entry;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * Created by Marvin on 14.02.2018.
@@ -29,6 +26,7 @@ public class DMateApplication extends Application {
     private SharedPreferences miscPrefs;
     private SharedPreferences entryPrefs;
     private Context context;
+    private ArrayList<Entry> entries;
 
     public void initialize(Context context) {
         //set app context
@@ -38,70 +36,54 @@ public class DMateApplication extends Application {
         this.entryPrefs = context.getSharedPreferences("de.dmate.marvin.dmate.util.entryPrefs", Context.MODE_PRIVATE);
         this.miscPrefs = context.getSharedPreferences("de.dmate.marvin.dmate.util.miscPrefs", Context.MODE_PRIVATE);
 
-        //if entryCount does not exist, set it to 0
-        if (getEntryCount() == -1) {
-            setEntryCount(0);
-        }
-    }
-
-    public int getEntryCount() {
-        return miscPrefs.getInt("entryCount", -1);
-    }
-
-    public void setEntryCount(Integer entryCount) {
-        SharedPreferences.Editor editor = miscPrefs.edit();
-        editor.putInt("entryCount", entryCount);
-        editor.commit();
+        this.entries = getAllEntriesFromPrefs();
     }
 
     //save new entry in entryPrefs
     public void putEntry(Entry entry) {
-        if (entryPrefs.getString(Long.toString(entry.getDate().getTime()), null) == null) {
-            SharedPreferences.Editor editor = entryPrefs.edit();
-            //use GSON library to convert Entry-Object to JSON and save it to entryPrefs as string
-            Gson gson = new Gson();
-            String json = gson.toJson(entry);
-            editor.putString(Long.toString(entry.getDate().getTime()), json);
-            editor.commit();
-            updateEntryCount();
-        }
+        entries.add(entry);
+        updateEntryPrefs();
     }
 
-    //update entryCount
-    //CALL WHEN PUTTING NEW ENTRIES OR DELETING ENTRIES
-    public void updateEntryCount() {
-        setEntryCount(getAllEntries().size());
-    }
-
-    //get Entry by ID from entryPrefs (ID is defined by Date in millis)
-    public Entry getEntry(long timeMillis) {
-        if (entryPrefs.getString(Long.toString(timeMillis), null) == null) return null;
-
-        Gson gson = new Gson();
-        String json = entryPrefs.getString(Long.toString(timeMillis), null);
-        return gson.fromJson(json, Entry.class);
+    //get all entries from DMateApplication.entries
+    public ArrayList<Entry> getAllEntries(){
+        return this.entries;
     }
 
     //get all entries from entryPrefs
-    public ArrayList<Entry> getAllEntries(){
+    public ArrayList<Entry> getAllEntriesFromPrefs(){
         final ArrayList<Entry> entries = new ArrayList<Entry>();
 
-            Map<String,?> keys = entryPrefs.getAll();
+        Map<String,?> keys = entryPrefs.getAll();
 
-            ArrayList<String> strings = new ArrayList<String>();
-            for(Map.Entry<String,?> entry : keys.entrySet()){
-                if (entry.getValue() instanceof String) {
-                    strings.add((String) entry.getValue());
-                }
+        ArrayList<String> strings = new ArrayList<String>();
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            if (entry.getValue() instanceof String) {
+                strings.add((String) entry.getValue());
             }
+        }
 
-            Gson gson = new Gson();
-            for (String json : strings) {
-                Entry e = gson.fromJson(json, Entry.class);
-                entries.add(e);
-            }
+        Gson gson = new Gson();
+        for (String json : strings) {
+            Entry e = gson.fromJson(json, Entry.class);
+            entries.add(e);
+        }
         Collections.sort(entries, new EntryComparator());
         return entries;
+    }
+
+    public void updateEntryPrefs() {
+        SharedPreferences.Editor editor = entryPrefs.edit();
+        //use GSON library to convert Entry-Object to JSON and save it to entryPrefs as string
+        Gson gson = new Gson();
+
+        for (Entry e : entries) {
+            if (entryPrefs.getString(Long.toString(e.getDate().getTime()), null) == null){
+                String json = gson.toJson(e);
+                editor.putString(Long.toString(e.getDate().getTime()), json);
+                editor.commit();
+            }
+        }
     }
 
     //for Testing purpose only
