@@ -11,7 +11,7 @@ import de.dmate.marvin.dmate.util.Helper;
  */
 
 public class Entry {
-    private Date date = null;
+    private Long dateMillis;
     private Integer bloodsugar = null;
     private Float breadunit = null;
     private Float bolus = null;
@@ -26,7 +26,7 @@ public class Entry {
     //Entry.EntryBuilder temp = Entry.bolus(32.5);
     //temp.bloodsugar(97).build();
     private Entry(EntryBuilder vb) {
-        this.date = new Date(System.currentTimeMillis());
+        this.dateMillis = System.currentTimeMillis();
         this.bloodsugar=vb.bloodsugar;
         this.breadunit=vb.breadunit;
         this.bolus=vb.bolus;
@@ -40,12 +40,14 @@ public class Entry {
         StringBuilder sb = new StringBuilder();
         sb.append("-------------------------------------------------------------------------------------------------------\nENTRY:");
         sb.append("\n" + "Date: ");
-        if (this.date !=null) sb.append(this.date.toString());
-        sb.append("\n" + "Date in millis: ");
-        if (this.date !=null) sb.append(this.date.getTime());
-        sb.append("\n" + "Is last entry of this day: ");
-        if (this.date !=null) sb.append(isLastEntryOfThisDay());
-        sb.append("\n" + "Bloodsugar: ");
+        if (this.getDate() !=null) {
+            sb.append(this.getDate().toString());
+            sb.append("\n" + "Date in millis: ");
+            sb.append(this.getDateMillis());
+            sb.append("\n" + "Is last entry of this day: ");
+            sb.append(isLastEntryOfThisDay());
+            sb.append("\n" + "Bloodsugar: ");
+        }
         if (this.bloodsugar!=null) sb.append(this.bloodsugar.toString());
         sb.append("\n" + "Breadunit: ");
         if (this.breadunit!=null) sb.append(this.breadunit.toString());
@@ -61,8 +63,13 @@ public class Entry {
     }
 
     //getters for all attributes
+    public Long getDateMillis() {
+        return dateMillis;
+    }
+
     public Date getDate() {
-        return date;
+        Date temp = new Date(dateMillis);
+        return temp;
     }
 
     public Integer getBloodsugar() {
@@ -96,7 +103,7 @@ public class Entry {
         //easy option: entries.getIndexOf(this) does not work, because objects are recreated when reading from prefs
         //so: if the millis are the same, the object must have the same values
         for (Entry e : entries) {
-            if(e.getDate().getTime() == this.getDate().getTime()) {
+            if(e.getDateMillis() == this.getDateMillis()) {
                 indexOfThis = entries.indexOf(e);
             }
         }
@@ -106,7 +113,7 @@ public class Entry {
 
         //create calendars to make Year and Day of Year comparable
         Calendar cal1 = Calendar.getInstance();
-        cal1.setTime(this.date);
+        cal1.setTime(this.getDate());
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(entries.get(indexOfThis-1).getDate());
         boolean sameDay = (cal1.get(Calendar.YEAR) != cal2.get(Calendar.YEAR) ||

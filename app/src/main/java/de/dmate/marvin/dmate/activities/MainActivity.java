@@ -1,35 +1,27 @@
 package de.dmate.marvin.dmate.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.gson.internal.bind.ArrayTypeAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
+import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.entities.Entry;
 import de.dmate.marvin.dmate.util.DMateApplication;
 import de.dmate.marvin.dmate.util.Helper;
-import de.dmate.marvin.dmate.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 //        Entry b = Entry.bloodsugar(100).breadunit(15.5f).bolus(31f).build();
 //        Entry c = Entry.bloodsugar(127).note("TestNote").basal(18f).bolus(27f).breadunit(13.5f).build();
 //        Entry d = Entry.bloodsugar(111).basal(7f).breadunit(7.5f).bolus(15f).note("Nooooooote").build();
+
 //        Entry ee = Entry.bloodsugar(55).basal(18f).breadunit(13.5f).bolus(15f).note("TestNote333333").build();
 //        Entry f = Entry.bloodsugar(87).basal(2f).breadunit(17f).bolus(25f).note("Nooooooote1532458415").build();
 //        Entry g = Entry.bloodsugar(139).basal(27f).breadunit(25.5f).bolus(30f).note("Test15").build();
@@ -88,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
 //        Entry u = Entry.bolus(18f).build();
 //        Entry v = Entry.bolus(32f).build();
 
+//        Entry temp = app.getAllEntries().get(1);
+//        System.out.println(temp.getDate().getTime() + "will be deleted");
+//        app.deleteEntry(temp);
 
         for (Entry e : app.getAllEntries()) {
             System.out.println(e.toString());
@@ -113,12 +109,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                //TODO: What happens when a certain item is clicked
-                //for now this is a dummy that displays a toast
-//                Entry clickedEntry = Helper.getInstance().app.getAllEntries().get(position);
-//                String message = "You clicked item #" + position + ".";
-//                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(MainActivity.this, UpdateEntryActivity.class);
                 startActivity(intent);
             }
@@ -138,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         //returns a view for every entry there is in the list
         //position refers to positions in list of entries (app.getAllEntries())
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            ViewHolderItem viewHolderItem;
+            ViewHolder viewHolder;
 
             //make sure there is a view
             //create a view, if there is none
@@ -147,25 +137,25 @@ public class MainActivity extends AppCompatActivity {
                 convertView = getLayoutInflater().inflate(R.layout.entry_layout, parent, false);
 
                 //set up viewholder
-                viewHolderItem = new ViewHolderItem();
+                viewHolder = new ViewHolder();
 
-                viewHolderItem.dateTextView = (TextView) convertView.findViewById(R.id.entry_date);
-                viewHolderItem.bloodsugarTextView = (TextView) convertView.findViewById(R.id.entry_bloodsugar);
-                viewHolderItem.breadunitTextView = (TextView) convertView.findViewById(R.id.entry_breadunit);
-                viewHolderItem.bolusTextView = (TextView) convertView.findViewById(R.id.entry_bolus);
-                viewHolderItem.basalTextView = (TextView) convertView.findViewById(R.id.entry_basal);
+                viewHolder.dateTextView = (TextView) convertView.findViewById(R.id.entry_date);
+                viewHolder.bloodsugarTextView = (TextView) convertView.findViewById(R.id.entry_bloodsugar);
+                viewHolder.breadunitTextView = (TextView) convertView.findViewById(R.id.entry_breadunit);
+                viewHolder.bolusTextView = (TextView) convertView.findViewById(R.id.entry_bolus);
+                viewHolder.basalTextView = (TextView) convertView.findViewById(R.id.entry_basal);
 
-                viewHolderItem.staticdateTextView = (TextView) convertView.findViewById(R.id.static_date);
-                viewHolderItem.staticbloodsugarTextView = (TextView) convertView.findViewById(R.id.static_bloodsugar);
-                viewHolderItem.staticbreadunitTextView = (TextView) convertView.findViewById(R.id.static_breadunit);
-                viewHolderItem.staticbolusTextView = (TextView) convertView.findViewById(R.id.static_bolus);
-                viewHolderItem.staticbasalTextView = (TextView) convertView.findViewById(R.id.static_basal);
+                viewHolder.staticdateTextView = (TextView) convertView.findViewById(R.id.static_date);
+                viewHolder.staticbloodsugarTextView = (TextView) convertView.findViewById(R.id.static_bloodsugar);
+                viewHolder.staticbreadunitTextView = (TextView) convertView.findViewById(R.id.static_breadunit);
+                viewHolder.staticbolusTextView = (TextView) convertView.findViewById(R.id.static_bolus);
+                viewHolder.staticbasalTextView = (TextView) convertView.findViewById(R.id.static_basal);
 
                 //store the holder with the view
-                convertView.setTag(viewHolderItem);
+                convertView.setTag(viewHolder);
             } else {
                 //if this is executed, one call of findViewById was avoided
-                viewHolderItem = (ViewHolderItem) convertView.getTag();
+                viewHolder = (ViewHolder) convertView.getTag();
             }
 
             //get all entries from prefs
@@ -180,26 +170,26 @@ public class MainActivity extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
                 String time = sdf.format(date);
                 TextView dateTextView = (TextView) convertView.findViewById(R.id.entry_date);
-                viewHolderItem.dateTextView.setText(time);
+                viewHolder.dateTextView.setText(time);
 
                 if (currentEntry.getBloodsugar()!= null) {
 //                    TextView bloodsugarTextView = (TextView) convertView.findViewById(R.id.entry_bloodsugar);
-                    viewHolderItem.bloodsugarTextView.setText(currentEntry.getBloodsugar().toString());
+                    viewHolder.bloodsugarTextView.setText(currentEntry.getBloodsugar().toString());
                 }
 
                 if (currentEntry.getBreadunit() != null) {
 //                    TextView breadunitTextView = (TextView) convertView.findViewById(R.id.entry_breadunit);
-                    viewHolderItem.breadunitTextView.setText(currentEntry.getBreadunit().toString());
+                    viewHolder.breadunitTextView.setText(currentEntry.getBreadunit().toString());
                 }
 
                 if (currentEntry.getBolus() != null) {
 //                    TextView bolusTextView = (TextView) convertView.findViewById(R.id.entry_bolus);
-                    viewHolderItem.bolusTextView.setText(currentEntry.getBolus().toString());
+                    viewHolder.bolusTextView.setText(currentEntry.getBolus().toString());
                 }
 
                 if (currentEntry.getBasal() != null) {
 //                    TextView basalTextView = (TextView) convertView.findViewById(R.id.entry_basal);
-                    viewHolderItem.basalTextView.setText(currentEntry.getBasal().toString());
+                    viewHolder.basalTextView.setText(currentEntry.getBasal().toString());
                 }
             }
             return convertView;
@@ -218,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private static class ViewHolderItem {
+    private static class ViewHolder {
         TextView dateTextView;
         TextView bloodsugarTextView;
         TextView breadunitTextView;

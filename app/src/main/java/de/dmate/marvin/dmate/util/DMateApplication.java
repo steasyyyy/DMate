@@ -7,12 +7,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import de.dmate.marvin.dmate.entities.Entry;
@@ -25,62 +20,84 @@ public class DMateApplication extends Application {
 
     private SharedPreferences miscPrefs;
     private SharedPreferences entryPrefs;
-    private Context context;
     private ArrayList<Entry> entries;
+    private Context context;
 
     public void initialize(Context context) {
-        //set app context
+        //initialize entryPrefs and miscPrefs attributes
         this.context = context;
-
-        //initialize entryPrefs and miscPrefs attributes for easier access
         this.entryPrefs = context.getSharedPreferences("de.dmate.marvin.dmate.util.entryPrefs", Context.MODE_PRIVATE);
         this.miscPrefs = context.getSharedPreferences("de.dmate.marvin.dmate.util.miscPrefs", Context.MODE_PRIVATE);
 
-        this.entries = getAllEntriesFromPrefs();
+        //get entries from prefs and save them as local list to prevent huge amount of reads from prefs
+        this.entries = new ArrayList<Entry>();
+        getAllEntriesFromPrefs();
     }
 
     //save new entry in entryPrefs
-    public void putEntry(Entry entry) {
-        entries.add(entry);
+    public boolean putEntry(Entry entry) {
+        //check if entry is already in the list
+        for (Entry e: entries) {
+            if (e.getDateMillis() == entry.getDateMillis()) return false;
+        }
+
+        this.entries.add(entry);
+
+        resortEntries();
         updateEntryPrefs();
+        return true;
+    }
+
+    public boolean deleteEntry(Entry entry) {
+        for (Entry e : entries) {
+            if (e.getDateMillis() == entry.getDateMillis()) {
+                entries.remove(e);
+                resortEntries();
+                updateEntryPrefs();
+                return true;
+            }
+        }
+        return false;
     }
 
     //get all entries from DMateApplication.entries
     public ArrayList<Entry> getAllEntries(){
-        return this.entries;
+        return entries;
     }
 
+
     //get all entries from entryPrefs
-    public ArrayList<Entry> getAllEntriesFromPrefs(){
-        final ArrayList<Entry> entries = new ArrayList<Entry>();
-
+    public void getAllEntriesFromPrefs(){
         Map<String,?> keys = entryPrefs.getAll();
-
         ArrayList<String> strings = new ArrayList<String>();
+
         for(Map.Entry<String,?> entry : keys.entrySet()){
             if (entry.getValue() instanceof String) {
                 strings.add((String) entry.getValue());
             }
         }
-
         Gson gson = new Gson();
         for (String json : strings) {
             Entry e = gson.fromJson(json, Entry.class);
             entries.add(e);
         }
+        Collections.sort(this.entries, new EntryComparator());
+    }
+
+    public void resortEntries() {
         Collections.sort(entries, new EntryComparator());
-        return entries;
     }
 
     public void updateEntryPrefs() {
         SharedPreferences.Editor editor = entryPrefs.edit();
         //use GSON library to convert Entry-Object to JSON and save it to entryPrefs as string
-        Gson gson = new Gson();
 
         for (Entry e : entries) {
-            if (entryPrefs.getString(Long.toString(e.getDate().getTime()), null) == null){
+            //if entry with certain datetime does not exist yet, add it to prefs
+            if (entryPrefs.getString(Long.toString(e.getDateMillis()), null) == null){
+                Gson gson = new Gson();
                 String json = gson.toJson(e);
-                editor.putString(Long.toString(e.getDate().getTime()), json);
+                editor.putString(Long.toString(e.getDateMillis()), json);
                 editor.commit();
             }
         }
@@ -91,12 +108,8 @@ public class DMateApplication extends Application {
     public  void resetAllPrefs() {
         entryPrefs.edit().clear().commit();
         miscPrefs.edit().clear().commit();
+        initialize(this.context);
     }
-
-
-
-
-
 
     //check for Internet connection (not needed atm)
     /*
