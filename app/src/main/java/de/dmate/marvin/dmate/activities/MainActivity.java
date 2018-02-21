@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -130,11 +131,27 @@ public class MainActivity extends AppCompatActivity {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             ViewHolder viewHolder;
 
+            //get all entries from prefs
+            ArrayList<Entry> entries = Helper.getInstance().getApplication().getAllEntries();
+
+            //find entry to work with
+            Entry currentEntry = entries.get(position);
+
             //make sure there is a view
             //create a view, if there is none
             if (convertView == null) {
                 //inflate the layout
                 convertView = getLayoutInflater().inflate(R.layout.entry_layout, parent, false);
+
+                if (currentEntry.isLastEntryOfThisDay()) {
+                    ConstraintLayout constraintLayout = (ConstraintLayout) convertView.findViewById(R.id.constraintLayout_date_separator);
+                    constraintLayout.setVisibility(View.VISIBLE);
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMMM dd yyyy");
+                    String temp = sdf.format(currentEntry.getDate());
+                    TextView dateSeparatorTextView = (TextView) convertView.findViewById(R.id.textView_date_separator);
+                    dateSeparatorTextView.setText(temp);
+                }
 
                 //set up viewholder
                 viewHolder = new ViewHolder();
@@ -157,12 +174,6 @@ public class MainActivity extends AppCompatActivity {
                 //if this is executed, one call of findViewById was avoided
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-
-            //get all entries from prefs
-            ArrayList<Entry> entries = Helper.getInstance().getApplication().getAllEntries();
-
-            //find entry to work with
-            Entry currentEntry = entries.get(position);
 
             if (currentEntry != null) {
                 //fill the view
