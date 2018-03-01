@@ -144,13 +144,19 @@ public class MainActivity extends AppCompatActivity {
                 convertView = getLayoutInflater().inflate(R.layout.entry_layout, parent, false);
 
                 if (currentEntry.isLastEntryOfThisDay()) {
+                    //get layout and set it visible if the entry is the last of the day
                     ConstraintLayout constraintLayout = (ConstraintLayout) convertView.findViewById(R.id.constraintLayout_date_separator);
                     constraintLayout.setVisibility(View.VISIBLE);
 
+                    //set lable for the date separator
                     SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMMM dd yyyy");
                     String temp = sdf.format(currentEntry.getDate());
                     TextView dateSeparatorTextView = (TextView) convertView.findViewById(R.id.textView_date_separator);
                     dateSeparatorTextView.setText(temp);
+
+                    //set view unclickable
+                    dateSeparatorTextView.setOnClickListener(null);
+                    dateSeparatorTextView.setFocusable(false);
                 }
 
                 //set up viewholder
