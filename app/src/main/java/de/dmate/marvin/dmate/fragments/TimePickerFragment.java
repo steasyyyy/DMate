@@ -20,7 +20,7 @@ import de.dmate.marvin.dmate.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link TimePickerFragment.OnFragmentInteractionListener} interface
+ * {@link OnTimeFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link TimePickerFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -35,7 +35,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private OnTimeFragmentInteractionListener mListener;
 
     public TimePickerFragment() {
         // Required empty public constructor
@@ -98,11 +98,11 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnTimeFragmentInteractionListener) {
+            mListener = (OnTimeFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnTimeFragmentInteractionListener");
         }
     }
 
@@ -122,8 +122,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+    public interface OnTimeFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
 }

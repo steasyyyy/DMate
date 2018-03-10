@@ -1,12 +1,15 @@
 package de.dmate.marvin.dmate.activities;
 
-import android.app.Dialog;
+import android.app.DatePickerDialog;
 import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 
 import java.util.Calendar;
 
@@ -16,7 +19,12 @@ import de.dmate.marvin.dmate.fragments.DatePickerFragment;
 import de.dmate.marvin.dmate.fragments.TimePickerFragment;
 import de.dmate.marvin.dmate.util.Helper;
 
-public class UpdateEntryActivity extends AppCompatActivity implements TimePickerFragment.OnFragmentInteractionListener, DatePickerFragment.OnFragmentInteractionListener {
+public class UpdateEntryActivity extends AppCompatActivity
+        implements TimePickerFragment.OnTimeFragmentInteractionListener, DatePickerFragment.OnDateFragmentInteractionListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+
+    private Button dateButton;
+    private Button timeButton;
+    private Calendar calendar;
 
     private Entry.EntryBuilder entry;
     private Long dateMillis;
@@ -27,11 +35,11 @@ public class UpdateEntryActivity extends AppCompatActivity implements TimePicker
         setContentView(R.layout.activity_update_entry);
 
         //set up calendar to save the current time (when the activity was started)
-        final Calendar calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance();
         dateMillis = calendar.getTimeInMillis();
         entry = Entry.dateMillis(dateMillis);
 
-        Button dateButton = (Button) findViewById(R.id.button_date);
+        dateButton = (Button) findViewById(R.id.button_date);
         dateButton.setText(Helper.formatMillisToDateString(dateMillis));
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +49,7 @@ public class UpdateEntryActivity extends AppCompatActivity implements TimePicker
             }
         });
 
-        Button timeButton = (Button) findViewById(R.id.button_time);
+        timeButton = (Button) findViewById(R.id.button_time);
         timeButton.setText(Helper.formatMillisToTimeString(dateMillis));
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,5 +63,29 @@ public class UpdateEntryActivity extends AppCompatActivity implements TimePicker
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public void setDateMillis(Long dateMillis) {
+        this.dateMillis = dateMillis;
+    }
+
+    private void updateDateTime() {
+        this.dateMillis = calendar.getTimeInMillis();
+        this.entry.dateMillis(dateMillis);
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        calendar.set(year, month -1, dayOfMonth);
+        updateDateTime();
+        dateButton.setText(Helper.formatMillisToDateString(dateMillis));
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calendar.set(Calendar.MINUTE, minute);
+        updateDateTime();
+        timeButton.setText(Helper.formatMillisToTimeString(dateMillis));
     }
 }
