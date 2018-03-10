@@ -15,9 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.entities.Entry;
@@ -149,8 +147,7 @@ public class MainActivity extends AppCompatActivity {
                     constraintLayout.setVisibility(View.VISIBLE);
 
                     //set lable for the date separator
-                    SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMMM dd yyyy");
-                    String temp = sdf.format(currentEntry.getDate());
+                    String temp = Helper.formatMillisToDateString(currentEntry.getDateMillis());
                     TextView dateSeparatorTextView = (TextView) convertView.findViewById(R.id.textView_date_separator);
                     dateSeparatorTextView.setText(temp);
 
@@ -183,9 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (currentEntry != null) {
                 //fill the view
-                Date date = currentEntry.getDate();
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                String time = sdf.format(date);
+                String time = Helper.formatMillisToTimeString(currentEntry.getDateMillis());
                 TextView dateTextView = (TextView) convertView.findViewById(R.id.entry_date);
                 viewHolder.dateTextView.setText(time);
 

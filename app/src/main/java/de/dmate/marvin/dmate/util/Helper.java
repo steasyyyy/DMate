@@ -1,5 +1,8 @@
 package de.dmate.marvin.dmate.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Marvin on 14.02.2018.
  */
@@ -25,5 +28,19 @@ public class Helper {
 
     public DMateApplication getApplication() {
         return app;
+    }
+
+    public static String formatMillisToDateString(Long dateMillis) {
+        Date date = new Date(dateMillis);
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMMM dd yyyy");
+        String temp = sdf.format(date);
+        return temp;
+    }
+
+    public static String formatMillisToTimeString(Long dateMillis) {
+        Date date = new Date(dateMillis);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String time = sdf.format(date);
+        return time;
     }
 }

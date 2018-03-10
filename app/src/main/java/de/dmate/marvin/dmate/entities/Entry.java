@@ -122,6 +122,10 @@ public class Entry {
     }
 
     //static functions to call when creating an entry via EntryBuilder
+    public static EntryBuilder dateMillis(Long dateMillis) {
+        return new EntryBuilder().dateMillis(dateMillis);
+    }
+
     public static EntryBuilder bloodsugar(Integer bloodsugar) {
         return new EntryBuilder().bloodsugar(bloodsugar);
     }
@@ -149,11 +153,17 @@ public class Entry {
     //EntryBuilder to create instances of Entry
     //usage explained above
     public static class EntryBuilder {
+        private Long dateMillis;
         private Integer bloodsugar;
         private Float breadunit;
         private Float bolus;
         private Float basal;
         private String note;
+
+        public EntryBuilder dateMillis (Long dateMillis) {
+            this.dateMillis = dateMillis;
+            return this;
+        }
 
         public EntryBuilder bloodsugar(Integer bloodsugar){
             this.bloodsugar=bloodsugar;
