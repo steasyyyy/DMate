@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, UpdateEntryActivity.class);
+                Intent intent = new Intent(MainActivity.this, NewEntryActivity.class);
                 startActivity(intent);
             }
         });

@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.UpdateEntryActivity"
+            android:name=".activities.NewEntryActivity"
             android:label="Update Entry"/>
     </application>
 

@@ -19,8 +19,8 @@ import de.dmate.marvin.dmate.fragments.DatePickerFragment;
 import de.dmate.marvin.dmate.fragments.TimePickerFragment;
 import de.dmate.marvin.dmate.util.Helper;
 
-public class UpdateEntryActivity extends AppCompatActivity
-        implements TimePickerFragment.OnTimeFragmentInteractionListener, DatePickerFragment.OnDateFragmentInteractionListener, TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+public class NewEntryActivity extends AppCompatActivity
+        implements TimePickerFragment.OnTimePickerFragmentInteractionListener, DatePickerFragment.OnDatePickerFragmentInteractionListener {
 
     private Button dateButton;
     private Button timeButton;
@@ -44,7 +44,7 @@ public class UpdateEntryActivity extends AppCompatActivity
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment datePickerFragment = new DatePickerFragment();
+                DatePickerFragment datePickerFragment = new DatePickerFragment();
                 datePickerFragment.show(getFragmentManager(), "datePicker");
             }
         });
@@ -54,15 +54,25 @@ public class UpdateEntryActivity extends AppCompatActivity
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment timePickerFragment = new TimePickerFragment();
+                TimePickerFragment timePickerFragment = new TimePickerFragment();
                 timePickerFragment.show(getFragmentManager(), "timePicker");
             }
         });
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void updateDate(int year, int month, int dayOfMonth) {
+        calendar.set(year, month -1, dayOfMonth);
+        updateDateTime();
+        dateButton.setText(Helper.formatMillisToDateString(dateMillis));
+    }
 
+    @Override
+    public void updateTime(int hourOfDay, int minute) {
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calendar.set(Calendar.MINUTE, minute);
+        updateDateTime();
+        timeButton.setText(Helper.formatMillisToTimeString(dateMillis));
     }
 
     public void setDateMillis(Long dateMillis) {
@@ -72,20 +82,5 @@ public class UpdateEntryActivity extends AppCompatActivity
     private void updateDateTime() {
         this.dateMillis = calendar.getTimeInMillis();
         this.entry.dateMillis(dateMillis);
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        calendar.set(year, month -1, dayOfMonth);
-        updateDateTime();
-        dateButton.setText(Helper.formatMillisToDateString(dateMillis));
-    }
-
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        calendar.set(Calendar.MINUTE, minute);
-        updateDateTime();
-        timeButton.setText(Helper.formatMillisToTimeString(dateMillis));
     }
 }
