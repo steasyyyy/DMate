@@ -1,15 +1,11 @@
 package de.dmate.marvin.dmate.activities;
 
-import android.app.DatePickerDialog;
-import android.app.DialogFragment;
-import android.app.TimePickerDialog;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import java.util.Calendar;
 
@@ -32,7 +28,7 @@ public class NewEntryActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update_entry);
+        setContentView(R.layout.activity_new_entry);
 
         //set up calendar to save the current time (when the activity was started)
         calendar = Calendar.getInstance();
@@ -62,7 +58,7 @@ public class NewEntryActivity extends AppCompatActivity
 
     @Override
     public void updateDate(int year, int month, int dayOfMonth) {
-        calendar.set(year, month -1, dayOfMonth);
+        calendar.set(year, month, dayOfMonth);
         updateDateTime();
         dateButton.setText(Helper.formatMillisToDateString(dateMillis));
     }
