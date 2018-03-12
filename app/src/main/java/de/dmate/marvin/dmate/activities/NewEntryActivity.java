@@ -2,8 +2,6 @@ package de.dmate.marvin.dmate.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 
@@ -35,47 +33,50 @@ public class NewEntryActivity extends AppCompatActivity
         dateMillis = calendar.getTimeInMillis();
         entry = Entry.dateMillis(dateMillis);
 
+        //get dateButton and set the text to current date
         dateButton = (Button) findViewById(R.id.button_date);
         dateButton.setText(Helper.formatMillisToDateString(dateMillis));
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //create fragment and show it
                 DatePickerFragment datePickerFragment = new DatePickerFragment();
                 datePickerFragment.show(getFragmentManager(), "datePicker");
             }
         });
 
+        //get the timeButton and set the text to current time
         timeButton = (Button) findViewById(R.id.button_time);
         timeButton.setText(Helper.formatMillisToTimeString(dateMillis));
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //create fragment and show it
                 TimePickerFragment timePickerFragment = new TimePickerFragment();
                 timePickerFragment.show(getFragmentManager(), "timePicker");
             }
         });
     }
 
+    //defined and called by DatePickerFragment (and nested interface)
     @Override
     public void updateDate(int year, int month, int dayOfMonth) {
         calendar.set(year, month, dayOfMonth);
-        updateDateTime();
+        updateLocalValues();
         dateButton.setText(Helper.formatMillisToDateString(dateMillis));
     }
 
+    //defined and called by TimePickerFragment (and nested interface)
     @Override
     public void updateTime(int hourOfDay, int minute) {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
-        updateDateTime();
+        updateLocalValues();
         timeButton.setText(Helper.formatMillisToTimeString(dateMillis));
     }
 
-    public void setDateMillis(Long dateMillis) {
-        this.dateMillis = dateMillis;
-    }
-
-    private void updateDateTime() {
+    //helper function to update dateMillis and the entry values
+    private void updateLocalValues() {
         this.dateMillis = calendar.getTimeInMillis();
         this.entry.dateMillis(dateMillis);
     }

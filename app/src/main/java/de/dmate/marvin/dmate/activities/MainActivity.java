@@ -185,38 +185,22 @@ public class MainActivity extends AppCompatActivity {
                 viewHolder.dateTextView.setText(time);
 
                 if (currentEntry.getBloodsugar()!= null) {
-//                    TextView bloodsugarTextView = (TextView) convertView.findViewById(R.id.entry_bloodsugar);
                     viewHolder.bloodsugarTextView.setText(currentEntry.getBloodsugar().toString());
                 }
 
                 if (currentEntry.getBreadunit() != null) {
-//                    TextView breadunitTextView = (TextView) convertView.findViewById(R.id.entry_breadunit);
                     viewHolder.breadunitTextView.setText(currentEntry.getBreadunit().toString());
                 }
 
                 if (currentEntry.getBolus() != null) {
-//                    TextView bolusTextView = (TextView) convertView.findViewById(R.id.entry_bolus);
                     viewHolder.bolusTextView.setText(currentEntry.getBolus().toString());
                 }
 
                 if (currentEntry.getBasal() != null) {
-//                    TextView basalTextView = (TextView) convertView.findViewById(R.id.entry_basal);
                     viewHolder.basalTextView.setText(currentEntry.getBasal().toString());
                 }
             }
             return convertView;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return super.getItemViewType(position);
-        }
-
-        //returns count of different Views that can be returned
-        //in this case 2, because Views are either entries or date separators
-        @Override
-        public int getViewTypeCount() {
-            return 2;
         }
     }
 

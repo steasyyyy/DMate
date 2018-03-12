@@ -16,8 +16,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/constraintLayout2"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="0dp"
-        app:layout_constraintVertical_bias="0.0">
+        android:layout_marginTop="0dp">
 
         <TextView
             android:id="@+id/textView_date_static"
