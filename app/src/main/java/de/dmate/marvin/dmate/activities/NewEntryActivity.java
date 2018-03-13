@@ -2,6 +2,7 @@ package de.dmate.marvin.dmate.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
@@ -27,6 +28,11 @@ public class NewEntryActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_entry);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("New Entry");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.primary_text_material_light));
 
         //set up calendar to save the current time (when the activity was started)
         calendar = Calendar.getInstance();
