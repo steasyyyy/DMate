@@ -1,8 +1,11 @@
 package de.dmate.marvin.dmate.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -29,6 +32,7 @@ public class NewEntryActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_entry);
 
+        //set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("New Entry");
@@ -62,6 +66,26 @@ public class NewEntryActivity extends AppCompatActivity
                 timePickerFragment.show(getFragmentManager(), "timePicker");
             }
         });
+    }
+
+    @Override
+    //set menu (containing the actions) for the app bar
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.app_bar_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    //react to action clicked on app bar
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_save:
+                entry.build();
+                Intent intent = new Intent(NewEntryActivity.this, MainActivity.class);
+                startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     //defined and called by DatePickerFragment (and nested interface)
