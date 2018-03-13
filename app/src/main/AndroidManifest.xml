@@ -19,8 +19,8 @@
         </intent-filter>
     </activity>
     <activity
-            android:name=".activities.NewEntryActivity"
-            android:label="Update Entry"
+            android:name=".activities.NewAndUpdateEntryActivity"
+            android:label="Entry"
             android:theme="@style/AppTheme"/>
     </application>
 

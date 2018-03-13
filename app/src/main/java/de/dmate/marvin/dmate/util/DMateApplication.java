@@ -65,6 +65,10 @@ public class DMateApplication extends Application {
         return entries;
     }
 
+    public Entry getEntry(int position) {
+        return getAllEntries().get(position);
+    }
+
 
     //get all entries from entryPrefs
     public void getAllEntriesFromPrefs(){

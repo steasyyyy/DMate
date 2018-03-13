@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,9 @@ import de.dmate.marvin.dmate.util.DMateApplication;
 import de.dmate.marvin.dmate.util.Helper;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final int NEW_ENTRY_REQUEST = 1;
+    public static final int EDIT_ENTRY_REQUEST = 2;
 
     //auto generated stuff for the bottom navigation bar
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -54,6 +59,18 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle("DMate");
         toolbar.setTitleTextColor(getResources().getColor(R.color.primary_text_material_light));
+
+        //set up OnClickListener for FAB
+        //when clicked, open NewAndUpdateEntryActivity and set requestCode to NEW_ENTRY_REQUEST
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, NewAndUpdateEntryActivity.class);
+                intent.putExtra("REQUEST_CODE", NEW_ENTRY_REQUEST);
+                startActivity(intent);
+            }
+        });
 
         //set application context in DMateApplication (custom application object)
         DMateApplication app = (DMateApplication) getApplication();
@@ -107,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-    //sets up an ItemClickListener
+    //set up an ItemClickListener
     //react to the user clicking a certain item
     private void registerClickCallback() {
         ListView listView = (ListView) findViewById(R.id.listview_main);
@@ -115,7 +132,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, NewEntryActivity.class);
+                Intent intent = new Intent(MainActivity.this, NewAndUpdateEntryActivity.class);
+                intent.putExtra("REQUEST_CODE", EDIT_ENTRY_REQUEST);
+                intent.putExtra("POSITION", position);
                 startActivity(intent);
             }
         });
