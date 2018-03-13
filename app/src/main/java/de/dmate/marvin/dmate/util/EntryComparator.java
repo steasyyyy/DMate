@@ -4,10 +4,6 @@ import java.util.Comparator;
 
 import de.dmate.marvin.dmate.entities.Entry;
 
-/**
- * Created by Marvin on 17.02.2018.
- */
-
 public class EntryComparator implements Comparator<Entry> {
 
     //compares dates and sorts entries (newest first)

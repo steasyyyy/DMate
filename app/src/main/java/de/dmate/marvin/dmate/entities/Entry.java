@@ -6,10 +6,6 @@ import java.util.Date;
 
 import de.dmate.marvin.dmate.util.Helper;
 
-/**
- * Created by Marvin on 14.02.2018.
- */
-
 public class Entry {
     private Long dateMillis;
     private Integer bloodsugar = null;

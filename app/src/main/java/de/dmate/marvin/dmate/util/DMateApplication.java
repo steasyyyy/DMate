@@ -12,10 +12,6 @@ import java.util.Map;
 
 import de.dmate.marvin.dmate.entities.Entry;
 
-/**
- * Created by Marvin on 14.02.2018.
- */
-
 public class DMateApplication extends Application {
 
     private SharedPreferences miscPrefs;

@@ -1,6 +1,7 @@
 package de.dmate.marvin.dmate.activities;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -21,13 +22,7 @@ import de.dmate.marvin.dmate.util.Helper;
 public class NewAndUpdateEntryActivity extends AppCompatActivity
         implements TimePickerFragment.OnTimePickerFragmentInteractionListener, DatePickerFragment.OnDatePickerFragmentInteractionListener {
 
-    public static final int ENTRY_CREATION_SUCCESSFUL = 1;
-    public static final int ENTRY_CREATION_CANCELLED = -1;
-    public static final int ENTRY_EDIT_SUCCESSFUL = 2;
-    public static final int ENTRY_EDIT_CANCELLED = -2;
-
     private int requestCode;
-    private int position;
 
     private Button dateButton;
     private Button timeButton;
@@ -92,7 +87,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
         //if request code = 2 -> edit entry
         if (requestCode == 2) {
             //get entry object to update
-            position = getIntent().getIntExtra("POSITION", Integer.MAX_VALUE);
+            int position = getIntent().getIntExtra("POSITION", Integer.MAX_VALUE);
             currentEntry = Helper.getInstance().getApplication().getEntry(position);
 
             dateMillis = currentEntry.getDateMillis();
@@ -149,6 +144,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
     //set menu (containing the actions) for the app bar
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.app_bar_actions, menu);
+        menu.findItem(R.id.action_refresh).setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -161,10 +157,20 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
                 if (requestCode == 1) {
                     newEntry.dateMillis(calendar.getTimeInMillis());
                     if (!ETbloodsugar.getText().toString().equals("")) newEntry.bloodsugar(Integer.parseInt(ETbloodsugar.getText().toString()));
+                    else newEntry.bloodsugar(null);
+
                     if (!ETbreadunit.getText().toString().equals("")) newEntry.breadunit(Float.parseFloat(ETbreadunit.getText().toString()));
+                    else newEntry.breadunit(null);
+
                     if (!ETbolus.getText().toString().equals("")) newEntry.bolus(Float.parseFloat(ETbolus.getText().toString()));
+                    else newEntry.bolus(null);
+
                     if (!ETbasal.getText().toString().equals("")) newEntry.basal(Float.parseFloat(ETbasal.getText().toString()));
+                    else newEntry.basal(null);
+
                     if (!ETnote.getText().toString().equals("")) newEntry.note(ETnote.getText().toString());
+                    else newEntry.note(null);
+
                     newEntry.build();
                 }
 
@@ -175,6 +181,8 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
                     if (!ETbolus.getText().toString().equals("")) currentEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
                     if (!ETbasal.getText().toString().equals("")) currentEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
                     if (!ETnote.getText().toString().equals("")) currentEntry.setNote(ETnote.getText().toString());
+                    Helper.getInstance().getApplication().resortEntries();
+                    Helper.getInstance().getApplication().updateEntryPrefs();
                 }
 
                 Intent intent = new Intent(NewAndUpdateEntryActivity.this, MainActivity.class);
@@ -205,6 +213,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
     //helper function to update dateMillis and the newEntry values
     private void updateLocalValues() {
         this.dateMillis = calendar.getTimeInMillis();
-        this.newEntry.dateMillis(dateMillis);
+        if (requestCode == 1) this.newEntry.dateMillis(dateMillis);
+        if (requestCode == 2) this.currentEntry.setDateMillis(dateMillis);
     }
 }

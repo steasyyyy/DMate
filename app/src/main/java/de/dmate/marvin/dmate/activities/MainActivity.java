@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //when resuming the activity, the dataset might have changed, so we need to update the listview!
     @Override
     protected void onResume() {
         ListView listView = (ListView) findViewById(R.id.listview_main);
@@ -149,6 +152,22 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    @Override
+    //set menu (containing the actions) for the app bar
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.app_bar_actions, menu);
+        menu.findItem(R.id.action_save).setVisible(false);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_refresh :
+                populateListView();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     //CustomArrayAdapter allows to fill TextViews in entry_layout with data from Entry-Objects
     private class CustomArrayAdapter extends ArrayAdapter<Entry> {

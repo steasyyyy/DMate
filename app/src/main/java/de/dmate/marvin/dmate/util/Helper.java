@@ -3,10 +3,6 @@ package de.dmate.marvin.dmate.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by Marvin on 14.02.2018.
- */
-
 public class Helper {
 
     //HELPER CLASS to access Application Object from everywhere
