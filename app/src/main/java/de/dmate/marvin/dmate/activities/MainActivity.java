@@ -14,11 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.entities.Entry;
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         //set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("DMate");
+        setTitle("DMate");
         toolbar.setTitleTextColor(getResources().getColor(R.color.primary_text_material_light));
 
         //set up OnClickListener for FAB
@@ -138,6 +140,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        ListView listView = (ListView) findViewById(R.id.listview_main);
+        populateListView();
+        super.onResume();
     }
 
 

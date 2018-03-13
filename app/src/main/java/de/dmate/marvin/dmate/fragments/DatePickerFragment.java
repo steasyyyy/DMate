@@ -17,6 +17,7 @@ import de.dmate.marvin.dmate.R;
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private OnDatePickerFragmentInteractionListener mListener;
+    private Calendar calendar;
 
     public DatePickerFragment() {
         // Required empty public constructor
@@ -30,16 +31,14 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        calendar = Calendar.getInstance();
+        Bundle args = getArguments();
+        calendar.setTimeInMillis(args.getLong("dateMillis"));
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        return new DatePickerDialog(getActivity(), this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
     @Override

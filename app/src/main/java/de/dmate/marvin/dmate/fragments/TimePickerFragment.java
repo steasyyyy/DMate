@@ -18,6 +18,7 @@ import de.dmate.marvin.dmate.R;
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     private OnTimePickerFragmentInteractionListener mListener;
+    private Calendar calendar;
 
     public TimePickerFragment() {
         // Required empty public constructor
@@ -31,6 +32,9 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        calendar = Calendar.getInstance();
+        Bundle args = getArguments();
+        calendar.setTimeInMillis(args.getLong("dateMillis"));
     }
 
     @Override
@@ -41,11 +45,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-
-        return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
+        return new TimePickerDialog(getActivity(), this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), DateFormat.is24HourFormat(getActivity()));
     }
 
     @Override

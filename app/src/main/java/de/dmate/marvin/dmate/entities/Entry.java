@@ -92,6 +92,31 @@ public class Entry {
         return note;
     }
 
+    //setters for all attributes
+    public void setDateMillis(Long dateMillis) {
+        this.dateMillis = dateMillis;
+    }
+
+    public void setBloodsugar(Integer bloodsugar) {
+        this.bloodsugar = bloodsugar;
+    }
+
+    public void setBreadunit(Float breadunit) {
+        this.breadunit = breadunit;
+    }
+
+    public void setBolus(Float bolus) {
+        this.bolus = bolus;
+    }
+
+    public void setBasal(Float basal) {
+        this.basal = basal;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
     //watch out: entries are ordered "last created first"
     // -> we need the last entry of one day if we want to find out where to set the date separator
     // (one before the last entry of the same day)

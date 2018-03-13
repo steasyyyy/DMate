@@ -44,6 +44,12 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
     private Long dateMillis;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_entry);
@@ -70,13 +76,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
 
         calendar = Calendar.getInstance();
 
-        //if request code = edit newEntry, get newEntry object via DMateApplication
-        if (requestCode == 2) {
-            position = getIntent().getIntExtra("POSITION", Integer.MAX_VALUE);
-            currentEntry = Helper.getInstance().getApplication().getEntry(position);
-
-        }
-
+        //if requestCode == 1 -> new entry
         if (requestCode == 1) {
             //save the current time (when the activity was started)
             dateMillis = calendar.getTimeInMillis();
@@ -84,26 +84,65 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
 
             //set the text on the dateButton to current date
             dateButton.setText(Helper.formatMillisToDateString(dateMillis));
-            dateButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //create fragment and show it
-                    DatePickerFragment datePickerFragment = new DatePickerFragment();
-                    datePickerFragment.show(getFragmentManager(), "datePicker");
-                }
-            });
 
             //get the timeButton and set the text to current time
             timeButton.setText(Helper.formatMillisToTimeString(dateMillis));
-            timeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //create fragment and show it
-                    TimePickerFragment timePickerFragment = new TimePickerFragment();
-                    timePickerFragment.show(getFragmentManager(), "timePicker");
-                }
-            });
         }
+
+        //if request code = 2 -> edit entry
+        if (requestCode == 2) {
+            //get entry object to update
+            position = getIntent().getIntExtra("POSITION", Integer.MAX_VALUE);
+            currentEntry = Helper.getInstance().getApplication().getEntry(position);
+
+            dateMillis = currentEntry.getDateMillis();
+            calendar.setTimeInMillis(dateMillis);
+
+            //setText to all buttons and EditTexts
+            dateButton.setText(Helper.formatMillisToDateString(currentEntry.getDateMillis()));
+            timeButton.setText(Helper.formatMillisToTimeString(currentEntry.getDateMillis()));
+
+            Integer bloodsugar = currentEntry.getBloodsugar();
+            if (bloodsugar != null) ETbloodsugar.setText(bloodsugar.toString());
+
+            Float breadunit = currentEntry.getBreadunit();
+            if (breadunit != null) ETbreadunit.setText(breadunit.toString());
+
+            Float bolus = currentEntry.getBolus();
+            if (bolus != null) ETbolus.setText(bolus.toString());
+
+            Float basal = currentEntry.getBasal();
+            if (basal != null) ETbasal.setText(basal.toString());
+
+            String note = currentEntry.getNote();
+            if (note != null) ETnote.setText(note);
+        }
+
+        //set OnClickListener for dateButton to open DatePickerFragment
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //create fragment and show it
+                DatePickerFragment datePickerFragment = new DatePickerFragment();
+                Bundle args = new Bundle();
+                args.putLong("dateMillis", dateMillis);
+                datePickerFragment.setArguments(args);
+                datePickerFragment.show(getFragmentManager(), "datePicker");
+            }
+        });
+
+        //set OnClickListener for timeButton to open TimePickerFragment
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //create fragment and show it
+                TimePickerFragment timePickerFragment = new TimePickerFragment();
+                Bundle args = new Bundle();
+                args.putLong("dateMillis", dateMillis);
+                timePickerFragment.setArguments(args);
+                timePickerFragment.show(getFragmentManager(), "timePicker");
+            }
+        });
     }
 
     @Override
@@ -117,8 +156,10 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
     //react to action clicked on app bar
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
+            //action_save = save changes after updating entry or creating a new one
             case R.id.action_save:
                 if (requestCode == 1) {
+                    newEntry.dateMillis(calendar.getTimeInMillis());
                     if (!ETbloodsugar.getText().toString().equals("")) newEntry.bloodsugar(Integer.parseInt(ETbloodsugar.getText().toString()));
                     if (!ETbreadunit.getText().toString().equals("")) newEntry.breadunit(Float.parseFloat(ETbreadunit.getText().toString()));
                     if (!ETbolus.getText().toString().equals("")) newEntry.bolus(Float.parseFloat(ETbolus.getText().toString()));
@@ -128,7 +169,12 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
                 }
 
                 if (requestCode == 2) {
-
+                    currentEntry.setDateMillis(calendar.getTimeInMillis());
+                    if (!ETbloodsugar.getText().toString().equals("")) currentEntry.setBloodsugar(Integer.parseInt(ETbloodsugar.getText().toString()));
+                    if (!ETbreadunit.getText().toString().equals("")) currentEntry.setBreadunit(Float.parseFloat(ETbreadunit.getText().toString()));
+                    if (!ETbolus.getText().toString().equals("")) currentEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
+                    if (!ETbasal.getText().toString().equals("")) currentEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
+                    if (!ETnote.getText().toString().equals("")) currentEntry.setNote(ETnote.getText().toString());
                 }
 
                 Intent intent = new Intent(NewAndUpdateEntryActivity.this, MainActivity.class);
