@@ -22,7 +22,7 @@ public class Entry {
     //Entry.EntryBuilder temp = Entry.bolus(32.5);
     //temp.bloodsugar(97).build();
     private Entry(EntryBuilder vb) {
-        this.dateMillis = System.currentTimeMillis();
+        this.dateMillis = vb.dateMillis;
         this.bloodsugar=vb.bloodsugar;
         this.breadunit=vb.breadunit;
         this.bolus=vb.bolus;

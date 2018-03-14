@@ -39,12 +39,6 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
     private Long dateMillis;
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_entry);
@@ -146,6 +140,12 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.app_bar_actions, menu);
         menu.findItem(R.id.action_refresh).setVisible(false);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 
     @Override

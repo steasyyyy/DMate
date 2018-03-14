@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import de.dmate.marvin.dmate.entities.Entry;
+import de.dmate.marvin.dmate.entities.EntryComparator;
 
 public class DMateApplication extends Application {
 

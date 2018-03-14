@@ -9,6 +9,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int NEW_ENTRY_REQUEST = 1;
     public static final int EDIT_ENTRY_REQUEST = 2;
+
+    private ArrayAdapter<Entry> adapter;
 
     //auto generated stuff for the bottom navigation bar
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -123,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void populateListView() {
         //instanciate an adapter and connect it to the listview
-        ArrayAdapter<Entry> adapter = new CustomArrayAdapter();
+        adapter = new CustomArrayAdapter();
         ListView listView = (ListView) findViewById(R.id.listview_main);
         listView.setAdapter(adapter);
     }
@@ -133,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
     private void registerClickCallback() {
         ListView listView = (ListView) findViewById(R.id.listview_main);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, NewAndUpdateEntryActivity.class);
@@ -147,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
     //when resuming the activity, the dataset might have changed, so we need to update the listview!
     @Override
     protected void onResume() {
-        ListView listView = (ListView) findViewById(R.id.listview_main);
+        adapter.notifyDataSetChanged();
         populateListView();
         super.onResume();
     }
@@ -178,97 +180,101 @@ public class MainActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        //returns a view for every entry there is in the list
+        //returns a view for every entry in the list
         //position refers to positions in list of entries (app.getAllEntries())
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            ViewHolder viewHolder;
-
-            //get all entries from prefs
-            ArrayList<Entry> entries = Helper.getInstance().getApplication().getAllEntries();
+            View entryView;
 
             //find entry to work with
-            Entry currentEntry = entries.get(position);
+            Entry currentEntry = ((DMateApplication)getApplication()).getEntry(position);
 
-            //make sure there is a view
-            //create a view, if there is none
+            //checking if convertView is null, meaning we have to inflate a new row
             if (convertView == null) {
                 //inflate the layout
-                convertView = getLayoutInflater().inflate(R.layout.entry_layout, parent, false);
-
-                if (currentEntry.isLastEntryOfThisDay()) {
-                    //get layout and set it visible if the entry is the last of the day
-                    ConstraintLayout constraintLayout = (ConstraintLayout) convertView.findViewById(R.id.constraintLayout_date_separator);
-                    constraintLayout.setVisibility(View.VISIBLE);
-
-                    //set lable for the date separator
-                    String temp = Helper.formatMillisToDateString(currentEntry.getDateMillis());
-                    TextView dateSeparatorTextView = (TextView) convertView.findViewById(R.id.textView_date_separator);
-                    dateSeparatorTextView.setText(temp);
-
-                    //set view unclickable
-                    dateSeparatorTextView.setOnClickListener(null);
-                    dateSeparatorTextView.setFocusable(false);
-                }
+                entryView = getLayoutInflater().inflate(R.layout.entry_layout, parent, false);
 
                 //set up viewholder
-                viewHolder = new ViewHolder();
-
-                viewHolder.dateTextView = (TextView) convertView.findViewById(R.id.entry_date);
-                viewHolder.bloodsugarTextView = (TextView) convertView.findViewById(R.id.entry_bloodsugar);
-                viewHolder.breadunitTextView = (TextView) convertView.findViewById(R.id.entry_breadunit);
-                viewHolder.bolusTextView = (TextView) convertView.findViewById(R.id.entry_bolus);
-                viewHolder.basalTextView = (TextView) convertView.findViewById(R.id.entry_basal);
-
-                viewHolder.staticdateTextView = (TextView) convertView.findViewById(R.id.static_date);
-                viewHolder.staticbloodsugarTextView = (TextView) convertView.findViewById(R.id.static_bloodsugar);
-                viewHolder.staticbreadunitTextView = (TextView) convertView.findViewById(R.id.static_breadunit);
-                viewHolder.staticbolusTextView = (TextView) convertView.findViewById(R.id.static_bolus);
-                viewHolder.staticbasalTextView = (TextView) convertView.findViewById(R.id.static_basal);
+                ViewHolder viewHolder = new ViewHolder();
+                viewHolder.dateTextView = (TextView) entryView.findViewById(R.id.entry_date);
+                viewHolder.bloodsugarTextView = (TextView) entryView.findViewById(R.id.entry_bloodsugar);
+                viewHolder.breadunitTextView = (TextView) entryView.findViewById(R.id.entry_breadunit);
+                viewHolder.bolusTextView = (TextView) entryView.findViewById(R.id.entry_bolus);
+                viewHolder.basalTextView = (TextView) entryView.findViewById(R.id.entry_basal);
+                viewHolder.staticdateTextView = (TextView) entryView.findViewById(R.id.static_date);
+                viewHolder.staticbloodsugarTextView = (TextView) entryView.findViewById(R.id.static_bloodsugar);
+                viewHolder.staticbreadunitTextView = (TextView) entryView.findViewById(R.id.static_breadunit);
+                viewHolder.staticbolusTextView = (TextView) entryView.findViewById(R.id.static_bolus);
+                viewHolder.staticbasalTextView = (TextView) entryView.findViewById(R.id.static_basal);
 
                 //store the holder with the view
-                convertView.setTag(viewHolder);
+                entryView.setTag(viewHolder);
             } else {
-                //if this is executed, one call of findViewById was avoided
-                viewHolder = (ViewHolder) convertView.getTag();
+                //our row is available as convertView so just set convertView as entryView (to be returned)
+                entryView = convertView;
             }
+
+            //when view is recycled, the dateSeparator might still be visible
+            //-> set it to gone first, then set visible later of required
+            ConstraintLayout constraintLayout = (ConstraintLayout) entryView.findViewById(R.id.constraintLayout_date_separator);
+            constraintLayout.setVisibility(View.GONE);
 
             if (currentEntry != null) {
                 //fill the view
                 String time = Helper.formatMillisToTimeString(currentEntry.getDateMillis());
-                TextView dateTextView = (TextView) convertView.findViewById(R.id.entry_date);
+
+                ViewHolder viewHolder = (ViewHolder) entryView.getTag();
                 viewHolder.dateTextView.setText(time);
 
                 if (currentEntry.getBloodsugar()!= null) {
                     viewHolder.bloodsugarTextView.setText(currentEntry.getBloodsugar().toString());
-                }
+                } else viewHolder.bloodsugarTextView.setText(null);
 
                 if (currentEntry.getBreadunit() != null) {
                     viewHolder.breadunitTextView.setText(currentEntry.getBreadunit().toString());
-                }
+                } else viewHolder.breadunitTextView.setText(null);
 
                 if (currentEntry.getBolus() != null) {
                     viewHolder.bolusTextView.setText(currentEntry.getBolus().toString());
-                }
+                } else viewHolder.bolusTextView.setText(null);
 
                 if (currentEntry.getBasal() != null) {
                     viewHolder.basalTextView.setText(currentEntry.getBasal().toString());
-                }
+                } else viewHolder.basalTextView.setText(null);
             }
-            return convertView;
+
+            //inflate dateSeparator as well if entry is last of this day
+            if (currentEntry.isLastEntryOfThisDay()) {
+                //get layout and set it visible if the entry is the last of the day
+                constraintLayout.setVisibility(View.VISIBLE);
+
+                //set lable for the date separator
+                String temp = Helper.formatMillisToDateString(currentEntry.getDateMillis());
+                TextView dateSeparatorTextView = (TextView) entryView.findViewById(R.id.textView_date_separator);
+                dateSeparatorTextView.setText(temp);
+
+                //set view unclickable
+                dateSeparatorTextView.setOnClickListener(null);
+                dateSeparatorTextView.setFocusable(false);
+            }
+
+            return entryView;
         }
+
+        private class ViewHolder{
+            TextView dateTextView;
+            TextView bloodsugarTextView;
+            TextView breadunitTextView;
+            TextView bolusTextView;
+            TextView basalTextView;
+
+            TextView staticdateTextView;
+            TextView staticbloodsugarTextView;
+            TextView staticbreadunitTextView;
+            TextView staticbolusTextView;
+            TextView staticbasalTextView;
+        }
+
     }
 
-    private static class ViewHolder {
-        TextView dateTextView;
-        TextView bloodsugarTextView;
-        TextView breadunitTextView;
-        TextView bolusTextView;
-        TextView basalTextView;
 
-        TextView staticdateTextView;
-        TextView staticbloodsugarTextView;
-        TextView staticbreadunitTextView;
-        TextView staticbolusTextView;
-        TextView staticbasalTextView;
-    }
 }
