@@ -54,6 +54,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
         if (requestCode == 1) setTitle("New entry");
         if (requestCode == 2) setTitle("Edit entry");
         toolbar.setTitleTextColor(getResources().getColor(R.color.primary_text_material_light));
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher_round);
 
         //get Buttons and EditTexts
         dateButton = (Button) findViewById(R.id.button_date);

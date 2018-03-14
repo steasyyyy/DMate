@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setTitle("DMate");
         toolbar.setTitleTextColor(getResources().getColor(R.color.primary_text_material_light));
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher_round);
 
         //set up OnClickListener for FAB
         //when clicked, open NewAndUpdateEntryActivity and set requestCode to NEW_ENTRY_REQUEST
