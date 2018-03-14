@@ -23,6 +23,7 @@
             android:name=".activities.NewAndUpdateEntryActivity"
             android:label="Entry"
             android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:launchMode="singleInstance"/>
     </application>
 
