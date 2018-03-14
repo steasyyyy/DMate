@@ -11,7 +11,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,6 +131,28 @@ public class MainActivity extends AppCompatActivity {
         adapter = new CustomArrayAdapter();
         ListView listView = (ListView) findViewById(R.id.listview_main);
         listView.setAdapter(adapter);
+        registerForContextMenu(listView);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.context_menu, menu);
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete :
+                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                ((DMateApplication)getApplication()).deleteEntry(info.position);
+                adapter.notifyDataSetChanged();
+                this.onResume();
+                return true;
+            default :
+                return super.onContextItemSelected(item);
+        }
     }
 
     //set up an ItemClickListener

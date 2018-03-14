@@ -57,6 +57,17 @@ public class DMateApplication extends Application {
         return false;
     }
 
+    public boolean deleteEntry (int position) {
+        if (entries.get(position) == null) {
+            return false;
+        } else {
+            entries.remove(position);
+            resortEntries();
+            updateEntryPrefs();
+            return true;
+        }
+    }
+
     //get all entries from DMateApplication.entries
     public ArrayList<Entry> getAllEntries(){
         return entries;
@@ -92,6 +103,9 @@ public class DMateApplication extends Application {
     public void updateEntryPrefs() {
         SharedPreferences.Editor editor = entryPrefs.edit();
         //use GSON library to convert Entry-Object to JSON and save it to entryPrefs as string
+
+        editor.clear();
+        editor.commit();
 
         for (Entry e : entries) {
             //if entry with certain datetime does not exist yet, add it to prefs
