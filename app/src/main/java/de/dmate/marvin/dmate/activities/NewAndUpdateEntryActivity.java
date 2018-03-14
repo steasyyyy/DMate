@@ -139,6 +139,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.app_bar_actions, menu);
         menu.findItem(R.id.action_refresh).setVisible(false);
+        menu.findItem(R.id.action_delete_forever).setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 

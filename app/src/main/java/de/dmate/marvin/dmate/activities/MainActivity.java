@@ -167,6 +167,9 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId()) {
             case R.id.action_refresh :
                 populateListView();
+            case R.id.action_delete_forever:
+                ((DMateApplication)getApplication()).resetAllPrefs();
+                this.onResume();
         }
         return super.onOptionsItemSelected(item);
     }
