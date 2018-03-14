@@ -159,17 +159,21 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.app_bar_actions, menu);
         menu.findItem(R.id.action_save).setVisible(false);
+        menu.findItem(R.id.action_delete_forever).setVisible(false);
+        menu.findItem(R.id.action_refresh).setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
+            //TODO
+            //this is bs for now, if needed -> refactor
             case R.id.action_refresh :
-                populateListView();
+//                this.onResume();
             case R.id.action_delete_forever:
-                ((DMateApplication)getApplication()).resetAllPrefs();
-                this.onResume();
+//                ((DMateApplication)getApplication()).resetAllPrefs();
+//                this.recreate();
         }
         return super.onOptionsItemSelected(item);
     }
