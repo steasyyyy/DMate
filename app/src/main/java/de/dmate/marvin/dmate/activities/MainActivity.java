@@ -247,8 +247,8 @@ public class MainActivity extends AppCompatActivity {
 
             //when view is recycled, the dateSeparator might still be visible
             //-> set it to gone first, then set visible later of required
-            ConstraintLayout constraintLayout = (ConstraintLayout) entryView.findViewById(R.id.constraintLayout_date_separator);
-            constraintLayout.setVisibility(View.GONE);
+            ConstraintLayout constraintLayoutDateSeparator = (ConstraintLayout) entryView.findViewById(R.id.constraintLayout_date_separator);
+            constraintLayoutDateSeparator.setVisibility(View.GONE);
 
             if (currentEntry != null) {
                 //fill the view
@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
             //inflate dateSeparator as well if entry is last of this day
             if (currentEntry.isLastEntryOfThisDay()) {
                 //get layout and set it visible if the entry is the last of the day
-                constraintLayout.setVisibility(View.VISIBLE);
+                constraintLayoutDateSeparator.setVisibility(View.VISIBLE);
 
                 //set lable for the date separator
                 String temp = Helper.formatMillisToDateString(currentEntry.getDateMillis());
