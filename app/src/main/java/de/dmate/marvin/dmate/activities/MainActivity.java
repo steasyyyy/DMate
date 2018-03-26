@@ -1,7 +1,10 @@
 package de.dmate.marvin.dmate.activities;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -9,6 +12,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -25,19 +29,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.entities.Entry;
+import de.dmate.marvin.dmate.room.EntryRoom;
+import de.dmate.marvin.dmate.room.EntryRoomListViewModel;
+import de.dmate.marvin.dmate.room.RecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.DMateApplication;
 import de.dmate.marvin.dmate.util.Helper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener, RecyclerViewAdapter.OnItemClickedListener {
 
     public static final int NEW_ENTRY_REQUEST = 1;
     public static final int EDIT_ENTRY_REQUEST = 2;
 
-    private ArrayAdapter<Entry> adapter;
+    private EntryRoomListViewModel viewModel;
+    private RecyclerViewAdapter recyclerViewAdapter;
+    private RecyclerView recyclerView;
 
     //auto generated stuff for the bottom navigation bar
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -61,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_new);
 
         //set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -117,23 +127,61 @@ public class MainActivity extends AppCompatActivity {
 //        Entry temp = app.getAllEntries().get(1);
 //        System.out.println(temp.getDate().getTime() + "will be deleted");
 //        app.deleteEntry(temp);
+//
+//        for (Entry e : app.getAllEntries()) {
+//            System.out.println(e.toString());
+//        }
 
-        for (Entry e : app.getAllEntries()) {
-            System.out.println(e.toString());
-        }
+
 
         //populate listView with entries and react to item clicks
-        populateListView();
-        registerClickCallback();
+
+//        //instanciate an adapter and connect it to the listview
+//        adapter = new CustomArrayAdapter();
+//        ListView listView = (ListView) findViewById(R.id.listview_main);
+//        listView.setAdapter(adapter);
+//        registerForContextMenu(listView);
+
+//        ListView listView = (ListView) findViewById(R.id.listview_main);
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+//                Intent intent = new Intent(MainActivity.this, NewAndUpdateEntryActivity.class);
+//                intent.putExtra("REQUEST_CODE", EDIT_ENTRY_REQUEST);
+//                intent.putExtra("POSITION", position);
+//                startActivity(intent);
+//            }
+//        });
+
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_main);
+        recyclerViewAdapter = new RecyclerViewAdapter(new ArrayList<EntryRoom>(), this, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerView.setAdapter(recyclerViewAdapter);
+        System.out.println("Adapter in MainActivity is set to: " + recyclerViewAdapter.toString());
+
+        viewModel = ViewModelProviders.of(this).get(EntryRoomListViewModel.class);
+
+        viewModel.getEntries().observe(MainActivity.this, new Observer<List<EntryRoom>>() {
+            @Override
+            public void onChanged(@Nullable List<EntryRoom> entries) {
+                Collections.reverse(entries);
+                recyclerViewAdapter.addItems(entries);
+            }
+        });
+
+        Helper.getInstance().setRecyclerViewAdapter(recyclerViewAdapter);
+
+        registerForContextMenu(recyclerView);
     }
 
-    private void populateListView() {
-        //instanciate an adapter and connect it to the listview
-        adapter = new CustomArrayAdapter();
-        ListView listView = (ListView) findViewById(R.id.listview_main);
-        listView.setAdapter(adapter);
-        registerForContextMenu(listView);
-    }
+//    private void populateListView() {
+//        //instanciate an adapter and connect it to the listview
+//        adapter = new CustomArrayAdapter();
+//        ListView listView = (ListView) findViewById(R.id.listview_main);
+//        listView.setAdapter(adapter);
+//        registerForContextMenu(listView);
+//    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -142,42 +190,42 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_delete :
-                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                ((DMateApplication)getApplication()).deleteEntry(info.position);
-                adapter.notifyDataSetChanged();
-                this.onResume();
-                return true;
-            default :
-                return super.onContextItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onContextItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_delete :
+//                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+//                ((DMateApplication)getApplication()).deleteEntry(info.position);
+//                adapter.notifyDataSetChanged();
+//                this.onResume();
+//                return true;
+//            default :
+//                return super.onContextItemSelected(item);
+//        }
+//    }
 
     //set up an ItemClickListener
     //react to the user clicking a certain item
-    private void registerClickCallback() {
-        ListView listView = (ListView) findViewById(R.id.listview_main);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, NewAndUpdateEntryActivity.class);
-                intent.putExtra("REQUEST_CODE", EDIT_ENTRY_REQUEST);
-                intent.putExtra("POSITION", position);
-                startActivity(intent);
-            }
-        });
-    }
+//    private void registerClickCallback() {
+//        ListView listView = (ListView) findViewById(R.id.listview_main);
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+//                Intent intent = new Intent(MainActivity.this, NewAndUpdateEntryActivity.class);
+//                intent.putExtra("REQUEST_CODE", EDIT_ENTRY_REQUEST);
+//                intent.putExtra("POSITION", position);
+//                startActivity(intent);
+//            }
+//        });
+//    }
 
     //when resuming the activity, the dataset might have changed, so we need to update the listview!
-    @Override
-    protected void onResume() {
-        adapter.notifyDataSetChanged();
-        populateListView();
-        super.onResume();
-    }
+//    @Override
+//    protected void onResume() {
+//        adapter.notifyDataSetChanged();
+//        populateListView();
+//        super.onResume();
+//    }
 
     @Override
     //set menu (containing the actions) for the app bar
@@ -201,6 +249,22 @@ public class MainActivity extends AppCompatActivity {
 //                this.recreate();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        EntryRoom entryRoom = (EntryRoom) v.getTag();
+        viewModel.deleteEntry(entryRoom);
+        return true;
+    }
+
+    @Override
+    public void onItemClick(View v, int position) {
+        Intent intent = new Intent(MainActivity.this, NewAndUpdateEntryActivity.class);
+        intent.putExtra("REQUEST_CODE", EDIT_ENTRY_REQUEST);
+        intent.putExtra("POSITION", position);
+
+        startActivity(intent);
     }
 
     //CustomArrayAdapter allows to fill TextViews in entry_layout with data from Entry-Objects

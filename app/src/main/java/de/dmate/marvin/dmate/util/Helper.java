@@ -3,6 +3,8 @@ package de.dmate.marvin.dmate.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import de.dmate.marvin.dmate.room.RecyclerViewAdapter;
+
 public class Helper {
 
     //HELPER CLASS to access Application Object from everywhere
@@ -10,6 +12,7 @@ public class Helper {
 
     private static final Helper ourInstance = new Helper();
     public DMateApplication app;
+    public RecyclerViewAdapter recyclerViewAdapter;
 
     public static Helper getInstance() {
         return ourInstance;
@@ -24,6 +27,14 @@ public class Helper {
 
     public DMateApplication getApplication() {
         return app;
+    }
+
+    public void setRecyclerViewAdapter(RecyclerViewAdapter recyclerViewAdapter) {
+        this.recyclerViewAdapter = recyclerViewAdapter;
+    }
+
+    public RecyclerViewAdapter getRecyclerViewAdapter() {
+        return this.recyclerViewAdapter;
     }
 
     public static String formatMillisToDateString(Long dateMillis) {
