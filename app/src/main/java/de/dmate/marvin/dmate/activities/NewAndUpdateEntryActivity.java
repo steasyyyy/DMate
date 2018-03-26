@@ -1,6 +1,7 @@
 package de.dmate.marvin.dmate.activities;
 
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,6 +56,8 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
         if (requestCode == 2) setTitle("Edit entry");
         toolbar.setTitleTextColor(getResources().getColor(R.color.primary_text_material_light));
         getSupportActionBar().setIcon(R.mipmap.ic_launcher_round);
+        //activate up navigation (back button on app bar)
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //get Buttons and EditTexts
         dateButton = (Button) findViewById(R.id.button_date);
@@ -146,12 +149,6 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
-    }
-
-    @Override
     //react to action clicked on app bar
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
@@ -191,6 +188,12 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
                 Intent intent = new Intent(NewAndUpdateEntryActivity.this, MainActivity.class);
                 startActivity(intent);
                 this.finishAndRemoveTask();
+                return true;
+
+            //action for up navigation (basic back button on app bar)
+            case android.R.id.home :
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
