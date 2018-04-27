@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate.room;
+package de.dmate.marvin.dmate.roomDatabase;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
@@ -10,9 +10,9 @@ import java.util.Date;
 //the colums of that table represent the attributes of this class
 //CAREFUL: Objects are not supported natively! You need to create TypeConverters, to convert an object to a value as done in RoomConverter
 @Entity(tableName = "entries")
-public class EntryRoom {
+public class Entry {
 
-    public EntryRoom() {
+    public Entry() {
 
     }
 

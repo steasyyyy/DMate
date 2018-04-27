@@ -3,19 +3,21 @@ package de.dmate.marvin.dmate.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import de.dmate.marvin.dmate.room.RecyclerViewAdapter;
+import de.dmate.marvin.dmate.roomDatabase.EntryListViewModel;
+import de.dmate.marvin.dmate.roomDatabase.RecyclerViewAdapter;
 
 public class Helper {
 
     //HELPER CLASS to access Application Object from everywhere
     //EXAMPLE: Helper.getInstance().getApplication().getNextID();
 
-    private static final Helper ourInstance = new Helper();
-    public DMateApplication app;
-    public RecyclerViewAdapter recyclerViewAdapter;
+    private static final Helper instance = new Helper();
+    private DMateApplication app;
+    private RecyclerViewAdapter recyclerViewAdapter;
+    private EntryListViewModel entryListViewModel;
 
     public static Helper getInstance() {
-        return ourInstance;
+        return instance;
     }
 
     private Helper() {
@@ -35,6 +37,14 @@ public class Helper {
 
     public RecyclerViewAdapter getRecyclerViewAdapter() {
         return this.recyclerViewAdapter;
+    }
+
+    public void setEntryListViewModel(EntryListViewModel entryListViewModel) {
+        this.entryListViewModel = entryListViewModel;
+    }
+
+    public EntryListViewModel getEntryListViewModel() {
+        return this.entryListViewModel;
     }
 
     public static String formatMillisToDateString(Long dateMillis) {

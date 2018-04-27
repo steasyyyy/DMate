@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate.room;
+package de.dmate.marvin.dmate.roomDatabase;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -6,18 +6,17 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-import java.util.Collections;
 import java.util.List;
 
 //ACCESS AND MANIPULATE DATA IN THE DATABASE FROM HERE
 //create a new asynctask for every access type and call methods from EntryDao within it
-public class EntryRoomListViewModel extends AndroidViewModel {
+public class EntryListViewModel extends AndroidViewModel {
 
-    private final LiveData<List<EntryRoom>> entries;
+    private final LiveData<List<Entry>> entries;
 
     private AppDatabase appDatabase;
 
-    public EntryRoomListViewModel(@NonNull Application application) {
+    public EntryListViewModel(@NonNull Application application) {
         super(application);
 
         appDatabase = AppDatabase.getDatabase(this.getApplication());
@@ -25,60 +24,62 @@ public class EntryRoomListViewModel extends AndroidViewModel {
         entries = appDatabase.entryRoomDao().getAllEntries();
     }
 
-    public LiveData<List<EntryRoom>> getEntries() {
+    public LiveData<List<Entry>> getEntries() {
         return entries;
     }
 
     //CALL THIS METHOD TO ADD AN ENTRY TO THE DATABASE
-    public void addEntry(EntryRoom entryRoom) {
-        new addAsyncTask(appDatabase).execute(entryRoom);
+    public void addEntry(Entry entry) {
+        new addEntryAsyncTask(appDatabase).execute(entry);
     }
 
     //CALL THIS METHOD TO DELETE AN ENTRY FROM THE DATABASE
-    public void deleteEntry(EntryRoom entryRoom) {
-        new deleteAsyncTask(appDatabase).execute(entryRoom);
+    public void deleteEntry(Entry entry) {
+        new deleteEntryAsyncTask(appDatabase).execute(entry);
     }
 
+    //CALL THIS METHOD TO GET AN ENTRY BY ID
     public void getEntryById(int id) {
         new getEntryByIdAsyncTask(appDatabase).execute(id);
     }
 
-    public void updateEntryRoom(EntryRoom entryRoom) {
-        new updateEntryRoomAsyncTask(appDatabase).execute(entryRoom);
+    //CALL THIS METHOD TO UPDATE AN EMTRY BY OBJECT REFERENCE
+    public void updateEntry(Entry entry) {
+        new updateEntryAsyncTask(appDatabase).execute(entry);
     }
 
     //AsyncTask for adding entries to the db
-    private static class addAsyncTask extends AsyncTask<EntryRoom, Void, Void> {
+    private static class addEntryAsyncTask extends AsyncTask<Entry, Void, Void> {
         private AppDatabase db;
 
-        addAsyncTask(AppDatabase db) {
+        addEntryAsyncTask(AppDatabase db) {
             this.db = db;
         }
 
         @Override
-        protected Void doInBackground(EntryRoom... params) {
+        protected Void doInBackground(Entry... params) {
             db.entryRoomDao().insertEntryRoom(params[0]);
             return null;
         }
     }
 
     //AsyncTask for deleting entries from the db
-    private static class deleteAsyncTask extends AsyncTask<EntryRoom, Void, Void> {
+    private static class deleteEntryAsyncTask extends AsyncTask<Entry, Void, Void> {
         private AppDatabase db;
 
-        deleteAsyncTask(AppDatabase db) {
+        deleteEntryAsyncTask(AppDatabase db) {
             this.db = db;
         }
 
         @Override
-        protected Void doInBackground(final EntryRoom... params) {
+        protected Void doInBackground(final Entry... params) {
             db.entryRoomDao().deleteEntryRoom(params[0]);
             return null;
         }
     }
 
     //AsyncTask for getting an entry by id
-    private static class getEntryByIdAsyncTask extends AsyncTask<Integer, Void, EntryRoom> {
+    private static class getEntryByIdAsyncTask extends AsyncTask<Integer, Void, Entry> {
         private AppDatabase db;
 
         getEntryByIdAsyncTask(AppDatabase db) {
@@ -86,20 +87,21 @@ public class EntryRoomListViewModel extends AndroidViewModel {
         }
 
         @Override
-        protected EntryRoom doInBackground(Integer... params) {
+        protected Entry doInBackground(Integer... params) {
             return db.entryRoomDao().getItemById((params[0]));
         }
     }
 
-    private static class updateEntryRoomAsyncTask extends AsyncTask<EntryRoom, Void, Void> {
+    //AsyncTask for updating an Entry
+    private static class updateEntryAsyncTask extends AsyncTask<Entry, Void, Void> {
         private AppDatabase db;
 
-        updateEntryRoomAsyncTask(AppDatabase db) {
+        updateEntryAsyncTask(AppDatabase db) {
             this.db = db;
         }
 
         @Override
-        protected Void doInBackground(EntryRoom... params) {
+        protected Void doInBackground(Entry... params) {
             db.entryRoomDao().updateEntryRoom(params[0]);
             return null;
         }

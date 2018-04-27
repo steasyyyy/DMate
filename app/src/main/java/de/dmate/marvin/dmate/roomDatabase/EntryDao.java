@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate.room;
+package de.dmate.marvin.dmate.roomDatabase;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -17,34 +17,34 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 //NEVER CALL METHODS DIRECTLY FROM THE UI THREAD! ALWAYS USE METHODS IN ENTRYLISTVIEWMODEL!
 @Dao
 @TypeConverters(RoomConverter.class)
-public interface EntryRoomDao {
+public interface EntryDao {
 
     //when method gets called via EntryListViewModel, the defined query is executed
     //Room understands insert, delete and update by itself (no need to define a query)
 
     //get a complete list of all entries ordered by dateTime
     @Query("SELECT * FROM entries ORDER BY date ASC")
-    LiveData<List<EntryRoom>> getAllEntries();
+    LiveData<List<Entry>> getAllEntries();
 
     //get entry by ID
     @Query("SELECT * FROM entries WHERE eId = :eId")
-    EntryRoom getItemById(int eId);
+    Entry getItemById(int eId);
 
     //insert entry
     @Insert(onConflict = REPLACE)
-    void insertEntryRoom(EntryRoom entry);
+    void insertEntryRoom(Entry entry);
 
     //insert multiple entries
     @Insert(onConflict = REPLACE)
-    void insertEntries(List<EntryRoom> entries);
+    void insertEntries(List<Entry> entries);
 
     //delete entry by ID
     @Delete
-    void deleteEntryRoom(EntryRoom entry);
+    void deleteEntryRoom(Entry entry);
 
     //update entry by ID
     @Update
-    void updateEntryRoom(EntryRoom entry);
+    void updateEntryRoom(Entry entry);
 
 
 }

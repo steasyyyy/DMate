@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate.room;
+package de.dmate.marvin.dmate.roomDatabase;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
@@ -7,9 +7,9 @@ import android.content.Context;
 
 //creation of the database
 //entities -> tables of relational db
-//NEVER CALL METHODS VIA APPDATABASE.ENTRYROOMDAO.x DIRECTLY FROM THE UI THREAD
+//NEVER CALL METHODS VIA APPDATABASE.ENTRYDAO.x DIRECTLY FROM THE UI THREAD
 //USE ENTRYLISTVIEWMODEL TO MANIPULATE DATA (ADD, REMOVE, UPDATE)
-@Database(entities = {EntryRoom.class}, version = 1)
+@Database(entities = {Entry.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase{
 
     private static AppDatabase INSTANCE;
@@ -21,6 +21,6 @@ public abstract class AppDatabase extends RoomDatabase{
         return INSTANCE;
     }
 
-    public abstract EntryRoomDao entryRoomDao();
+    public abstract EntryDao entryRoomDao();
 
 }

@@ -1,6 +1,5 @@
 package de.dmate.marvin.dmate.activities;
 
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
@@ -18,13 +17,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 import de.dmate.marvin.dmate.R;
-import de.dmate.marvin.dmate.entities.Entry;
 import de.dmate.marvin.dmate.fragments.DatePickerFragment;
 import de.dmate.marvin.dmate.fragments.TimePickerFragment;
-import de.dmate.marvin.dmate.room.AppDatabase;
-import de.dmate.marvin.dmate.room.EntryRoom;
-import de.dmate.marvin.dmate.room.EntryRoomListViewModel;
-import de.dmate.marvin.dmate.room.RecyclerViewAdapter;
+import de.dmate.marvin.dmate.roomDatabase.Entry;
+import de.dmate.marvin.dmate.roomDatabase.EntryListViewModel;
+import de.dmate.marvin.dmate.roomDatabase.RecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.Helper;
 
 public class NewAndUpdateEntryActivity extends AppCompatActivity
@@ -45,8 +42,8 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
     private RecyclerView recyclerView;
     private RecyclerViewAdapter recyclerViewAdapter;
 
-    private EntryRoom newEntryRoom;
-    private EntryRoom currentEntry;
+    private Entry newEntry;
+    private Entry currentEntry;
     private Long dateMillis;
 
     @Override
@@ -54,7 +51,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_entry);
 
-        //set requestCode to differ between editing an newEntryRoom or creating a new one
+        //set requestCode to differ between editing an newEntry or creating a new one
         Intent intent = getIntent();
         requestCode = intent.getIntExtra("REQUEST_CODE", Integer.MAX_VALUE);
 
@@ -85,8 +82,8 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
         if (requestCode == 1) {
             //save the current time (when the activity was started)
             dateMillis = calendar.getTimeInMillis();
-            newEntryRoom = new EntryRoom();
-            newEntryRoom.setDate(new Date(dateMillis));
+            newEntry = new Entry();
+            newEntry.setDate(new Date(dateMillis));
 
             //set the text on the dateButton to current date
             dateButton.setText(Helper.formatMillisToDateString(dateMillis));
@@ -164,29 +161,29 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
     @Override
     //react to action clicked on app bar
     public boolean onOptionsItemSelected(MenuItem item) {
-        EntryRoomListViewModel viewModel = ViewModelProviders.of(this).get(EntryRoomListViewModel.class);
+        EntryListViewModel viewModel = ViewModelProviders.of(this).get(EntryListViewModel.class);
         switch(item.getItemId()) {
             //action_save = save changes after updating entry or creating a new one
             case R.id.action_save:
                 if (requestCode == 1) {
-                    newEntryRoom.setDate(new Date(calendar.getTimeInMillis()));
+                    newEntry.setDate(new Date(calendar.getTimeInMillis()));
 
-                    if (!ETbloodsugar.getText().toString().equals("")) newEntryRoom.setBloodsugar(Integer.parseInt(ETbloodsugar.getText().toString()));
-                    else newEntryRoom.setBloodsugar(null);
+                    if (!ETbloodsugar.getText().toString().equals("")) newEntry.setBloodsugar(Integer.parseInt(ETbloodsugar.getText().toString()));
+                    else newEntry.setBloodsugar(null);
 
-                    if (!ETbreadunit.getText().toString().equals("")) newEntryRoom.setBreadunit(Float.parseFloat(ETbreadunit.getText().toString()));
-                    else newEntryRoom.setBreadunit(null);
+                    if (!ETbreadunit.getText().toString().equals("")) newEntry.setBreadunit(Float.parseFloat(ETbreadunit.getText().toString()));
+                    else newEntry.setBreadunit(null);
 
-                    if (!ETbolus.getText().toString().equals("")) newEntryRoom.setBolus(Float.parseFloat(ETbolus.getText().toString()));
-                    else newEntryRoom.setBolus(null);
+                    if (!ETbolus.getText().toString().equals("")) newEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
+                    else newEntry.setBolus(null);
 
-                    if (!ETbasal.getText().toString().equals("")) newEntryRoom.setBasal(Float.parseFloat(ETbasal.getText().toString()));
-                    else newEntryRoom.setBasal(null);
+                    if (!ETbasal.getText().toString().equals("")) newEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
+                    else newEntry.setBasal(null);
 
-                    if (!ETnote.getText().toString().equals("")) newEntryRoom.setNote(ETnote.getText().toString());
-                    else newEntryRoom.setNote(null);
+                    if (!ETnote.getText().toString().equals("")) newEntry.setNote(ETnote.getText().toString());
+                    else newEntry.setNote(null);
 
-                    viewModel.addEntry(newEntryRoom);
+                    viewModel.addEntry(newEntry);
                 }
 
                 if (requestCode == 2) {
@@ -196,7 +193,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
                     if (!ETbolus.getText().toString().equals("")) currentEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
                     if (!ETbasal.getText().toString().equals("")) currentEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
                     if (!ETnote.getText().toString().equals("")) currentEntry.setNote(ETnote.getText().toString());
-                    viewModel.updateEntryRoom(currentEntry);
+                    viewModel.updateEntry(currentEntry);
                 }
 
                 Intent intent = new Intent(NewAndUpdateEntryActivity.this, MainActivity.class);
@@ -230,10 +227,10 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
         timeButton.setText(Helper.formatMillisToTimeString(dateMillis));
     }
 
-    //helper function to update dateMillis and the newEntryRoom values
+    //helper function to update dateMillis and the newEntry values
     private void updateLocalValues() {
         this.dateMillis = calendar.getTimeInMillis();
-        if (requestCode == 1) this.newEntryRoom.setDate(new Date(dateMillis));
+        if (requestCode == 1) this.newEntry.setDate(new Date(dateMillis));
         if (requestCode == 2) this.currentEntry.setDate(new Date(dateMillis));
     }
 }

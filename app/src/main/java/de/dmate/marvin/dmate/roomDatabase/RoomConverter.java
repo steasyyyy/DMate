@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate.room;
+package de.dmate.marvin.dmate.roomDatabase;
 
 import android.arch.persistence.room.TypeConverter;
 
