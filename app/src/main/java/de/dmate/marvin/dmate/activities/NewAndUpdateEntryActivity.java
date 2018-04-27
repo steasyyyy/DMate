@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -83,7 +84,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
             //save the current time (when the activity was started)
             dateMillis = calendar.getTimeInMillis();
             newEntry = new Entry();
-            newEntry.setDate(new Date(dateMillis));
+            newEntry.setTimestamp(new Timestamp(dateMillis));
 
             //set the text on the dateButton to current date
             dateButton.setText(Helper.formatMillisToDateString(dateMillis));
@@ -99,12 +100,12 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
             //TODO
             currentEntry = recyclerViewAdapter.getItemByPosition(position);
 
-            dateMillis = currentEntry.getDate().getTime();
+            dateMillis = currentEntry.getTimestamp().getTime();
             calendar.setTimeInMillis(dateMillis);
 
             //setText to all buttons and EditTexts
-            dateButton.setText(Helper.formatMillisToDateString(currentEntry.getDate().getTime()));
-            timeButton.setText(Helper.formatMillisToTimeString(currentEntry.getDate().getTime()));
+            dateButton.setText(Helper.formatMillisToDateString(currentEntry.getTimestamp().getTime()));
+            timeButton.setText(Helper.formatMillisToTimeString(currentEntry.getTimestamp().getTime()));
 
             Integer bloodsugar = currentEntry.getBloodsugar();
             if (bloodsugar != null) ETbloodsugar.setText(bloodsugar.toString());
@@ -166,7 +167,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
             //action_save = save changes after updating entry or creating a new one
             case R.id.action_save:
                 if (requestCode == 1) {
-                    newEntry.setDate(new Date(calendar.getTimeInMillis()));
+                    newEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
 
                     if (!ETbloodsugar.getText().toString().equals("")) newEntry.setBloodsugar(Integer.parseInt(ETbloodsugar.getText().toString()));
                     else newEntry.setBloodsugar(null);
@@ -187,7 +188,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
                 }
 
                 if (requestCode == 2) {
-                    currentEntry.setDate(calendar.getTime());
+                    currentEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
                     if (!ETbloodsugar.getText().toString().equals("")) currentEntry.setBloodsugar(Integer.parseInt(ETbloodsugar.getText().toString()));
                     if (!ETbreadunit.getText().toString().equals("")) currentEntry.setBreadunit(Float.parseFloat(ETbreadunit.getText().toString()));
                     if (!ETbolus.getText().toString().equals("")) currentEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
@@ -230,7 +231,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
     //helper function to update dateMillis and the newEntry values
     private void updateLocalValues() {
         this.dateMillis = calendar.getTimeInMillis();
-        if (requestCode == 1) this.newEntry.setDate(new Date(dateMillis));
-        if (requestCode == 2) this.currentEntry.setDate(new Date(dateMillis));
+        if (requestCode == 1) this.newEntry.setTimestamp(new Timestamp(dateMillis));
+        if (requestCode == 2) this.currentEntry.setTimestamp(new Timestamp(dateMillis));
     }
 }

@@ -9,7 +9,7 @@ import android.content.Context;
 //entities -> tables of relational db
 //NEVER CALL METHODS VIA APPDATABASE.ENTRYDAO.x DIRECTLY FROM THE UI THREAD
 //USE ENTRYLISTVIEWMODEL TO MANIPULATE DATA (ADD, REMOVE, UPDATE)
-@Database(entities = {Entry.class}, version = 1)
+@Database(entities = {Entry.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase{
 
     private static AppDatabase INSTANCE;

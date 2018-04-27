@@ -1,11 +1,8 @@
 package de.dmate.marvin.dmate.roomDatabase;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -48,7 +45,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(RecyclerViewHolder holder, final int position) {
         Entry entry = entries.get(position);
 
-        holder.dateTextView.setText(Helper.formatMillisToTimeString(entry.getDate().getTime()));
+        holder.dateTextView.setText(Helper.formatMillisToTimeString(entry.getTimestamp().getTime()));
 
         if (entry.getBloodsugar() != null) {
             holder.bloodsugarTextView.setText(entry.getBloodsugar().toString());

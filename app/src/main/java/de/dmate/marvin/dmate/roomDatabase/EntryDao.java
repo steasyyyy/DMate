@@ -23,12 +23,16 @@ public interface EntryDao {
     //Room understands insert, delete and update by itself (no need to define a query)
 
     //get a complete list of all entries ordered by dateTime
-    @Query("SELECT * FROM entries ORDER BY date ASC")
+    @Query("SELECT * FROM entries ORDER BY timestamp DESC")
     LiveData<List<Entry>> getAllEntries();
 
     //get entry by ID
     @Query("SELECT * FROM entries WHERE eId = :eId")
     Entry getItemById(int eId);
+
+    //get last entry of day
+    @Query("SELECT * FROM entries WHERE timestamp = (SELECT MIN(timestamp) FROM entries)")
+    Entry getLastEntryOfDay();
 
     //insert entry
     @Insert(onConflict = REPLACE)

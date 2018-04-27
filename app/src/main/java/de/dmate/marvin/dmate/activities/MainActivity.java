@@ -16,8 +16,8 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         viewModel.getEntries().observe(MainActivity.this, new Observer<List<Entry>>() {
             @Override
             public void onChanged(@Nullable List<Entry> entries) {
-                Collections.reverse(entries);
                 recyclerViewAdapter.addItems(entries);
             }
         });

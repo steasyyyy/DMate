@@ -38,6 +38,7 @@ public class EntryListViewModel extends AndroidViewModel {
         new deleteEntryAsyncTask(appDatabase).execute(entry);
     }
 
+    //TODO VOID????
     //CALL THIS METHOD TO GET AN ENTRY BY ID
     public void getEntryById(int id) {
         new getEntryByIdAsyncTask(appDatabase).execute(id);

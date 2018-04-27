@@ -4,7 +4,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 //declaring @Entity here specifies, that Room should create a table
 //the colums of that table represent the attributes of this class
@@ -20,7 +21,7 @@ public class Entry {
     public int eId;
 
     @TypeConverters(RoomConverter.class)
-    private Date date = null;
+    private Timestamp timestamp = null;
 
     private Integer bloodsugar = null;
     private Float breadunit = null;
@@ -29,12 +30,38 @@ public class Entry {
     private String note = null;
     private Boolean verified = false;
 
+//    public boolean isLastEntryOfThisDay() {
+//        //get entries from prefs
+//        ArrayList<Entry> entries =  Helper.getInstance().getApplication().getAllEntries();
+//        int indexOfThis = 0;
+//
+//        //easy option: entries.getIndexOf(this) does not work, because objects are recreated when reading from prefs
+//        //so: if the millis are the same, the object must have the same values
+//        for (Entry e : entries) {
+//            if(e.getDateMillis() == this.getDateMillis()) {
+//                indexOfThis = entries.indexOf(e);
+//            }
+//        }
+//
+//        //if index=0, there is no entry before "this" and "this" must be the last entry of the day
+//        if (indexOfThis==0) return true;
+//
+//        //create calendars to make Year and Day of Year comparable
+//        Calendar cal1 = Calendar.getInstance();
+//        cal1.setTime(this.getDate());
+//        Calendar cal2 = Calendar.getInstance();
+//        cal2.setTime(entries.get(indexOfThis-1).getDate());
+//        boolean sameDay = (cal1.get(Calendar.YEAR) != cal2.get(Calendar.YEAR) ||
+//                cal1.get(Calendar.DAY_OF_YEAR) != cal2.get(Calendar.DAY_OF_YEAR));
+//        return sameDay;
+//    }
+
     public int geteId() {
         return eId;
     }
 
-    public Date getDate() {
-        return date;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
     public Integer getBloodsugar() {
@@ -65,8 +92,8 @@ public class Entry {
         this.eId = eId;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTimestamp (Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 
     public void setBloodsugar(Integer bloodsugar) {
