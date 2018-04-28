@@ -3,8 +3,7 @@ package de.dmate.marvin.dmate.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import de.dmate.marvin.dmate.roomDatabase.EntryListViewModel;
-import de.dmate.marvin.dmate.roomDatabase.RecyclerViewAdapter;
+import de.dmate.marvin.dmate.roomDatabase.EntryViewModel;
 
 public class Helper {
 
@@ -14,7 +13,7 @@ public class Helper {
     private static final Helper instance = new Helper();
     private DMateApplication app;
     private RecyclerViewAdapter recyclerViewAdapter;
-    private EntryListViewModel entryListViewModel;
+    private EntryViewModel entryViewModel;
 
     public static Helper getInstance() {
         return instance;
@@ -39,12 +38,12 @@ public class Helper {
         return this.recyclerViewAdapter;
     }
 
-    public void setEntryListViewModel(EntryListViewModel entryListViewModel) {
-        this.entryListViewModel = entryListViewModel;
+    public void setEntryViewModel(EntryViewModel entryViewModel) {
+        this.entryViewModel = entryViewModel;
     }
 
-    public EntryListViewModel getEntryListViewModel() {
-        return this.entryListViewModel;
+    public EntryViewModel getEntryViewModel() {
+        return this.entryViewModel;
     }
 
     public static String formatMillisToDateString(Long dateMillis) {

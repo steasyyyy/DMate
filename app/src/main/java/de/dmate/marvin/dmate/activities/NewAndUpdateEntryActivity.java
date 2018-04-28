@@ -15,14 +15,13 @@ import android.widget.EditText;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
 
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.fragments.DatePickerFragment;
 import de.dmate.marvin.dmate.fragments.TimePickerFragment;
 import de.dmate.marvin.dmate.roomDatabase.Entry;
-import de.dmate.marvin.dmate.roomDatabase.EntryListViewModel;
-import de.dmate.marvin.dmate.roomDatabase.RecyclerViewAdapter;
+import de.dmate.marvin.dmate.roomDatabase.EntryViewModel;
+import de.dmate.marvin.dmate.util.RecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.Helper;
 
 public class NewAndUpdateEntryActivity extends AppCompatActivity
@@ -162,7 +161,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
     @Override
     //react to action clicked on app bar
     public boolean onOptionsItemSelected(MenuItem item) {
-        EntryListViewModel viewModel = ViewModelProviders.of(this).get(EntryListViewModel.class);
+        EntryViewModel viewModel = ViewModelProviders.of(this).get(EntryViewModel.class);
         switch(item.getItemId()) {
             //action_save = save changes after updating entry or creating a new one
             case R.id.action_save:

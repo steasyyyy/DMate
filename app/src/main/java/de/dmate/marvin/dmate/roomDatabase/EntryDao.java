@@ -19,7 +19,7 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @TypeConverters(RoomConverter.class)
 public interface EntryDao {
 
-    //when method gets called via EntryListViewModel, the defined query is executed
+    //when method gets called via EntryViewModel, the defined query is executed
     //Room understands insert, delete and update by itself (no need to define a query)
 
     //get a complete list of all entries ordered by dateTime

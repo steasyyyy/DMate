@@ -13,19 +13,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.roomDatabase.Entry;
-import de.dmate.marvin.dmate.roomDatabase.EntryListViewModel;
-import de.dmate.marvin.dmate.roomDatabase.RecyclerViewAdapter;
+import de.dmate.marvin.dmate.roomDatabase.EntryViewModel;
+import de.dmate.marvin.dmate.util.RecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.DMateApplication;
 import de.dmate.marvin.dmate.util.Helper;
 
@@ -34,22 +31,28 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     public static final int NEW_ENTRY_REQUEST = 1;
     public static final int EDIT_ENTRY_REQUEST = 2;
 
-    private EntryListViewModel viewModel;
+    //ViewModel for entries in Database
+    private EntryViewModel viewModel;
+
+    //Custom RecyclerViewAdapter to feed the RecyclerView with data (List of entries)
     private RecyclerViewAdapter recyclerViewAdapter;
+
+    //RecyclerView = rework of ListView to show list of entries
     private RecyclerView recyclerView;
 
-    //auto generated stuff for the bottom navigation bar
+    //bottom navigation bar
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_ratio_wizard:
                     return true;
                 case R.id.navigation_notifications:
+                    return true;
+                case R.id.navigation_settings:
                     return true;
             }
             return false;
@@ -95,8 +98,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
 //        registerForContextMenu(recyclerView);
 
-        viewModel = ViewModelProviders.of(this).get(EntryListViewModel.class);
-        Helper.getInstance().setEntryListViewModel(viewModel);
+        viewModel = ViewModelProviders.of(this).get(EntryViewModel.class);
+        Helper.getInstance().setEntryViewModel(viewModel);
 
         //start observing LiveData in ViewModel and define what should happen when "LiveData<List<Entry>> entries;" in ViewModel changes
         //because it is LiveData the collection in ViewModel is always up to date (automatically gets updated when changes to database are made)

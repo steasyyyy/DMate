@@ -10,13 +10,13 @@ import java.util.List;
 
 //ACCESS AND MANIPULATE DATA IN THE DATABASE FROM HERE
 //create a new asynctask for every access type and call methods from EntryDao within it
-public class EntryListViewModel extends AndroidViewModel {
+public class EntryViewModel extends AndroidViewModel {
 
     private final LiveData<List<Entry>> entries;
 
     private AppDatabase appDatabase;
 
-    public EntryListViewModel(@NonNull Application application) {
+    public EntryViewModel(@NonNull Application application) {
         super(application);
 
         appDatabase = AppDatabase.getDatabase(this.getApplication());

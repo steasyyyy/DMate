@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate.roomDatabase;
+package de.dmate.marvin.dmate.util;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.dmate.marvin.dmate.R;
-import de.dmate.marvin.dmate.util.Helper;
+import de.dmate.marvin.dmate.roomDatabase.Entry;
 
 //This RecyclerViewAdapter is my own implementation of RecyclerView.Adapter
 //It manages the RecyclerView in MainActivity and feeds data to it.
@@ -18,7 +18,8 @@ import de.dmate.marvin.dmate.util.Helper;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>{
 
     public List<Entry> entries;
-    //both listeners are an instance of MainActivtiy which implements the needed interfaces
+
+    //both listeners are an instance of MainActivtiy which implements the interfaces that are defined here
     private OnItemClickedListener itemClickedListener;
     private OnContextMenuCreatedListener contextMenuListener;
 
@@ -28,10 +29,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.itemClickedListener = itemClickListener;
     }
 
+    //Custom interface to delegate listener actions to MainActivity
     public interface OnItemClickedListener {
         void onItemClick(View v, int position);
     }
 
+    //Custom interface to delegate listener actions to MainActivity
     public interface OnContextMenuCreatedListener {
         void onContextMenuCreated(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo, final int position);
     }
@@ -99,6 +102,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return entries.get(position);
     }
 
+    //custom ViewHolder to minimize calls of findViewById and increase scrolling performance
     static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         TextView dateTextView;
