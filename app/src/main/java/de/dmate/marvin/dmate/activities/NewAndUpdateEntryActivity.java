@@ -17,8 +17,8 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 
 import de.dmate.marvin.dmate.R;
-import de.dmate.marvin.dmate.fragments.DatePickerFragment;
-import de.dmate.marvin.dmate.fragments.TimePickerFragment;
+import de.dmate.marvin.dmate.fragments.PickerFragments.DatePickerFragment;
+import de.dmate.marvin.dmate.fragments.PickerFragments.TimePickerFragment;
 import de.dmate.marvin.dmate.roomDatabase.Entry;
 import de.dmate.marvin.dmate.roomDatabase.EntryViewModel;
 import de.dmate.marvin.dmate.util.RecyclerViewAdapter;

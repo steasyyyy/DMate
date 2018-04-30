@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate.fragments;
+package de.dmate.marvin.dmate.fragments.PickerFragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
