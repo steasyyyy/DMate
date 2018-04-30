@@ -1,5 +1,6 @@
 package de.dmate.marvin.dmate.util;
 
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -7,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import de.dmate.marvin.dmate.R;
@@ -39,6 +44,31 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
         void onContextMenuCreated(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo, final int position);
     }
 
+    //check if entry is last of the day
+    //if yes, we need to inflate the date seperator
+    private boolean isLastEntryOfDay(Entry entry) {
+        boolean isLast = true;
+
+        Calendar calendarCurrent = Calendar.getInstance();
+        calendarCurrent.setTimeInMillis(entry.getTimestamp().getTime());
+
+        Calendar calendarTemp = Calendar.getInstance();
+
+        for (Entry e : entries) {
+            calendarTemp.setTimeInMillis(e.getTimestamp().getTime());
+            if (entry.geteId() != e.geteId()) {
+                if (calendarCurrent.get(Calendar.YEAR) == calendarTemp.get(Calendar.YEAR)
+                        && calendarCurrent.get(Calendar.MONTH) == calendarTemp.get(Calendar.MONTH)
+                        && calendarCurrent.get(Calendar.DAY_OF_MONTH) == calendarTemp.get(Calendar.DAY_OF_MONTH)) {
+                    if (entry.getTimestamp().before(e.getTimestamp())) {
+                        isLast=false;
+                    }
+                }
+            }
+        }
+        return isLast;
+    }
+
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new RecyclerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_layout, parent, false));
@@ -65,6 +95,14 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
         if (entry.getBasal() != null) {
             holder.basalTextView.setText(entry.getBasal().toString());
         } else holder.basalTextView.setText(null);
+
+        if (isLastEntryOfDay(entry)) {
+            holder.constraintLayout.setVisibility(ConstraintLayout.VISIBLE);
+            holder.dateSeperatorTextView.setText(Helper.formatMillisToDateString(entry.getTimestamp().getTime()));
+        } else {
+            holder.constraintLayout.setVisibility(ConstraintLayout.GONE);
+            holder.dateSeperatorTextView.setText(null);
+        }
 
         holder.itemView.setTag(entry);
 
@@ -117,6 +155,9 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
         TextView staticbolusTextView;
         TextView staticbasalTextView;
 
+        ConstraintLayout constraintLayout;
+        TextView dateSeperatorTextView;
+
         public RecyclerViewHolder(View itemView) {
             super(itemView);
 
@@ -131,6 +172,9 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
             staticbreadunitTextView = (TextView) itemView.findViewById(R.id.static_breadunit);
             staticbolusTextView = (TextView) itemView.findViewById(R.id.static_bolus);
             staticbasalTextView = (TextView) itemView.findViewById(R.id.static_basal);
+
+            constraintLayout = (ConstraintLayout) itemView.findViewById(R.id.constraintLayout_date_separator);
+            dateSeperatorTextView = (TextView) constraintLayout.findViewById(R.id.textView_date_separator);
         }
     }
 }

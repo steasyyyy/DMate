@@ -30,10 +30,6 @@ public interface EntryDao {
     @Query("SELECT * FROM entries WHERE eId = :eId")
     Entry getItemById(int eId);
 
-    //get last entry of day
-    @Query("SELECT * FROM entries WHERE timestamp = (SELECT MIN(timestamp) FROM entries)")
-    Entry getLastEntryOfDay();
-
     //insert entry
     @Insert(onConflict = REPLACE)
     void insertEntryRoom(Entry entry);

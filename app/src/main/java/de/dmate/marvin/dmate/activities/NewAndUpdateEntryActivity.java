@@ -106,6 +106,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
 
                 Intent intent = new Intent(NewAndUpdateEntryActivity.this, MainActivity.class);
                 startActivity(intent);
+                finishAndRemoveTaskCustom();
             }
         });
 
@@ -213,6 +214,11 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //helper function (allows to finish and remove task from inside the FAB clicklistener)
+    private void finishAndRemoveTaskCustom() {
+        this.finishAndRemoveTask();
     }
 
     //defined and called by DatePickerFragment (and nested interface)
