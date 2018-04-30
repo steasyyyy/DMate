@@ -18,7 +18,7 @@ import de.dmate.marvin.dmate.fragments.BottomNavigationFragments.NotificationsFr
 import de.dmate.marvin.dmate.fragments.BottomNavigationFragments.RatioWizardFragment;
 import de.dmate.marvin.dmate.fragments.BottomNavigationFragments.SettingsFragment;
 import de.dmate.marvin.dmate.roomDatabase.EntryViewModel;
-import de.dmate.marvin.dmate.util.RecyclerViewAdapter;
+import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.DMateApplication;
 import de.dmate.marvin.dmate.util.Helper;
 
@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity implements
     //ViewModel for entries in Database
     private EntryViewModel viewModel;
 
-    //Custom RecyclerViewAdapter to feed the RecyclerView with data (List of entries)
-    private RecyclerViewAdapter recyclerViewAdapter;
+    //Custom EntriesRecyclerViewAdapter to feed the RecyclerView with data (List of entries)
+    private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
 
     //RecyclerView = rework of ListView to show list of entries
     private RecyclerView recyclerView;

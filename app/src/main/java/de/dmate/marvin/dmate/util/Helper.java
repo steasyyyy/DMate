@@ -12,7 +12,7 @@ public class Helper {
 
     private static final Helper instance = new Helper();
     private DMateApplication app;
-    private RecyclerViewAdapter recyclerViewAdapter;
+    private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
     private EntryViewModel entryViewModel;
 
     public static Helper getInstance() {
@@ -30,12 +30,12 @@ public class Helper {
         return app;
     }
 
-    public void setRecyclerViewAdapter(RecyclerViewAdapter recyclerViewAdapter) {
-        this.recyclerViewAdapter = recyclerViewAdapter;
+    public void setEntriesRecyclerViewAdapter(EntriesRecyclerViewAdapter entriesRecyclerViewAdapter) {
+        this.entriesRecyclerViewAdapter = entriesRecyclerViewAdapter;
     }
 
-    public RecyclerViewAdapter getRecyclerViewAdapter() {
-        return this.recyclerViewAdapter;
+    public EntriesRecyclerViewAdapter getEntriesRecyclerViewAdapter() {
+        return this.entriesRecyclerViewAdapter;
     }
 
     public void setEntryViewModel(EntryViewModel entryViewModel) {

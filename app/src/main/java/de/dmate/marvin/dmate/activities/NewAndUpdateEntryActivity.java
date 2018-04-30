@@ -21,7 +21,7 @@ import de.dmate.marvin.dmate.fragments.PickerFragments.DatePickerFragment;
 import de.dmate.marvin.dmate.fragments.PickerFragments.TimePickerFragment;
 import de.dmate.marvin.dmate.roomDatabase.Entry;
 import de.dmate.marvin.dmate.roomDatabase.EntryViewModel;
-import de.dmate.marvin.dmate.util.RecyclerViewAdapter;
+import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.Helper;
 
 public class NewAndUpdateEntryActivity extends AppCompatActivity
@@ -40,7 +40,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
     private Calendar calendar;
 
     private RecyclerView recyclerView;
-    private RecyclerViewAdapter recyclerViewAdapter;
+    private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
 
     private Entry newEntry;
     private Entry currentEntry;
@@ -76,7 +76,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
 
         calendar = Calendar.getInstance();
 
-        recyclerViewAdapter = Helper.getInstance().getRecyclerViewAdapter();
+        entriesRecyclerViewAdapter = Helper.getInstance().getEntriesRecyclerViewAdapter();
 
         //if requestCode == 1 -> new entry
         if (requestCode == 1) {
@@ -97,7 +97,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
             //get entry object to update
             int position = getIntent().getIntExtra("POSITION", Integer.MAX_VALUE);
             //TODO
-            currentEntry = recyclerViewAdapter.getItemByPosition(position);
+            currentEntry = entriesRecyclerViewAdapter.getItemByPosition(position);
 
             dateMillis = currentEntry.getTimestamp().getTime();
             calendar.setTimeInMillis(dateMillis);
