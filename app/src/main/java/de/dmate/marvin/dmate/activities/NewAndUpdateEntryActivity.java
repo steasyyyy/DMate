@@ -2,6 +2,7 @@ package de.dmate.marvin.dmate.activities;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -64,6 +65,49 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
         getSupportActionBar().setIcon(R.mipmap.ic_launcher_round);
         //activate up navigation (back button on app bar)
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //set up OnClickListener for FAB
+        //when clicked, open NewAndUpdateEntryActivity and set requestCode to NEW_ENTRY_REQUEST
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_fragment_save);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EntryViewModel viewModel = Helper.getInstance().getEntryViewModel();
+                if (requestCode == 1) {
+                    newEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
+
+                    if (!ETbloodsugar.getText().toString().equals("")) newEntry.setBloodsugar(Integer.parseInt(ETbloodsugar.getText().toString()));
+                    else newEntry.setBloodsugar(null);
+
+                    if (!ETbreadunit.getText().toString().equals("")) newEntry.setBreadunit(Float.parseFloat(ETbreadunit.getText().toString()));
+                    else newEntry.setBreadunit(null);
+
+                    if (!ETbolus.getText().toString().equals("")) newEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
+                    else newEntry.setBolus(null);
+
+                    if (!ETbasal.getText().toString().equals("")) newEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
+                    else newEntry.setBasal(null);
+
+                    if (!ETnote.getText().toString().equals("")) newEntry.setNote(ETnote.getText().toString());
+                    else newEntry.setNote(null);
+
+                    viewModel.addEntry(newEntry);
+                }
+
+                if (requestCode == 2) {
+                    currentEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
+                    if (!ETbloodsugar.getText().toString().equals("")) currentEntry.setBloodsugar(Integer.parseInt(ETbloodsugar.getText().toString()));
+                    if (!ETbreadunit.getText().toString().equals("")) currentEntry.setBreadunit(Float.parseFloat(ETbreadunit.getText().toString()));
+                    if (!ETbolus.getText().toString().equals("")) currentEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
+                    if (!ETbasal.getText().toString().equals("")) currentEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
+                    if (!ETnote.getText().toString().equals("")) currentEntry.setNote(ETnote.getText().toString());
+                    viewModel.updateEntry(currentEntry);
+                }
+
+                Intent intent = new Intent(NewAndUpdateEntryActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //get Buttons and EditTexts
         dateButton = (Button) findViewById(R.id.button_date);
@@ -155,58 +199,19 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.app_bar_actions, menu);
         menu.findItem(R.id.action_refresh).setVisible(false);
         menu.findItem(R.id.action_delete_forever).setVisible(false);
+        menu.findItem(R.id.action_save).setVisible(false);
+        menu.findItem(R.id.action_settings).setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     //react to action clicked on app bar
     public boolean onOptionsItemSelected(MenuItem item) {
-        EntryViewModel viewModel = ViewModelProviders.of(this).get(EntryViewModel.class);
         switch(item.getItemId()) {
-            //action_save = save changes after updating entry or creating a new one
-            case R.id.action_save:
-                if (requestCode == 1) {
-                    newEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
-
-                    if (!ETbloodsugar.getText().toString().equals("")) newEntry.setBloodsugar(Integer.parseInt(ETbloodsugar.getText().toString()));
-                    else newEntry.setBloodsugar(null);
-
-                    if (!ETbreadunit.getText().toString().equals("")) newEntry.setBreadunit(Float.parseFloat(ETbreadunit.getText().toString()));
-                    else newEntry.setBreadunit(null);
-
-                    if (!ETbolus.getText().toString().equals("")) newEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
-                    else newEntry.setBolus(null);
-
-                    if (!ETbasal.getText().toString().equals("")) newEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
-                    else newEntry.setBasal(null);
-
-                    if (!ETnote.getText().toString().equals("")) newEntry.setNote(ETnote.getText().toString());
-                    else newEntry.setNote(null);
-
-                    viewModel.addEntry(newEntry);
-                }
-
-                if (requestCode == 2) {
-                    currentEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
-                    if (!ETbloodsugar.getText().toString().equals("")) currentEntry.setBloodsugar(Integer.parseInt(ETbloodsugar.getText().toString()));
-                    if (!ETbreadunit.getText().toString().equals("")) currentEntry.setBreadunit(Float.parseFloat(ETbreadunit.getText().toString()));
-                    if (!ETbolus.getText().toString().equals("")) currentEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
-                    if (!ETbasal.getText().toString().equals("")) currentEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
-                    if (!ETnote.getText().toString().equals("")) currentEntry.setNote(ETnote.getText().toString());
-                    viewModel.updateEntry(currentEntry);
-                }
-
-                Intent intent = new Intent(NewAndUpdateEntryActivity.this, MainActivity.class);
-                startActivity(intent);
-                this.finishAndRemoveTask();
-                return true;
-
-            //action for up navigation (basic back button on app bar)
             case android.R.id.home :
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

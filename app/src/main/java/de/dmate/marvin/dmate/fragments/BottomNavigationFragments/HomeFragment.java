@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         //set up OnClickListener for FAB
         //when clicked, open NewAndUpdateEntryActivity and set requestCode to NEW_ENTRY_REQUEST
-        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab_fragment);
+        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab_fragment_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

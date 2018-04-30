@@ -76,9 +76,6 @@ public class MainActivity extends AppCompatActivity implements
                     case R.id.navigation_home:
                         selectedFragment = HomeFragment.newInstance();
                         break;
-                    case R.id.navigation_ratio_wizard:
-                        selectedFragment = RatioWizardFragment.newInstance();
-                        break;
                     case R.id.navigation_notifications:
                         selectedFragment = NotificationsFragment.newInstance();
                         break;

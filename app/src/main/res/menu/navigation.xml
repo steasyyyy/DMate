@@ -6,10 +6,6 @@
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black"
         android:title="Home" />
-    <item
-        android:id="@+id/navigation_ratio_wizard"
-        android:icon="@drawable/ic_ratio_wizard_black"
-        android:title="Ratio wizard" />
 
     <item
         android:id="@+id/navigation_notifications"
