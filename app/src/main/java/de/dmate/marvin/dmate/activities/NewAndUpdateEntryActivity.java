@@ -7,11 +7,14 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -117,6 +120,9 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
         ETbolus = (EditText) findViewById(R.id.editText_bolus);
         ETbasal = (EditText) findViewById(R.id.editText_basal);
         ETnote = (EditText) findViewById(R.id.editText_note);
+
+        com.sothree.slidinguppanel.SlidingUpPanelLayout supl = (com.sothree.slidinguppanel.SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+
 
         calendar = Calendar.getInstance();
 
