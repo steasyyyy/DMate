@@ -18,8 +18,8 @@ import de.dmate.marvin.dmate.fragments.BottomNavigationFragments.NotificationsFr
 import de.dmate.marvin.dmate.fragments.BottomNavigationFragments.RatioWizardFragment;
 import de.dmate.marvin.dmate.fragments.BottomNavigationFragments.SettingsFragment;
 import de.dmate.marvin.dmate.roomDatabase.EntryViewModel;
-import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.DMateApplication;
+import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.Helper;
 
 public class MainActivity extends AppCompatActivity implements
