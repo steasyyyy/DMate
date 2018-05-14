@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -39,6 +41,10 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
     private EditText ETbolus;
     private EditText ETbasal;
     private EditText ETnote;
+
+    private SlidingUpPanelLayout supl;
+    private TextView slideUpTextView;
+    private ImageView slideUpImageView;
 
     private Calendar calendar;
 
@@ -121,7 +127,28 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
         ETbasal = (EditText) findViewById(R.id.editText_basal);
         ETnote = (EditText) findViewById(R.id.editText_note);
 
-        com.sothree.slidinguppanel.SlidingUpPanelLayout supl = (com.sothree.slidinguppanel.SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        supl = findViewById(R.id.sliding_layout);
+        slideUpTextView = (TextView) supl.findViewById(R.id.slide_up_textview);
+        slideUpImageView = (ImageView) supl.findViewById(R.id.slide_up_imageView);
+
+        supl.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                if (supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+                    slideUpTextView.setText("Slide down to hide ratio wizard");
+                    slideUpImageView.setImageResource(R.drawable.ic_action_down);
+                }
+                if (supl.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    slideUpTextView.setText("Slide up to show ratio wizard");
+                    slideUpImageView.setImageResource(R.drawable.ic_action_up);
+                }
+            }
+        });
 
 
         calendar = Calendar.getInstance();

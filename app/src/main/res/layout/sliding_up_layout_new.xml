@@ -7,7 +7,7 @@
     android:layout_marginTop="168dp">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/slide_up_imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -19,8 +19,10 @@
         android:id="@+id/slide_up_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
+        android:layout_below="@+id/slide_up_imageView"
         android:layout_centerHorizontal="true"
         android:text="Slide up to show ratio wizard" />
+
+
 
 </RelativeLayout>
