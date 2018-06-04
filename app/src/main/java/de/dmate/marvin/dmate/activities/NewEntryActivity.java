@@ -174,7 +174,6 @@ public class NewEntryActivity extends AppCompatActivity
         if (requestCode == 2) {
             //get entry object to update
             int position = getIntent().getIntExtra("POSITION", Integer.MAX_VALUE);
-            //TODO
             currentEntry = entriesRecyclerViewAdapter.getItemByPosition(position);
 
             dateMillis = currentEntry.getTimestamp().getTime();

@@ -15,8 +15,15 @@ import android.view.View;
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.fragments.BottomNavigationFragments.HomeFragment;
 import de.dmate.marvin.dmate.fragments.BottomNavigationFragments.NotificationsFragment;
-import de.dmate.marvin.dmate.fragments.BottomNavigationFragments.RatioWizardFragment;
 import de.dmate.marvin.dmate.fragments.BottomNavigationFragments.SettingsFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BasalInsulineDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BolusInsulineDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.DaytimesDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.ExportDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.NotificationsDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.SportiveActivitiesDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.TargetAreaDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.UnitsDialogFragment;
 import de.dmate.marvin.dmate.roomDatabase.EntryViewModel;
 import de.dmate.marvin.dmate.util.DMateApplication;
 import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
@@ -25,8 +32,15 @@ import de.dmate.marvin.dmate.util.Helper;
 public class MainActivity extends AppCompatActivity implements
         HomeFragment.OnHomeFragmentInteractionListener,
         NotificationsFragment.OnNotificationFragmentInteractionListener,
-        RatioWizardFragment.OnRatioWizardFragmentInteractionListener,
-        SettingsFragment.OnSettingsFragmentInteractionListener  {
+        SettingsFragment.OnSettingsFragmentInteractionListener,
+        BasalInsulineDialogFragment.OnBasalInsulineDialogFragmentInteractionListener,
+        BolusInsulineDialogFragment.OnBolusInsulineDialogFragmentInteractionListener,
+        DaytimesDialogFragment.OnDaytimesDialogFragmentInteractionListener,
+        ExportDialogFragment.OnExportDialogFragmentInteractionListener,
+        NotificationsDialogFragment.OnNotificationsDialogFragmentInteractionListener,
+        SportiveActivitiesDialogFragment.OnSportiveActivitiesDialogFragmentListener,
+        TargetAreaDialogFragment.OnTargetAreaDialogFragmentInteractionListener,
+        UnitsDialogFragment.OnUnitsDialogFragmentInteractionListener {
 
     //used to determine state of NewEntryActivity (Add new entry OR edit existing entry)
     public static final int NEW_ENTRY_REQUEST = 1;

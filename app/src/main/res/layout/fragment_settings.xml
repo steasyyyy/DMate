@@ -68,20 +68,20 @@
         android:id="@+id/button_bolus_insuline"
         android:layout_width="366dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button_BolusInsuline"
+        android:layout_below="@+id/button_daytimes"
         android:layout_centerHorizontal="true"
         android:text="Bolus insuline"
         android:textAlignment="viewStart"
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/button_BolusInsuline"
+        android:id="@+id/button_daytimes"
         android:layout_width="366dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
-        android:text="BolusInsuline"
+        android:text="Daytimes"
         android:textAlignment="viewStart"
         android:textAllCaps="false" />
 </RelativeLayout>

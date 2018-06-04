@@ -1,23 +1,27 @@
 package de.dmate.marvin.dmate.fragments.SettingsDialogFragments;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import de.dmate.marvin.dmate.R;
 
-public class UnitsDialogFragment extends Fragment {
+public class UnitsDialogFragment extends DialogFragment {
 
-    private OnFragmentInteractionListener mListener;
+    private OnUnitsDialogFragmentInteractionListener mListener;
 
     public UnitsDialogFragment() {
         // Required empty public constructor
     }
 
-    public static UnitsDialogFragment newInstance(String param1, String param2) {
+    public static UnitsDialogFragment newInstance() {
         UnitsDialogFragment fragment = new UnitsDialogFragment();
         return fragment;
     }
@@ -25,6 +29,15 @@ public class UnitsDialogFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(R.layout.fragment_dialog_units);
+        AlertDialog dialog = builder.create();
+        return dialog;
     }
 
     @Override
@@ -37,11 +50,11 @@ public class UnitsDialogFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnUnitsDialogFragmentInteractionListener) {
+            mListener = (OnUnitsDialogFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnBasalInsulineDialogFragmentInteractionListener");
         }
     }
 
@@ -51,7 +64,7 @@ public class UnitsDialogFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
+    public interface OnUnitsDialogFragmentInteractionListener {
 
     }
 }
