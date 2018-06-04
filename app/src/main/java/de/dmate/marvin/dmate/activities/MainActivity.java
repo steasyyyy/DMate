@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements
         RatioWizardFragment.OnRatioWizardFragmentInteractionListener,
         SettingsFragment.OnSettingsFragmentInteractionListener  {
 
-    //used to determine state of NewAndUpdateEntryActivity (Add new entry OR edit existing entry)
+    //used to determine state of NewEntryActivity (Add new entry OR edit existing entry)
     public static final int NEW_ENTRY_REQUEST = 1;
     public static final int EDIT_ENTRY_REQUEST = 2;
 
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_new);
+        setContentView(R.layout.activity_main);
 
         //set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements
     //from HomeFragment
     @Override
     public void fabNewEntry(View v) {
-        Intent intent = new Intent(MainActivity.this, NewAndUpdateEntryActivity.class);
+        Intent intent = new Intent(MainActivity.this, NewEntryActivity.class);
         intent.putExtra("REQUEST_CODE", NEW_ENTRY_REQUEST);
         startActivity(intent);
     }
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements
     //from HomeFragment
     @Override
     public void onItemClickCustom(View v, int position) {
-        Intent intent = new Intent(MainActivity.this, NewAndUpdateEntryActivity.class);
+        Intent intent = new Intent(MainActivity.this, NewEntryActivity.class);
         intent.putExtra("REQUEST_CODE", EDIT_ENTRY_REQUEST);
         intent.putExtra("POSITION", position);
 

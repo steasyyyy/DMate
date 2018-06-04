@@ -45,7 +45,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_date_picker, container, false);
+        return inflater.inflate(R.layout.fragment_picker_date, container, false);
     }
 
     @Override

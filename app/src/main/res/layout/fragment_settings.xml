@@ -1,9 +1,87 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="de.dmate.marvin.dmate.fragments.BottomNavigationFragments.SettingsFragment">
 
+    <Button
+        android:id="@+id/button_export"
+        android:layout_width="366dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_notifications"
+        android:layout_centerHorizontal="true"
+        android:text="Export"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/button_notifications"
+        android:layout_width="366dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_sportive_activities"
+        android:layout_centerHorizontal="true"
+        android:text="Notifications"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/button_sportive_activities"
+        android:layout_width="366dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_blood_sugar_target_area"
+        android:layout_centerHorizontal="true"
+        android:text="Sportive activities"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/button_blood_sugar_target_area"
+        android:layout_width="366dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_units"
+        android:layout_centerHorizontal="true"
+        android:text="Blood sugar target area"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/button_units"
+        android:layout_width="366dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_basal_insuline"
+        android:layout_centerHorizontal="true"
+        android:text="Units"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/button_basal_insuline"
+        android:layout_width="366dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_bolus_insuline"
+        android:layout_centerHorizontal="true"
+        android:text="Basal insuline"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/button_bolus_insuline"
+        android:layout_width="366dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_BolusInsuline"
+        android:layout_centerHorizontal="true"
+        android:text="Bolus insuline"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/button_BolusInsuline"
+        android:layout_width="366dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="BolusInsuline"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false" />
+</RelativeLayout>

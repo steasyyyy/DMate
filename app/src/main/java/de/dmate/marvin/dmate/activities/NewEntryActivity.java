@@ -7,7 +7,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +28,7 @@ import de.dmate.marvin.dmate.roomDatabase.EntryViewModel;
 import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.Helper;
 
-public class NewAndUpdateEntryActivity extends AppCompatActivity
+public class NewEntryActivity extends AppCompatActivity
         implements TimePickerFragment.OnTimePickerFragmentInteractionListener, DatePickerFragment.OnDatePickerFragmentInteractionListener {
 
     private int requestCode;
@@ -75,7 +74,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //set up OnClickListener for FAB
-        //when clicked, open NewAndUpdateEntryActivity and set requestCode to NEW_ENTRY_REQUEST
+        //when clicked, open NewEntryActivity and set requestCode to NEW_ENTRY_REQUEST
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_fragment_save);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +111,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
                     viewModel.updateEntry(currentEntry);
                 }
 
-                Intent intent = new Intent(NewAndUpdateEntryActivity.this, MainActivity.class);
+                Intent intent = new Intent(NewEntryActivity.this, MainActivity.class);
                 startActivity(intent);
                 finishAndRemoveTaskCustom();
             }
@@ -127,10 +126,11 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
         ETbasal = (EditText) findViewById(R.id.editText_basal);
         ETnote = (EditText) findViewById(R.id.editText_note);
 
+
+        //initialize SlidingUpPanelLayout (Slide up to show ratio wizard in NewEntryActivity)
         supl = findViewById(R.id.sliding_layout);
         slideUpTextView = (TextView) supl.findViewById(R.id.slide_up_textview);
         slideUpImageView = (ImageView) supl.findViewById(R.id.slide_up_imageView);
-
         supl.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
@@ -139,6 +139,7 @@ public class NewAndUpdateEntryActivity extends AppCompatActivity
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                //when panel state changes, adjust labels from slide "up" to slide "down" and vice versa
                 if (supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
                     slideUpTextView.setText("Slide down to hide ratio wizard");
                     slideUpImageView.setImageResource(R.drawable.ic_action_down);

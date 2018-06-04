@@ -41,7 +41,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_time_picker, container, false);
+        return inflater.inflate(R.layout.fragment_picker_time, container, false);
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {

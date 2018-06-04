@@ -20,7 +20,7 @@
         </intent-filter>
     </activity>
     <activity
-            android:name=".activities.NewAndUpdateEntryActivity"
+            android:name=".activities.NewEntryActivity"
             android:label="Entry"
             android:theme="@style/AppTheme"
         android:parentActivityName=".activities.MainActivity"
