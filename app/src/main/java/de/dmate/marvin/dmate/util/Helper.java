@@ -7,9 +7,6 @@ import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 
 public class Helper {
 
-    //HELPER CLASS to access Application Object from everywhere
-    //EXAMPLE: Helper.getInstance().getApplication().getNextID();
-
     private static final Helper instance = new Helper();
     private DMateApplication app;
     private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
