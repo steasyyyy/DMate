@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import de.dmate.marvin.dmate.R;
-import de.dmate.marvin.dmate.roomDatabase.Entry;
+import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 
 //This EntriesRecyclerViewAdapter is my own implementation of RecyclerView.Adapter
 //It manages the RecyclerView in MainActivity and feeds data to it.

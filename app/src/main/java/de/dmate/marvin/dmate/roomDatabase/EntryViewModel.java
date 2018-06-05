@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
+import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
+
 //ACCESS AND MANIPULATE DATA IN THE DATABASE FROM HERE
 //create a new asynctask for every access type and call methods from EntryDao within it
 public class EntryViewModel extends AndroidViewModel {
@@ -21,7 +23,7 @@ public class EntryViewModel extends AndroidViewModel {
 
         appDatabase = AppDatabase.getDatabase(this.getApplication());
 
-        entries = appDatabase.entryRoomDao().getAllEntries();
+        entries = appDatabase.entryDao().getAllEntries();
     }
 
     public LiveData<List<Entry>> getEntries() {
@@ -59,7 +61,7 @@ public class EntryViewModel extends AndroidViewModel {
 
         @Override
         protected Void doInBackground(Entry... params) {
-            db.entryRoomDao().insertEntryRoom(params[0]);
+            db.entryDao().insertEntry(params[0]);
             return null;
         }
     }
@@ -74,7 +76,7 @@ public class EntryViewModel extends AndroidViewModel {
 
         @Override
         protected Void doInBackground(final Entry... params) {
-            db.entryRoomDao().deleteEntryRoom(params[0]);
+            db.entryDao().deleteEntryRoom(params[0]);
             return null;
         }
     }
@@ -89,7 +91,7 @@ public class EntryViewModel extends AndroidViewModel {
 
         @Override
         protected Entry doInBackground(Integer... params) {
-            return db.entryRoomDao().getItemById((params[0]));
+            return db.entryDao().getItemById((params[0]));
         }
     }
 
@@ -103,7 +105,7 @@ public class EntryViewModel extends AndroidViewModel {
 
         @Override
         protected Void doInBackground(Entry... params) {
-            db.entryRoomDao().updateEntryRoom(params[0]);
+            db.entryDao().updateEntryRoom(params[0]);
             return null;
         }
     }

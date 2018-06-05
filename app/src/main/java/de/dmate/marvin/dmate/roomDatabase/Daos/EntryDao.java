@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate.roomDatabase;
+package de.dmate.marvin.dmate.roomDatabase.Daos;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -9,6 +9,9 @@ import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.Update;
 
 import java.util.List;
+
+import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
+import de.dmate.marvin.dmate.roomDatabase.RoomConverter;
 
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
@@ -32,7 +35,7 @@ public interface EntryDao {
 
     //insert entry
     @Insert(onConflict = REPLACE)
-    void insertEntryRoom(Entry entry);
+    void insertEntry(Entry entry);
 
     //insert multiple entries
     @Insert(onConflict = REPLACE)

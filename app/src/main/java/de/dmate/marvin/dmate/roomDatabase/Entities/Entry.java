@@ -1,15 +1,28 @@
-package de.dmate.marvin.dmate.roomDatabase;
+package de.dmate.marvin.dmate.roomDatabase.Entities;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
 import java.sql.Timestamp;
 
+import de.dmate.marvin.dmate.roomDatabase.RoomConverter;
+
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
 //declaring @Entity here specifies, that Room should create a table
 //the colums of that table represent the attributes of this class
 //CAREFUL: Objects are not supported natively! You need to create TypeConverters, to convert an object to a value as done in RoomConverter
-@Entity(tableName = "entries")
+@Entity(tableName = "entries",
+        foreignKeys = @ForeignKey(
+                entity = User.class,
+                parentColumns = "uId",
+                childColumns = "uIdF",
+                onDelete = CASCADE,
+                onUpdate = CASCADE),
+        indices = {@Index("uIdF")})
 public class Entry {
 
     public Entry() {
@@ -17,7 +30,9 @@ public class Entry {
     }
 
     @PrimaryKey(autoGenerate = true)
-    public int eId;
+    public Integer eId;
+
+    public Integer uIdF;
 
     @TypeConverters(RoomConverter.class)
     private Timestamp timestamp = null;
@@ -31,6 +46,10 @@ public class Entry {
 
     public int geteId() {
         return eId;
+    }
+
+    public Integer getuIdF() {
+        return uIdF;
     }
 
     public Timestamp getTimestamp() {
@@ -63,6 +82,10 @@ public class Entry {
 
     public void seteId(int eId) {
         this.eId = eId;
+    }
+
+    public void setuIdF(Integer uIdF) {
+        this.uIdF = uIdF;
     }
 
     public void setTimestamp (Timestamp timestamp) {

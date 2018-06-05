@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.dmate.marvin.dmate.R;
-import de.dmate.marvin.dmate.roomDatabase.Entry;
+import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.EntryViewModel;
 import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.Helper;
