@@ -16,7 +16,6 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
                 onDelete = CASCADE,
                 onUpdate = CASCADE),
         indices = {@Index("uIdF")})
-
 public class PlannedBasalInjection {
 
     public PlannedBasalInjection() {

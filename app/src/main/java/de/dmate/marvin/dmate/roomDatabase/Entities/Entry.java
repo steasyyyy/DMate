@@ -5,7 +5,6 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.Relation;
 import android.arch.persistence.room.TypeConverters;
 
 import java.sql.Timestamp;
@@ -47,7 +46,19 @@ public class Entry {
     private String note = null;
     private Boolean verified = false;
 
-    //exercices missing
+    @Ignore
+    private List<Exercise> exercises;
+
+    private Float reqBolusSimple = null;
+    private Float reqBolusConsulting = null;
+    private Float buFactorReal = null;
+    private Float buFactorConsulting = null;
+
+    private String minAcceptanceTime = null;
+    private String maxAcceptanceTime = null;
+    private Integer divergenceFromTarget = null;
+
+
 
     public int geteId() {
         return eId;
@@ -83,6 +94,34 @@ public class Entry {
 
     public Boolean getVerified() {
         return verified;
+    }
+
+    public Float getReqBolusSimple() {
+        return reqBolusSimple;
+    }
+
+    public Float getReqBolusConsulting() {
+        return reqBolusConsulting;
+    }
+
+    public Float getBuFactorReal() {
+        return buFactorReal;
+    }
+
+    public Float getBuFactorConsulting() {
+        return buFactorConsulting;
+    }
+
+    public String getMinAcceptanceTime() {
+        return minAcceptanceTime;
+    }
+
+    public String getMaxAcceptanceTime() {
+        return maxAcceptanceTime;
+    }
+
+    public Integer getDivergenceFromTarget() {
+        return divergenceFromTarget;
     }
 
     public void seteId(int eId) {
@@ -121,4 +160,35 @@ public class Entry {
         this.verified = verified;
     }
 
+    public void seteId(Integer eId) {
+        this.eId = eId;
+    }
+
+    public void setReqBolusSimple(Float reqBolusSimple) {
+        this.reqBolusSimple = reqBolusSimple;
+    }
+
+    public void setReqBolusConsulting(Float reqBolusConsulting) {
+        this.reqBolusConsulting = reqBolusConsulting;
+    }
+
+    public void setBuFactorReal(Float buFactorReal) {
+        this.buFactorReal = buFactorReal;
+    }
+
+    public void setBuFactorConsulting(Float buFactorConsulting) {
+        this.buFactorConsulting = buFactorConsulting;
+    }
+
+    public void setMinAcceptanceTime(String minAcceptanceTime) {
+        this.minAcceptanceTime = minAcceptanceTime;
+    }
+
+    public void setMaxAcceptanceTime(String maxAcceptanceTime) {
+        this.maxAcceptanceTime = maxAcceptanceTime;
+    }
+
+    public void setDivergenceFromTarget(Integer divergenceFromTarget) {
+        this.divergenceFromTarget = divergenceFromTarget;
+    }
 }

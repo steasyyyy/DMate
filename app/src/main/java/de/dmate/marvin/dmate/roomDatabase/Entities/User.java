@@ -1,14 +1,10 @@
 package de.dmate.marvin.dmate.roomDatabase.Entities;
 
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.Relation;
 
 import java.util.List;
-
-import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "users")
 public class User {
@@ -20,22 +16,36 @@ public class User {
     @PrimaryKey(autoGenerate = true)
     public Integer uId;
 
-    public String name;
-    public String bolusName;
-    public Float bolusDuration;
-    public String basalName;
-    public Float basalDuration;
+    private String name;
+    private String bolusName;
+    private Float bolusDuration;
+    private String basalName;
+    private Float basalDuration;
 
-    //planned basal injections missing
+    private Integer targetMin;
+    private Integer targetMax;
+    private Boolean unitBu;
+    private Boolean unitMgdl;
+    private Boolean notificationsEnabled;
 
-    public Integer targetMin;
-    public Integer targetMax;
-    public Boolean unitBu;
-    public Boolean unitMgdl;
-    public Boolean notificationsEnabled;
+    private Float buFactorConsultingArithMean;
 
-    //daytimes missing
-    //sports missing
+    private Float divergenceFromInitialValueArithMean;
+
+    private Float bloodsugarArithMean;
+
+    @Ignore
+    private List<PlannedBasalInjection> plannedBasalInjections;
+    @Ignore
+    private List<Daytime> daytimes;
+    @Ignore
+    private List<Sport> sports;
+    @Ignore
+    private List<Analysis> analyses;
+
+
+
+
 
     public Integer getuId() {
         return uId;
@@ -81,6 +91,18 @@ public class User {
         return notificationsEnabled;
     }
 
+    public Float getBuFactorConsultingArithMean() {
+        return buFactorConsultingArithMean;
+    }
+
+    public Float getDivergenceFromInitialValueArithMean() {
+        return divergenceFromInitialValueArithMean;
+    }
+
+    public Float getBloodsugarArithMean() {
+        return bloodsugarArithMean;
+    }
+
     public void setuId(Integer uId) {
         this.uId = uId;
     }
@@ -123,5 +145,17 @@ public class User {
 
     public void setNotificationsEnabled(Boolean notificationsEnabled) {
         this.notificationsEnabled = notificationsEnabled;
+    }
+
+    public void setBuFactorConsultingArithMean(Float buFactorConsultingArithMean) {
+        this.buFactorConsultingArithMean = buFactorConsultingArithMean;
+    }
+
+    public void setDivergenceFromInitialValueArithMean(Float divergenceFromInitialValueArithMean) {
+        this.divergenceFromInitialValueArithMean = divergenceFromInitialValueArithMean;
+    }
+
+    public void setBloodsugarArithMean(Float bloodsugarArithMean) {
+        this.bloodsugarArithMean = bloodsugarArithMean;
     }
 }

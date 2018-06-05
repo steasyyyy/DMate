@@ -16,7 +16,6 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
                 onDelete = CASCADE,
                 onUpdate = CASCADE),
         indices = {@Index("uIdF")})
-
 public class Daytime {
 
     public Daytime() {
@@ -26,7 +25,7 @@ public class Daytime {
     @PrimaryKey(autoGenerate = true)
     public Integer dId;
 
-    public int uIdF;
+    public Integer uIdF;
 
     private String daytimeStart;
     private String daytimeEnd;
