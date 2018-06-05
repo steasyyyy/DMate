@@ -25,7 +25,7 @@ public interface EntryDao {
     //when method gets called via EntryViewModel, the defined query is executed
     //Room understands insert, delete and update by itself (no need to define a query)
 
-    //get a complete list of all entries ordered by dateTime
+    //get a complete list of all entries by user ordered by dateTime
     @Query("SELECT * FROM entries ORDER BY timestamp DESC")
     LiveData<List<Entry>> getAllEntries();
 
@@ -41,11 +41,11 @@ public interface EntryDao {
     @Insert(onConflict = REPLACE)
     void insertEntries(List<Entry> entries);
 
-    //delete entry by ID
+    //delete entry
     @Delete
     void deleteEntryRoom(Entry entry);
 
-    //update entry by ID
+    //update entry
     @Update
     void updateEntryRoom(Entry entry);
 
