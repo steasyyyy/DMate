@@ -5,6 +5,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.Update;
 
@@ -17,12 +18,12 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 //DAO = data access object
 //defines methods for data access and manipulation in the db
-//NEVER CALL METHODS DIRECTLY FROM THE UI THREAD! ALWAYS USE METHODS IN ENTRYLISTVIEWMODEL!
+//NEVER CALL METHODS DIRECTLY FROM THE UI THREAD! ALWAYS USE METHODS IN DATAVIEWMODEL!
 @Dao
 @TypeConverters(RoomConverter.class)
 public interface EntryDao {
 
-    //when method gets called via EntryViewModel, the defined query is executed
+    //when method gets called via DataViewModel, the defined query is executed
     //Room understands insert, delete and update by itself (no need to define a query)
 
     //get a complete list of all entries by user ordered by dateTime

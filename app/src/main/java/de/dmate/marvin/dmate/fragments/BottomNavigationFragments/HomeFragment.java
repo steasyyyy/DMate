@@ -20,14 +20,14 @@ import java.util.List;
 
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
-import de.dmate.marvin.dmate.roomDatabase.EntryViewModel;
+import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.Helper;
 
 public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter.OnItemClickedListener, EntriesRecyclerViewAdapter.OnContextMenuCreatedListener {
 
     //ViewModel for entries in Database
-    private EntryViewModel viewModel;
+    private DataViewModel viewModel;
 
     //Custom EntriesRecyclerViewAdapter to feed the RecyclerView with data (List of entries)
     private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
@@ -77,8 +77,8 @@ public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter
 
         recyclerView.setAdapter(entriesRecyclerViewAdapter);
 
-        viewModel = ViewModelProviders.of(this).get(EntryViewModel.class);
-        Helper.getInstance().setEntryViewModel(viewModel);
+        viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
+        Helper.getInstance().setDataViewModel(viewModel);
 
         //start observing LiveData in ViewModel and define what should happen when "LiveData<List<Entry>> entries;" in ViewModel changes
         //because it is LiveData the collection in ViewModel is always up to date (automatically gets updated when changes to database are made)

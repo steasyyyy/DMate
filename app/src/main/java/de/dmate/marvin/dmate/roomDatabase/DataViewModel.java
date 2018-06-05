@@ -12,13 +12,13 @@ import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 
 //ACCESS AND MANIPULATE DATA IN THE DATABASE FROM HERE
 //create a new asynctask for every access type and call methods from EntryDao within it
-public class EntryViewModel extends AndroidViewModel {
+public class DataViewModel extends AndroidViewModel {
 
     private final LiveData<List<Entry>> entries;
 
     private AppDatabase appDatabase;
 
-    public EntryViewModel(@NonNull Application application) {
+    public DataViewModel(@NonNull Application application) {
         super(application);
 
         appDatabase = AppDatabase.getDatabase(this.getApplication());
@@ -40,8 +40,6 @@ public class EntryViewModel extends AndroidViewModel {
         new deleteEntryAsyncTask(appDatabase).execute(entry);
     }
 
-    //TODO VOID????
-    //CALL THIS METHOD TO GET AN ENTRY BY ID
     public void getEntryById(int id) {
         new getEntryByIdAsyncTask(appDatabase).execute(id);
     }

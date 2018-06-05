@@ -2,8 +2,12 @@ package de.dmate.marvin.dmate.roomDatabase.Entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.Relation;
+
+import java.util.List;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -35,7 +39,6 @@ public class Exercise {
     public Integer sIdF;
 
     private Float exerciseUnits;
-
 
     public Integer getExId() {
         return exId;

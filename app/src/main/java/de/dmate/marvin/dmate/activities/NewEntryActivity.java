@@ -24,7 +24,7 @@ import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.fragments.PickerFragments.DatePickerFragment;
 import de.dmate.marvin.dmate.fragments.PickerFragments.TimePickerFragment;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
-import de.dmate.marvin.dmate.roomDatabase.EntryViewModel;
+import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.Helper;
 
@@ -79,7 +79,7 @@ public class NewEntryActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EntryViewModel viewModel = Helper.getInstance().getEntryViewModel();
+                DataViewModel viewModel = Helper.getInstance().getDataViewModel();
                 if (requestCode == 1) {
                     newEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
 

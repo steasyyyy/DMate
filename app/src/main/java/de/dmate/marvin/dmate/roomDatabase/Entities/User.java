@@ -2,7 +2,11 @@ package de.dmate.marvin.dmate.roomDatabase.Entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.Relation;
+
+import java.util.List;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -16,23 +20,22 @@ public class User {
     @PrimaryKey(autoGenerate = true)
     public Integer uId;
 
-    private String name;
-    private String bolusName;
-    private Float bolusDuration;
-    private String basalName;
-    private Float basalDuration;
+    public String name;
+    public String bolusName;
+    public Float bolusDuration;
+    public String basalName;
+    public Float basalDuration;
 
-//    private PlannedBasalInjection plannedBasalInjection;
+    //planned basal injections missing
 
-    private Integer targetMin;
-    private Integer targetMax;
-    private Boolean unitBu;
-    private Boolean unitMgdl;
-    private Boolean notificationsEnabled;
+    public Integer targetMin;
+    public Integer targetMax;
+    public Boolean unitBu;
+    public Boolean unitMgdl;
+    public Boolean notificationsEnabled;
 
-//    private Daytime daytime;
-//    private Sport sport;
-
+    //daytimes missing
+    //sports missing
 
     public Integer getuId() {
         return uId;

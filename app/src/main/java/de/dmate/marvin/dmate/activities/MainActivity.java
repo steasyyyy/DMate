@@ -24,7 +24,7 @@ import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.NotificationsDial
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.SportiveActivitiesDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.TargetAreaDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.UnitsDialogFragment;
-import de.dmate.marvin.dmate.roomDatabase.EntryViewModel;
+import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.util.DMateApplication;
 import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.Helper;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements
     public static final int EDIT_ENTRY_REQUEST = 2;
 
     //ViewModel for entries in Database
-    private EntryViewModel viewModel;
+    private DataViewModel viewModel;
 
     //Custom EntriesRecyclerViewAdapter to feed the RecyclerView with data (List of entries)
     private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
