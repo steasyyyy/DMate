@@ -5,7 +5,14 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import de.dmate.marvin.dmate.roomDatabase.Daos.DaytimeDao;
 import de.dmate.marvin.dmate.roomDatabase.Daos.EntryDao;
+import de.dmate.marvin.dmate.roomDatabase.Daos.ExerciseDao;
+import de.dmate.marvin.dmate.roomDatabase.Daos.NotificationDao;
+import de.dmate.marvin.dmate.roomDatabase.Daos.ObservationDao;
+import de.dmate.marvin.dmate.roomDatabase.Daos.PlannedBasalInjectionDao;
+import de.dmate.marvin.dmate.roomDatabase.Daos.SportDao;
+import de.dmate.marvin.dmate.roomDatabase.Daos.UserDao;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Exercise;
@@ -41,6 +48,13 @@ public abstract class AppDatabase extends RoomDatabase{
         return INSTANCE;
     }
 
+    public abstract DaytimeDao daytimeDao();
     public abstract EntryDao entryDao();
+    public abstract ExerciseDao exerciseDao();
+    public abstract NotificationDao notificationDao();
+    public abstract ObservationDao observationDao();
+    public abstract PlannedBasalInjectionDao plannedBasalInjectionDao();
+    public abstract SportDao sportDao();
+    public abstract UserDao userDao();
 
 }

@@ -16,9 +16,13 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface ExerciseDao {
 
-    //get all exercises by entryId
-    @Query("SELECT * FROM exercises WHERE eIdF = :entryId")
-    LiveData<List<Daytime>> getAllExercisesByEntryId(Integer entryId);
+//    //get all exercises by entryId
+//    @Query("SELECT * FROM exercises WHERE eIdF = :entryId")
+//    LiveData<List<Daytime>> getAllExercisesByEntryId(Integer entryId);
+
+    //get all exercises
+    @Query("SELECT * FROM exercises")
+    LiveData<List<Exercise>> getAllExercises();
 
     //get exercise by id
     @Query("SELECT * FROM exercises WHERE exId = :exId")

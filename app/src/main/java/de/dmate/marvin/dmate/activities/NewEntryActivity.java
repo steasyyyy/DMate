@@ -108,7 +108,7 @@ public class NewEntryActivity extends AppCompatActivity
                     if (!ETbolus.getText().toString().equals("")) currentEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
                     if (!ETbasal.getText().toString().equals("")) currentEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
                     if (!ETnote.getText().toString().equals("")) currentEntry.setNote(ETnote.getText().toString());
-                    viewModel.updateEntry(currentEntry);
+                    viewModel.addEntry(currentEntry);
                 }
 
                 Intent intent = new Intent(NewEntryActivity.this, MainActivity.class);
