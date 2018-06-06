@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import de.dmate.marvin.dmate.R;
@@ -16,6 +18,7 @@ import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BasalInsulineDial
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BolusInsulineDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.DaytimesDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.ExportDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.NameDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.NotificationsDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.SportiveActivitiesDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.TargetAreaDialogFragment;
@@ -25,6 +28,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
 
     private OnSettingsFragmentInteractionListener mListener;
 
+    private Button nameButton;
     private Button daytimesButton;
     private Button bolusInsulineButton;
     private Button basalInsulineButton;
@@ -54,6 +58,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         super.onViewCreated(view, savedInstanceState);
 
         //get buttons used in SettingsFragment and set ClickListener to "this"
+        nameButton = getView().findViewById(R.id.button_name);
+        nameButton.setOnClickListener(this);
         daytimesButton = getView().findViewById(R.id.button_daytimes);
         daytimesButton.setOnClickListener(this);
         bolusInsulineButton = getView().findViewById(R.id.button_bolus_insuline);
@@ -76,6 +82,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
+            case R.id.button_name:
+                new NameDialogFragment().show(getFragmentManager(), "nameDialog");
+                break;
             case R.id.button_daytimes:
                 new DaytimesDialogFragment().show(getFragmentManager(), "daytimesDialog");
                 break;
@@ -83,7 +92,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
                 new BolusInsulineDialogFragment().show(getFragmentManager(), "bolusInsulineDialog");
                 break;
             case R.id.button_basal_insuline:
-                new BasalInsulineDialogFragment().show(getFragmentManager(),"basalInsulineDialog");
+                BasalInsulineDialogFragment fragment = new BasalInsulineDialogFragment();
+                fragment.show(getFragmentManager(),"basalInsulineDialog");
                 break;
             case R.id.button_units:
                 new UnitsDialogFragment().show(getFragmentManager(), "unitsDialog");
@@ -102,7 +112,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
                 break;
             default:
                 System.out.println("Error! Could not find ID of this button.");
-
         }
     }
 

@@ -20,6 +20,7 @@ import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BasalInsulineDial
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BolusInsulineDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.DaytimesDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.ExportDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.NameDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.NotificationsDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.SportiveActivitiesDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.TargetAreaDialogFragment;
@@ -40,7 +41,8 @@ public class MainActivity extends AppCompatActivity implements
         NotificationsDialogFragment.OnNotificationsDialogFragmentInteractionListener,
         SportiveActivitiesDialogFragment.OnSportiveActivitiesDialogFragmentListener,
         TargetAreaDialogFragment.OnTargetAreaDialogFragmentInteractionListener,
-        UnitsDialogFragment.OnUnitsDialogFragmentInteractionListener {
+        UnitsDialogFragment.OnUnitsDialogFragmentInteractionListener,
+        NameDialogFragment.OnNameDialogFragmentInteractionListener {
 
     //used to determine state of NewEntryActivity (Add new entry OR edit existing entry)
     public static final int NEW_ENTRY_REQUEST = 1;
@@ -110,33 +112,6 @@ public class MainActivity extends AppCompatActivity implements
         transaction.commit();
     }
 
-//    @Override
-//    //set menu (containing the actions) for the app bar
-//    //set functionality to buttons in method: onOptionsItemSelected(MenuItem item)
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.app_bar_actions, menu);
-//        menu.findItem(R.id.action_save).setVisible(false);
-//        menu.findItem(R.id.action_delete_forever).setVisible(false);
-//        menu.findItem(R.id.action_refresh).setVisible(false);
-//        menu.findItem(R.id.action_settings).setVisible(false);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-
-//    //set functionality to buttons selected in the app bar menu
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch(item.getItemId()) {
-//            //TODO
-//            //this is bs for now, if needed -> refactor
-//            case R.id.action_refresh :
-////                this.onResume();
-//            case R.id.action_delete_forever:
-////                ((DMateApplication)getApplication()).resetAllPrefs();
-////                this.recreate();
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
     //from HomeFragment
     @Override
     public void fabNewEntry(View v) {
@@ -151,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements
         Intent intent = new Intent(MainActivity.this, NewEntryActivity.class);
         intent.putExtra("REQUEST_CODE", EDIT_ENTRY_REQUEST);
         intent.putExtra("POSITION", position);
-
         startActivity(intent);
     }
 }

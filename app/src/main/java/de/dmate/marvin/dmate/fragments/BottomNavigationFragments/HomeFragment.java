@@ -101,7 +101,7 @@ public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter
             mListener = (OnHomeFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnRatioWizardFragmentInteractionListener");
+                    + " must implement HomeFragmentInteractionListener");
         }
     }
 

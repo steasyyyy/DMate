@@ -18,7 +18,7 @@ import de.dmate.marvin.dmate.roomDatabase.Entities.Sport;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
 
 //ACCESS AND MANIPULATE DATA IN THE DATABASE FROM HERE
-//create a new asynctask for every access type and call methods from EntryDao within it
+//functions are available for inserting into db, deleting from db and getting a complete list of entries to certain tables as LiveData<List<T>>
 public class DataViewModel extends AndroidViewModel {
 
     private final LiveData<List<Daytime>> daytimes;

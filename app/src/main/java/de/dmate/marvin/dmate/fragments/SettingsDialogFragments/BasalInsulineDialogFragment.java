@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import de.dmate.marvin.dmate.R;
 
@@ -33,9 +36,21 @@ public class BasalInsulineDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        //get alert dialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(R.layout.fragment_dialog_basal_insuline);
-        AlertDialog dialog = builder.create();
+
+        //set new View to the builder and create the Dialog
+        Dialog dialog = builder.setView(new View(getActivity())).create();
+
+        //get WindowManager.LayoutParams, copy attributes from Dialog to LayoutParams and override them with MATCH_PARENT
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        layoutParams.copyFrom(dialog.getWindow().getAttributes());
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+        //show the Dialog before setting new LayoutParams to the Dialog
+        dialog.show();
+        dialog.getWindow().setAttributes(layoutParams);
+
         return dialog;
     }
 
