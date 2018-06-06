@@ -16,10 +16,11 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface NotificationDao {
 
-    //get all notifications by userId
-    @Query("SELECT * FROM notifications WHERE uIdF = :userId ORDER BY timestamp DESC")
-    LiveData<List<Notification>> getAllNotificationsByUserId(Integer userId);
+    //get all notifications
+    @Query("SELECT * FROM notifications ORDER BY timestamp DESC")
+    LiveData<List<Notification>> getAllNotifications();
 
+    //get notification by Id
     @Query("SELECT * FROM notifications WHERE nId = :notificationId")
     Notification getNotificationById(Integer notificationId);
 

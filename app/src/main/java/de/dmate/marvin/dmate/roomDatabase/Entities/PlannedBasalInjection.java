@@ -8,14 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "plannedBasalInjections",
-        foreignKeys = @ForeignKey(
-                entity = User.class,
-                parentColumns = "uId",
-                childColumns = "uIdF",
-                onDelete = CASCADE,
-                onUpdate = CASCADE),
-        indices = {@Index("uIdF")})
+@Entity(tableName = "plannedBasalInjections")
 public class PlannedBasalInjection {
 
     public PlannedBasalInjection() {
@@ -25,18 +18,12 @@ public class PlannedBasalInjection {
     @PrimaryKey(autoGenerate = true)
     public Integer pbiId;
 
-    public Integer uIdF;
-
     private String timeOfDay;
     private Float basal;
 
-
+    //getter
     public Integer getPbiId() {
         return pbiId;
-    }
-
-    public Integer getuIdF() {
-        return uIdF;
     }
 
     public String getTimeOfDay() {
@@ -47,12 +34,9 @@ public class PlannedBasalInjection {
         return basal;
     }
 
+    //setter
     public void setPbiId(Integer pbiId) {
         this.pbiId = pbiId;
-    }
-
-    public void setuIdF(Integer uIdF) {
-        this.uIdF = uIdF;
     }
 
     public void setTimeOfDay(String timeOfDay) {

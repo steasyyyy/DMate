@@ -16,9 +16,11 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface SportDao {
 
-    @Query("SELECT * FROM sports WHERE uIdF = :userId")
-    LiveData<List<Sport>> getAllSportsByUserId(Integer userId);
+    //get all sports
+    @Query("SELECT * FROM sports")
+    LiveData<List<Sport>> getAllSports();
 
+    //get sport by Id
     @Query("SELECT * FROM sports WHERE sId = :sportId")
     Sport getSportById(Integer sportId);
 

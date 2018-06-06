@@ -24,29 +24,32 @@ public class User {
 
     private Integer targetMin;
     private Integer targetMax;
+
+    private String minAcceptanceTime;
+    private String maxAcceptanceTime;
+
     private Boolean unitBu;
     private Boolean unitMgdl;
     private Boolean notificationsEnabled;
 
-    private Float buFactorConsultingArithMean;
+    private Float bloodsugarArithMean;
 
     private Float divergenceFromInitialValueArithMean;
 
-    private Float bloodsugarArithMean;
-
+    @Ignore
+    private List<Entry> entries;
+    @Ignore
+    private List<Observation> observations;
+    @Ignore
+    private List<Notification> notifications;
     @Ignore
     private List<PlannedBasalInjection> plannedBasalInjections;
     @Ignore
     private List<Daytime> daytimes;
     @Ignore
     private List<Sport> sports;
-    @Ignore
-    private List<Analysis> analyses;
 
-
-
-
-
+    //getter
     public Integer getuId() {
         return uId;
     }
@@ -79,6 +82,14 @@ public class User {
         return targetMax;
     }
 
+    public String getMinAcceptanceTime() {
+        return minAcceptanceTime;
+    }
+
+    public String getMaxAcceptanceTime() {
+        return maxAcceptanceTime;
+    }
+
     public Boolean getUnitBu() {
         return unitBu;
     }
@@ -91,18 +102,39 @@ public class User {
         return notificationsEnabled;
     }
 
-    public Float getBuFactorConsultingArithMean() {
-        return buFactorConsultingArithMean;
+    public Float getBloodsugarArithMean() {
+        return bloodsugarArithMean;
     }
 
     public Float getDivergenceFromInitialValueArithMean() {
         return divergenceFromInitialValueArithMean;
     }
 
-    public Float getBloodsugarArithMean() {
-        return bloodsugarArithMean;
+    public List<Entry> getEntries() {
+        return entries;
     }
 
+    public List<Observation> getObservations() {
+        return observations;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public List<PlannedBasalInjection> getPlannedBasalInjections() {
+        return plannedBasalInjections;
+    }
+
+    public List<Daytime> getDaytimes() {
+        return daytimes;
+    }
+
+    public List<Sport> getSports() {
+        return sports;
+    }
+
+    //setter
     public void setuId(Integer uId) {
         this.uId = uId;
     }
@@ -135,6 +167,14 @@ public class User {
         this.targetMax = targetMax;
     }
 
+    public void setMinAcceptanceTime(String minAcceptanceTime) {
+        this.minAcceptanceTime = minAcceptanceTime;
+    }
+
+    public void setMaxAcceptanceTime(String maxAcceptanceTime) {
+        this.maxAcceptanceTime = maxAcceptanceTime;
+    }
+
     public void setUnitBu(Boolean unitBu) {
         this.unitBu = unitBu;
     }
@@ -147,15 +187,35 @@ public class User {
         this.notificationsEnabled = notificationsEnabled;
     }
 
-    public void setBuFactorConsultingArithMean(Float buFactorConsultingArithMean) {
-        this.buFactorConsultingArithMean = buFactorConsultingArithMean;
+    public void setBloodsugarArithMean(Float bloodsugarArithMean) {
+        this.bloodsugarArithMean = bloodsugarArithMean;
     }
 
     public void setDivergenceFromInitialValueArithMean(Float divergenceFromInitialValueArithMean) {
         this.divergenceFromInitialValueArithMean = divergenceFromInitialValueArithMean;
     }
 
-    public void setBloodsugarArithMean(Float bloodsugarArithMean) {
-        this.bloodsugarArithMean = bloodsugarArithMean;
+    public void setEntries(List<Entry> entries) {
+        this.entries = entries;
+    }
+
+    public void setObservations(List<Observation> observations) {
+        this.observations = observations;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public void setPlannedBasalInjections(List<PlannedBasalInjection> plannedBasalInjections) {
+        this.plannedBasalInjections = plannedBasalInjections;
+    }
+
+    public void setDaytimes(List<Daytime> daytimes) {
+        this.daytimes = daytimes;
+    }
+
+    public void setSports(List<Sport> sports) {
+        this.sports = sports;
     }
 }

@@ -40,6 +40,7 @@ public class Exercise {
 
     private Float exerciseUnits;
 
+    //getter
     public Integer getExId() {
         return exId;
     }
@@ -56,6 +57,7 @@ public class Exercise {
         return exerciseUnits;
     }
 
+    //setter
     public void setExId(Integer exId) {
         this.exId = exId;
     }

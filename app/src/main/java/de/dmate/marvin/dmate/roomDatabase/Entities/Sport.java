@@ -8,14 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "sports",
-        foreignKeys = @ForeignKey(
-                entity = User.class,
-                parentColumns = "uId",
-                childColumns = "uIdF",
-                onDelete = CASCADE,
-                onUpdate = CASCADE),
-        indices = {@Index("uIdF")})
+@Entity(tableName = "sports")
 public class Sport {
 
     public Sport() {
@@ -25,18 +18,13 @@ public class Sport {
     @PrimaryKey(autoGenerate = true)
     public Integer sId;
 
-    public Integer uIdF;
-
     private String sportName;
     private Integer sportEffectPerUnit;
 
 
+    //getter
     public Integer getsId() {
         return sId;
-    }
-
-    public Integer getuIdF() {
-        return uIdF;
     }
 
     public String getSportName() {
@@ -47,12 +35,9 @@ public class Sport {
         return sportEffectPerUnit;
     }
 
+    //setter
     public void setsId(Integer sId) {
         this.sId = sId;
-    }
-
-    public void setuIdF(Integer uIdF) {
-        this.uIdF = uIdF;
     }
 
     public void setSportName(String sportName) {

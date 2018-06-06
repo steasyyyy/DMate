@@ -15,9 +15,9 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface DaytimeDao {
 
-    //get all daytimes by userId
-    @Query("SELECT * FROM daytimes WHERE uIdF = :userId ORDER BY daytimeStart ASC")
-    LiveData<List<Daytime>> getAllDaytimesByUserId(Integer userId);
+    //get all daytimes
+    @Query("SELECT * FROM daytimes ORDER BY daytimeStart ASC")
+    LiveData<List<Daytime>> getAllDaytimes();
 
     //get daytime by id
     @Query("SELECT * FROM daytimes WHERE dId = :dId")

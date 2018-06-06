@@ -89,7 +89,7 @@ public class DataViewModel extends AndroidViewModel {
 
         @Override
         protected Entry doInBackground(Integer... params) {
-            return db.entryDao().getItemById((params[0]));
+            return db.entryDao().getEntryById((params[0]));
         }
     }
 

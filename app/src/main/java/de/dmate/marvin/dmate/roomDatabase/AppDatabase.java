@@ -6,11 +6,11 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import de.dmate.marvin.dmate.roomDatabase.Daos.EntryDao;
-import de.dmate.marvin.dmate.roomDatabase.Entities.Analysis;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Exercise;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Notification;
+import de.dmate.marvin.dmate.roomDatabase.Entities.Observation;
 import de.dmate.marvin.dmate.roomDatabase.Entities.PlannedBasalInjection;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Sport;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
@@ -28,15 +28,15 @@ import de.dmate.marvin.dmate.roomDatabase.Entities.User;
                 Sport.class,
                 Exercise.class,
                 Notification.class,
-                Analysis.class},
-        version = 5)
+                Observation.class},
+        version = 7)
 public abstract class AppDatabase extends RoomDatabase{
 
     private static AppDatabase INSTANCE;
 
     public static AppDatabase getDatabase(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "entries_db").build();
+            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "dmate_database").build();
         }
         return INSTANCE;
     }

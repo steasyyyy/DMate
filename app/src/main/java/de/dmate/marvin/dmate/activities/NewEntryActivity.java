@@ -83,11 +83,11 @@ public class NewEntryActivity extends AppCompatActivity
                 if (requestCode == 1) {
                     newEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
 
-                    if (!ETbloodsugar.getText().toString().equals("")) newEntry.setBloodsugar(Integer.parseInt(ETbloodsugar.getText().toString()));
-                    else newEntry.setBloodsugar(null);
+                    if (!ETbloodsugar.getText().toString().equals("")) newEntry.setBloodSugar(Integer.parseInt(ETbloodsugar.getText().toString()));
+                    else newEntry.setBloodSugar(null);
 
-                    if (!ETbreadunit.getText().toString().equals("")) newEntry.setBreadunit(Float.parseFloat(ETbreadunit.getText().toString()));
-                    else newEntry.setBreadunit(null);
+                    if (!ETbreadunit.getText().toString().equals("")) newEntry.setBreadUnit(Float.parseFloat(ETbreadunit.getText().toString()));
+                    else newEntry.setBreadUnit(null);
 
                     if (!ETbolus.getText().toString().equals("")) newEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
                     else newEntry.setBolus(null);
@@ -103,8 +103,8 @@ public class NewEntryActivity extends AppCompatActivity
 
                 if (requestCode == 2) {
                     currentEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
-                    if (!ETbloodsugar.getText().toString().equals("")) currentEntry.setBloodsugar(Integer.parseInt(ETbloodsugar.getText().toString()));
-                    if (!ETbreadunit.getText().toString().equals("")) currentEntry.setBreadunit(Float.parseFloat(ETbreadunit.getText().toString()));
+                    if (!ETbloodsugar.getText().toString().equals("")) currentEntry.setBloodSugar(Integer.parseInt(ETbloodsugar.getText().toString()));
+                    if (!ETbreadunit.getText().toString().equals("")) currentEntry.setBreadUnit(Float.parseFloat(ETbreadunit.getText().toString()));
                     if (!ETbolus.getText().toString().equals("")) currentEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
                     if (!ETbasal.getText().toString().equals("")) currentEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
                     if (!ETnote.getText().toString().equals("")) currentEntry.setNote(ETnote.getText().toString());
@@ -183,10 +183,10 @@ public class NewEntryActivity extends AppCompatActivity
             dateButton.setText(Helper.formatMillisToDateString(currentEntry.getTimestamp().getTime()));
             timeButton.setText(Helper.formatMillisToTimeString(currentEntry.getTimestamp().getTime()));
 
-            Integer bloodsugar = currentEntry.getBloodsugar();
+            Integer bloodsugar = currentEntry.getBloodSugar();
             if (bloodsugar != null) ETbloodsugar.setText(bloodsugar.toString());
 
-            Float breadunit = currentEntry.getBreadunit();
+            Float breadunit = currentEntry.getBreadUnit();
             if (breadunit != null) ETbreadunit.setText(breadunit.toString());
 
             Float bolus = currentEntry.getBolus();

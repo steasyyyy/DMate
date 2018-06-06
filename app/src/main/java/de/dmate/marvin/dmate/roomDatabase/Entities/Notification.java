@@ -13,20 +13,13 @@ import de.dmate.marvin.dmate.roomDatabase.RoomConverter;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "notifications",
-        foreignKeys = {@ForeignKey(
-            entity = User.class,
-            parentColumns = "uId",
-            childColumns = "uIdF",
-            onDelete = CASCADE,
-            onUpdate = CASCADE)},
-        indices = {@Index("uIdF")})
+@Entity(tableName = "notifications")
 public class Notification {
 
     @Ignore
-    public static Integer BASAL_ADJUST = 1;
+    public static Integer BASAL_INJECTION_FORGOTTEN = 1;
     @Ignore
-    public static Integer BASAL_INJECTION_FORGOTTEN = 2;
+    public static Integer BASAL_RATIO_ADJUST = 2;
 
     public Notification() {
 
@@ -35,20 +28,20 @@ public class Notification {
     @PrimaryKey(autoGenerate = true)
     public Integer nId;
 
-    public Integer uIdF;
+    @TypeConverters(RoomConverter.class)
+    private Timestamp timestamp;
 
     private Integer notificationType;
     private String message;
 
-    @TypeConverters(RoomConverter.class)
-    private Timestamp timestamp;
 
+    //getter
     public Integer getnId() {
         return nId;
     }
 
-    public Integer getuIdF() {
-        return uIdF;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
     public Integer getNotificationType() {
@@ -59,16 +52,13 @@ public class Notification {
         return message;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
+    //setter
     public void setnId(Integer nId) {
         this.nId = nId;
     }
 
-    public void setuIdF(Integer uIdF) {
-        this.uIdF = uIdF;
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 
     public void setNotificationType(Integer notificationType) {
@@ -77,9 +67,5 @@ public class Notification {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
     }
 }

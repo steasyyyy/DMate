@@ -77,12 +77,12 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
 
         holder.dateTextView.setText(Helper.formatMillisToTimeString(entry.getTimestamp().getTime()));
 
-        if (entry.getBloodsugar() != null) {
-            holder.bloodsugarTextView.setText(entry.getBloodsugar().toString());
+        if (entry.getBloodSugar() != null) {
+            holder.bloodsugarTextView.setText(entry.getBloodSugar().toString());
         } else holder.bloodsugarTextView.setText(null);
 
-        if (entry.getBreadunit() != null) {
-            holder.breadunitTextView.setText(entry.getBreadunit().toString());
+        if (entry.getBreadUnit() != null) {
+            holder.breadunitTextView.setText(entry.getBreadUnit().toString());
         } else holder.breadunitTextView.setText(null);
 
         if (entry.getBolus() != null) {

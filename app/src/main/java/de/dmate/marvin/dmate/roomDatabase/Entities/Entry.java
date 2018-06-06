@@ -1,9 +1,7 @@
 package de.dmate.marvin.dmate.roomDatabase.Entities;
 
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
@@ -12,19 +10,10 @@ import java.util.List;
 
 import de.dmate.marvin.dmate.roomDatabase.RoomConverter;
 
-import static android.arch.persistence.room.ForeignKey.CASCADE;
-
 //declaring @Entity here specifies, that Room should create a table
 //the colums of that table represent the attributes of this class
 //CAREFUL: Objects are not supported natively! You need to create TypeConverters, to convert an object to a value as done in RoomConverter
-@Entity(tableName = "entries",
-        foreignKeys = @ForeignKey(
-                entity = User.class,
-                parentColumns = "uId",
-                childColumns = "uIdF",
-                onDelete = CASCADE,
-                onUpdate = CASCADE),
-        indices = {@Index("uIdF")})
+@Entity(tableName = "entries")
 public class Entry {
 
     public Entry() {
@@ -34,50 +23,42 @@ public class Entry {
     @PrimaryKey(autoGenerate = true)
     public Integer eId;
 
-    public Integer uIdF;
-
     @TypeConverters(RoomConverter.class)
     private Timestamp timestamp = null;
 
-    private Integer bloodsugar = null;
-    private Float breadunit = null;
+    private Integer bloodSugar = null;
+    private Float breadUnit = null;
     private Float bolus = null;
     private Float basal = null;
     private String note = null;
-    private Boolean verified = false;
-
-    @Ignore
-    private List<Exercise> exercises;
+    private Boolean reliable = false; //when the user is ill, this value will be false
 
     private Float reqBolusSimple = null;
     private Float reqBolusConsulting = null;
     private Float buFactorReal = null;
     private Float buFactorConsulting = null;
-
-    private String minAcceptanceTime = null;
-    private String maxAcceptanceTime = null;
     private Integer divergenceFromTarget = null;
+    private Float bolusCorrectionByBloodSugar = null;
+    private Float bolusCorrectionBySport = null;
 
+    @Ignore
+    private List<Exercise> exercises;
 
-
-    public int geteId() {
+    //getter
+    public Integer geteId() {
         return eId;
-    }
-
-    public Integer getuIdF() {
-        return uIdF;
     }
 
     public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public Integer getBloodsugar() {
-        return bloodsugar;
+    public Integer getBloodSugar() {
+        return bloodSugar;
     }
 
-    public Float getBreadunit() {
-        return breadunit;
+    public Float getBreadUnit() {
+        return breadUnit;
     }
 
     public Float getBolus() {
@@ -92,8 +73,12 @@ public class Entry {
         return note;
     }
 
-    public Boolean getVerified() {
-        return verified;
+    public Boolean getReliable() {
+        return reliable;
+    }
+
+    public List<Exercise> getExercises() {
+        return exercises;
     }
 
     public Float getReqBolusSimple() {
@@ -112,36 +97,33 @@ public class Entry {
         return buFactorConsulting;
     }
 
-    public String getMinAcceptanceTime() {
-        return minAcceptanceTime;
-    }
-
-    public String getMaxAcceptanceTime() {
-        return maxAcceptanceTime;
-    }
-
     public Integer getDivergenceFromTarget() {
         return divergenceFromTarget;
     }
 
-    public void seteId(int eId) {
+    public Float getBolusCorrectionByBloodSugar() {
+        return bolusCorrectionByBloodSugar;
+    }
+
+    public Float getBolusCorrectionBySport() {
+        return bolusCorrectionBySport;
+    }
+
+    //setter
+    public void seteId(Integer eId) {
         this.eId = eId;
     }
 
-    public void setuIdF(Integer uIdF) {
-        this.uIdF = uIdF;
-    }
-
-    public void setTimestamp (Timestamp timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 
-    public void setBloodsugar(Integer bloodsugar) {
-        this.bloodsugar = bloodsugar;
+    public void setBloodSugar(Integer bloodSugar) {
+        this.bloodSugar = bloodSugar;
     }
 
-    public void setBreadunit(Float breadunit) {
-        this.breadunit = breadunit;
+    public void setBreadUnit(Float breadUnit) {
+        this.breadUnit = breadUnit;
     }
 
     public void setBolus(Float bolus) {
@@ -156,12 +138,12 @@ public class Entry {
         this.note = note;
     }
 
-    public void setVerified(Boolean verified) {
-        this.verified = verified;
+    public void setReliable(Boolean reliable) {
+        this.reliable = reliable;
     }
 
-    public void seteId(Integer eId) {
-        this.eId = eId;
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
     }
 
     public void setReqBolusSimple(Float reqBolusSimple) {
@@ -180,15 +162,15 @@ public class Entry {
         this.buFactorConsulting = buFactorConsulting;
     }
 
-    public void setMinAcceptanceTime(String minAcceptanceTime) {
-        this.minAcceptanceTime = minAcceptanceTime;
-    }
-
-    public void setMaxAcceptanceTime(String maxAcceptanceTime) {
-        this.maxAcceptanceTime = maxAcceptanceTime;
-    }
-
     public void setDivergenceFromTarget(Integer divergenceFromTarget) {
         this.divergenceFromTarget = divergenceFromTarget;
+    }
+
+    public void setBolusCorrectionByBloodSugar(Float bolusCorrectionByBloodSugar) {
+        this.bolusCorrectionByBloodSugar = bolusCorrectionByBloodSugar;
+    }
+
+    public void setBolusCorrectionBySport(Float bolusCorrectionBySport) {
+        this.bolusCorrectionBySport = bolusCorrectionBySport;
     }
 }

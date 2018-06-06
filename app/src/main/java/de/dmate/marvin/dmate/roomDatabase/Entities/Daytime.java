@@ -8,14 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "daytimes",
-        foreignKeys = @ForeignKey(
-                entity = User.class,
-                parentColumns = "uId",
-                childColumns = "uIdF",
-                onDelete = CASCADE,
-                onUpdate = CASCADE),
-        indices = {@Index("uIdF")})
+@Entity(tableName = "daytimes")
 public class Daytime {
 
     public Daytime() {
@@ -25,19 +18,15 @@ public class Daytime {
     @PrimaryKey(autoGenerate = true)
     public Integer dId;
 
-    public Integer uIdF;
-
     private String daytimeStart;
     private String daytimeEnd;
     private Integer correctionFactor;
     private Integer buFactor;
+    private Float buFactorConsultingArithMean;
 
+    //getter
     public Integer getdId() {
         return dId;
-    }
-
-    public int getuIdF() {
-        return uIdF;
     }
 
     public String getDaytimeStart() {
@@ -56,12 +45,13 @@ public class Daytime {
         return buFactor;
     }
 
-    public void setdId(Integer dId) {
-        this.dId = dId;
+    public Float getBuFactorConsultingArithMean() {
+        return buFactorConsultingArithMean;
     }
 
-    public void setuId(int uIdF) {
-        this.uIdF = uIdF;
+    //setter
+    public void setdId(Integer dId) {
+        this.dId = dId;
     }
 
     public void setDaytimeStart(String daytimeStart) {
@@ -78,5 +68,9 @@ public class Daytime {
 
     public void setBuFactor(Integer buFactor) {
         this.buFactor = buFactor;
+    }
+
+    public void setBuFactorConsultingArithMean(Float buFactorConsultingArithMean) {
+        this.buFactorConsultingArithMean = buFactorConsultingArithMean;
     }
 }

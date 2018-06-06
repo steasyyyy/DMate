@@ -32,7 +32,7 @@ public interface EntryDao {
 
     //get entry by ID
     @Query("SELECT * FROM entries WHERE eId = :eId")
-    Entry getItemById(int eId);
+    Entry getEntryById(Integer eId);
 
     //insert entry
     @Insert(onConflict = REPLACE)
