@@ -60,7 +60,7 @@ public class NewEntryActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_entry_new);
+        setContentView(R.layout.activity_new_entry);
 
         //set requestCode to differ between editing an newEntry or creating a new one
         Intent intent = getIntent();
