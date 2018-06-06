@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -40,6 +41,8 @@ public class NewEntryActivity extends AppCompatActivity
     private EditText ETbolus;
     private EditText ETbasal;
     private EditText ETnote;
+    private Button exercisesButton;
+    private Switch diseasedSwitch;
 
     private SlidingUpPanelLayout supl;
     private TextView slideUpTextView;
@@ -57,7 +60,7 @@ public class NewEntryActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_entry);
+        setContentView(R.layout.activity_new_entry_new);
 
         //set requestCode to differ between editing an newEntry or creating a new one
         Intent intent = getIntent();
@@ -120,11 +123,13 @@ public class NewEntryActivity extends AppCompatActivity
         //get Buttons and EditTexts
         dateButton = (Button) findViewById(R.id.button_date);
         timeButton = (Button) findViewById(R.id.button_time);
-        ETbloodsugar = (EditText) findViewById(R.id.editText_bloodsugar);
-        ETbreadunit = (EditText) findViewById(R.id.editText_breadunit);
-        ETbolus = (EditText) findViewById(R.id.editText_bolus);
-        ETbasal = (EditText) findViewById(R.id.editText_basal);
+        ETbloodsugar = (EditText) findViewById(R.id.editText_bloodSugar);
+        ETbreadunit = (EditText) findViewById(R.id.editText_breadUnits);
+        ETbolus = (EditText) findViewById(R.id.editText_bolusInjection);
+        ETbasal = (EditText) findViewById(R.id.editText_basalInjection);
         ETnote = (EditText) findViewById(R.id.editText_note);
+        exercisesButton = (Button) findViewById(R.id.button_exercises);
+        diseasedSwitch = (Switch) findViewById(R.id.switch_diseased);
 
 
         //initialize SlidingUpPanelLayout (Slide up to show ratio wizard in NewEntryActivity)

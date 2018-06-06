@@ -154,54 +154,54 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Button"
-                app:layout_constraintBottom_toTopOf="@+id/editText_bloodsugar"
+                app:layout_constraintBottom_toTopOf="@+id/editText_bloodSugar"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button_date"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintHorizontal_bias="0.496" />
 
             <EditText
-                android:id="@+id/editText_bloodsugar"
+                android:id="@+id/editText_bloodSugar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number"
-                app:layout_constraintBottom_toTopOf="@+id/editText_breadunit"
+                app:layout_constraintBottom_toTopOf="@+id/editText_breadUnits"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button_time"
                 app:layout_constraintRight_toRightOf="parent" />
 
             <EditText
-                android:id="@+id/editText_breadunit"
+                android:id="@+id/editText_breadUnits"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                app:layout_constraintBottom_toTopOf="@+id/editText_bolus"
+                app:layout_constraintBottom_toTopOf="@+id/editText_bolusInjection"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText_bloodsugar"
+                app:layout_constraintTop_toBottomOf="@+id/editText_bloodSugar"
                 app:layout_constraintRight_toRightOf="parent" />
 
             <EditText
-                android:id="@+id/editText_bolus"
+                android:id="@+id/editText_bolusInjection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                app:layout_constraintBottom_toTopOf="@+id/editText_basal"
+                app:layout_constraintBottom_toTopOf="@+id/editText_basalInjection"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText_breadunit"
+                app:layout_constraintTop_toBottomOf="@+id/editText_breadUnits"
                 app:layout_constraintRight_toRightOf="parent" />
 
             <EditText
-                android:id="@+id/editText_basal"
+                android:id="@+id/editText_basalInjection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="numberDecimal"
                 app:layout_constraintBottom_toTopOf="@+id/editText_note"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText_bolus"
+                app:layout_constraintTop_toBottomOf="@+id/editText_bolusInjection"
                 app:layout_constraintRight_toRightOf="parent" />
 
             <EditText
@@ -212,8 +212,8 @@
                 android:inputType="textMultiLine"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText_basal"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editText_basalInjection" />
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 

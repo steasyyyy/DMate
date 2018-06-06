@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sliding_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    sothree:umanoPanelHeight="68dp"
+    sothree:umanoShadowHeight="4dp">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:titleMarginStart="32dp">
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_fragment_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="26dp"
+            android:layout_marginEnd="25dp"
+            android:src="@drawable/ic_check" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/button_time"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button_date"
+                android:layout_centerHorizontal="true"
+                android:text="Time"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/button_date"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="Date"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false" />
+
+            <EditText
+                android:id="@+id/editText_bloodSugar"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button_time"
+                android:layout_centerHorizontal="true"
+                android:ems="10"
+                android:hint="Bloodsugar"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/editText_basalInjection"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editText_bolusInjection"
+                android:layout_centerHorizontal="true"
+                android:ems="10"
+                android:hint="Basal injection"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/editText_bolusInjection"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editText_breadUnits"
+                android:layout_centerHorizontal="true"
+                android:ems="10"
+                android:hint="Bolus injection"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/editText_breadUnits"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editText_bloodSugar"
+                android:layout_centerHorizontal="true"
+                android:ems="10"
+                android:hint="Bread units"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/editText_note"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/switch_diseased"
+                android:layout_centerHorizontal="true"
+                android:ems="10"
+                android:hint="Note"
+                android:inputType="textMultiLine" />
+
+            <Switch
+                android:id="@+id/switch_diseased"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button_exercises"
+                android:layout_centerHorizontal="true"
+                android:text="Diseased"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/button_exercises"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/button_date"
+                android:layout_below="@+id/editText_basalInjection"
+                android:text="Exercises"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <include layout="@layout/sliding_up_layout_new"/>
+
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
