@@ -1,14 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".fragments.SettingsDialogFragments.BolusInsulineDialogFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="16dp"
+        android:text="Daytimes"
+        android:textSize="18sp" />
 
-</FrameLayout>
+    <com.edmodo.rangebar.RangeBar
+        android:id="@+id/daytimes_rangeBar"
+        android:layout_width="wrap_content"
+        android:layout_height="83dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="62dp"
+        android:text="Select range"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/button_confirm_daytimes"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/button_cancel_daytimes"
+        android:layout_marginEnd="62dp"
+        android:text="Confirm"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/button_cancel_daytimes"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/listView_daytimes"
+        android:layout_marginStart="62dp"
+        android:layout_marginTop="8dp"
+        android:text="Cancel"
+        android:textAllCaps="false" />
+
+    <ListView
+        android:id="@+id/listView_daytimes"
+        android:layout_width="match_parent"
+        android:layout_height="156dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/daytimes_rangeBar" />
+
+</RelativeLayout>

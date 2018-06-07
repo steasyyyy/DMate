@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.SettingsDialogFragments.BasalInsulineDialogFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <EditText
         android:id="@+id/editText_name_basal"
         android:layout_width="295dp"
@@ -19,7 +17,7 @@
         android:inputType="textPersonName" />
 
     <EditText
-        android:id="@+id/editText_duration_of_action_basal5"
+        android:id="@+id/editText_duration_of_action_basal"
         android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText_name_basal"

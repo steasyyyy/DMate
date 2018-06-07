@@ -45,13 +45,17 @@ public class BasalInsulineDialogFragment extends DialogFragment {
         //get WindowManager.LayoutParams, copy attributes from Dialog to LayoutParams and override them with MATCH_PARENT
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.copyFrom(dialog.getWindow().getAttributes());
-        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+        layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
         //show the Dialog before setting new LayoutParams to the Dialog
         dialog.show();
         dialog.getWindow().setAttributes(layoutParams);
 
         return dialog;
+
+        //alternative:
+//        layoutParams.width = 1000;
+//        layoutParams.height = 1500;
     }
 
     @Override
