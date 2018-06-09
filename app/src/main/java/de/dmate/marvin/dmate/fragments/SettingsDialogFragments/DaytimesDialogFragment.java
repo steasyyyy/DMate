@@ -5,14 +5,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.edmodo.rangebar.RangeBar;
 
@@ -20,12 +22,20 @@ import java.util.ArrayList;
 
 import de.dmate.marvin.dmate.R;
 
-public class DaytimesDialogFragment extends DialogFragment implements RangeBar.OnRangeBarChangeListener {
+public class DaytimesDialogFragment extends DialogFragment {
 
     private OnDaytimesDialogFragmentInteractionListener mListener;
+    private Dialog dialog;
 
-    private RangeBar rangeBar;
-    private ListView listView;
+    private ListView listViewDaytimes;
+    private Button buttonNewDaytime;
+    private RelativeLayout newDaytimeLayout;
+    private EditText editTextDaytimeStart;
+    private EditText editTextDaytimeEnd;
+    private Button buttoncancelNewDaytime;
+    private Button buttonConfirmNewDaytime;
+    private Button buttonConfirmDaytimes;
+
 
     public DaytimesDialogFragment() {
         // Required empty public constructor
@@ -54,6 +64,8 @@ public class DaytimesDialogFragment extends DialogFragment implements RangeBar.O
         dialog.show();
         dialog.getWindow().setAttributes(layoutParams);
 
+        this.dialog = dialog;
+
         return dialog;
     }
 
@@ -62,22 +74,67 @@ public class DaytimesDialogFragment extends DialogFragment implements RangeBar.O
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog_daytimes, container, false);
 
-        rangeBar = view.findViewById(R.id.daytimes_rangeBar);
-        rangeBar.setOnRangeBarChangeListener(this);
-        rangeBar.setBarColor(getResources().getColor(R.color.colorAccent));
-        rangeBar.setConnectingLineColor(getResources().getColor(R.color.colorAccent));
-        rangeBar.setDrawingCacheBackgroundColor(getResources().getColor(R.color.colorAccent));
-        rangeBar.setThumbColorNormal(getResources().getColor(R.color.colorAccent));
-        rangeBar.setThumbColorPressed(getResources().getColor(R.color.colorAccent));
-        rangeBar.setTickCount(24);
-
-        listView = view.findViewById(R.id.listView_daytimes);
+        //initialize listview
+        listViewDaytimes = view.findViewById(R.id.listView_daytimes);
         ArrayList<String> arrayList = new ArrayList<String>();
         arrayList.add("Daytime1");
         arrayList.add("Daytime2");
+        arrayList.add("Daytime2");
+        arrayList.add("Daytime2");
+        arrayList.add("Daytime2");
+        arrayList.add("Daytime2");
+        arrayList.add("Daytime2");
+        arrayList.add("Daytime2");
+        arrayList.add("Daytime2");
+        arrayList.add("Daytime2");
+        arrayList.add("Daytime2");
+        arrayList.add("Daytime2");
+        arrayList.add("Daytime2");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.daytime_layout, arrayList);
-        listView.setAdapter(arrayAdapter);
+        listViewDaytimes.setAdapter(arrayAdapter);
 
+        //initialize all buttons etc.
+        buttonNewDaytime = view.findViewById(R.id.button_new_daytime);
+        newDaytimeLayout = view.findViewById(R.id.new_daytime_layout);
+        buttoncancelNewDaytime = view.findViewById(R.id.button_cancel_new_daytime);
+        buttonConfirmNewDaytime = view.findViewById(R.id.button_confirm_new_daytime);
+        buttonConfirmDaytimes = view.findViewById(R.id.button_confirm_daytimes);
+        editTextDaytimeStart = view.findViewById(R.id.editText_daytimeStart);
+        editTextDaytimeEnd = view.findViewById(R.id.editText_daytimeEnd);
+
+        buttonNewDaytime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonConfirmDaytimes.setVisibility(View.GONE);
+                newDaytimeLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        buttoncancelNewDaytime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonConfirmDaytimes.setVisibility(View.VISIBLE);
+                newDaytimeLayout.setVisibility(View.GONE);
+            }
+        });
+
+        buttonConfirmNewDaytime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO save new daytime
+                buttonConfirmDaytimes.setVisibility(View.VISIBLE);
+                newDaytimeLayout.setVisibility(View.GONE);
+            }
+        });
+
+        buttonConfirmDaytimes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO save daytimes if any changed
+                buttonConfirmDaytimes.setVisibility(View.VISIBLE);
+                dismiss();
+            }
+        });
 
         return view;
     }
@@ -99,12 +156,10 @@ public class DaytimesDialogFragment extends DialogFragment implements RangeBar.O
         mListener = null;
     }
 
-    //interface implementation for RangeBar
     @Override
-    public void onIndexChangeListener(RangeBar rangeBar, int i, int i1) {
-
+    public Dialog getDialog() {
+        return dialog;
     }
-
 
     public interface OnDaytimesDialogFragmentInteractionListener {
 

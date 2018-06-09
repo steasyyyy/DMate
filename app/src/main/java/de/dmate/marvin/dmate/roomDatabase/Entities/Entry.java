@@ -1,6 +1,7 @@
 package de.dmate.marvin.dmate.roomDatabase.Entities;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
@@ -13,7 +14,14 @@ import de.dmate.marvin.dmate.roomDatabase.RoomConverter;
 //declaring @Entity here specifies, that Room should create a table
 //the colums of that table represent the attributes of this class
 //CAREFUL: Objects are not supported natively! You need to create TypeConverters, to convert an object to a value as done in RoomConverter
-@Entity(tableName = "entries")
+@Entity(tableName = "entries",
+        foreignKeys = {
+        @ForeignKey(
+                entity = Daytime.class,
+                parentColumns = "dId",
+                childColumns = "dIdF",
+                onDelete = ForeignKey.SET_NULL,
+                onUpdate = ForeignKey.SET_NULL)})
 public class Entry {
 
     public Entry() {
@@ -22,6 +30,8 @@ public class Entry {
 
     @PrimaryKey(autoGenerate = true)
     public Integer eId;
+
+    public Integer dIdF;
 
     @TypeConverters(RoomConverter.class)
     private Timestamp timestamp = null;

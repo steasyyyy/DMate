@@ -2,8 +2,78 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".fragments.SettingsDialogFragments.BolusInsulineDialogFragment">
+
+    <RelativeLayout
+        android:id="@+id/new_daytime_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/button_new_daytime"
+        android:layout_marginTop="-12dp"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/button_cancel_new_daytime"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/button_confirm_new_daytime"
+            android:layout_marginStart="62dp"
+            android:text="Cancel"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/button_confirm_new_daytime"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/editText_daytimeEnd"
+            android:layout_marginEnd="62dp"
+            android:layout_marginTop="8dp"
+            android:text="Confirm"
+            android:textAllCaps="false" />
+
+        <EditText
+            android:id="@+id/editText_daytimeStart"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="90dp"
+            android:ems="10"
+            android:hint="HH:MM"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/editText_daytimeEnd"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/editText_daytimeStart"
+            android:layout_marginEnd="90dp"
+            android:ems="10"
+            android:hint="HH:MM"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/editText_daytimeStart"
+            android:layout_alignStart="@+id/textView4"
+            android:text="Start" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/editText_daytimeEnd"
+            android:layout_toStartOf="@+id/editText_daytimeStart"
+            android:text="End" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/textView2"
@@ -16,42 +86,33 @@
         android:text="Daytimes"
         android:textSize="18sp" />
 
-    <com.edmodo.rangebar.RangeBar
-        android:id="@+id/daytimes_rangeBar"
-        android:layout_width="wrap_content"
-        android:layout_height="83dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="62dp"
-        android:text="Select range"
-        android:textSize="14sp" />
-
     <Button
-        android:id="@+id/button_confirm_daytimes"
-        android:layout_width="110dp"
+        android:id="@+id/button_new_daytime"
+        android:layout_width="305dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/button_cancel_daytimes"
-        android:layout_marginEnd="62dp"
-        android:text="Confirm"
-        android:textAllCaps="false" />
-
-    <Button
-        android:id="@+id/button_cancel_daytimes"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/listView_daytimes"
-        android:layout_marginStart="62dp"
-        android:layout_marginTop="8dp"
-        android:text="Cancel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:text="New daytime"
         android:textAllCaps="false" />
 
     <ListView
         android:id="@+id/listView_daytimes"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="156dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/daytimes_rangeBar" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="59dp" />
+
+    <Button
+        android:id="@+id/button_confirm_daytimes"
+        android:layout_width="305dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/new_daytime_layout"
+        android:layout_centerHorizontal="true"
+        android:text="Confirm"
+        android:textAlignment="center"
+        android:textAllCaps="false" />
 
 </RelativeLayout>
