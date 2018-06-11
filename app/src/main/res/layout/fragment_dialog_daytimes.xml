@@ -157,7 +157,7 @@
     <ListView
         android:id="@+id/listView_daytimes"
         android:layout_width="300dp"
-        android:layout_height="135dp"
+        android:layout_height="180dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="49dp" />

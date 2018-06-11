@@ -4,15 +4,20 @@ import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,8 +35,9 @@ import javax.xml.datatype.Duration;
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
+import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 
-public class DaytimesDialogFragment extends DialogFragment {
+public class DaytimesDialogFragment extends DialogFragment implements ListView.OnItemClickListener, ListView.OnItemLongClickListener {
 
     private OnDaytimesDialogFragmentInteractionListener mListener;
     private Dialog dialog;
@@ -112,8 +118,10 @@ public class DaytimesDialogFragment extends DialogFragment {
         //create DaytimeArrayAdapter with empty data collection
         arrayAdapter = new DaytimeArrayAdapter(getContext(), new ArrayList<Daytime>());
 
-        //set adapter in listview
+        //set adapter and clicklistener for listview
         listViewDaytimes.setAdapter(arrayAdapter);
+        listViewDaytimes.setOnItemClickListener(this);
+        registerForContextMenu(listViewDaytimes);
 
         //observe LiveData from DB to trigger update of adapter content
         viewModel.getDaytimes().observe(DaytimesDialogFragment.this, new Observer<List<Daytime>>() {
@@ -161,8 +169,8 @@ public class DaytimesDialogFragment extends DialogFragment {
                 }
 
                 //check if minutes are = "" and set to "00" if so
-                if (editTextDaytimeStartMM.getText().toString().equals("")) editTextDaytimeStartMM.setText("00");
-                if (editTextDaytimeEndMM.getText().toString().equals("")) editTextDaytimeEndMM.setText("00");
+                if (editTextDaytimeStartMM.getText().toString().equals("") || editTextDaytimeStartMM.getText().toString().equals("0")) editTextDaytimeStartMM.setText("00");
+                if (editTextDaytimeEndMM.getText().toString().equals("") || editTextDaytimeStartMM.getText().toString().equals("0")) editTextDaytimeEndMM.setText("00");
 
                 //check if correction factor is = "" and trigger Toast if so
                 if (editTextCorrectionFactor.getText().toString().equals("")) {
@@ -213,6 +221,14 @@ public class DaytimesDialogFragment extends DialogFragment {
                 buttonConfirmDaytimes.setVisibility(View.VISIBLE);
                 newDaytimeLayout.setVisibility(View.GONE);
                 buttonNewDaytime.setVisibility(View.VISIBLE);
+
+                //clear all editTexts
+                editTextDaytimeStartHH.setText("");
+                editTextDaytimeStartMM.setText("");
+                editTextDaytimeEndHH.setText("");
+                editTextDaytimeEndMM.setText("");
+                editTextCorrectionFactor.setText("");
+                editTextBuFactor.setText("");
             }
         });
 
@@ -248,6 +264,49 @@ public class DaytimesDialogFragment extends DialogFragment {
     @Override
     public Dialog getDialog() {
         return dialog;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Daytime currentDaytime = arrayAdapter.getItem(position);
+
+        String daytimeStartHH = currentDaytime.getDaytimeStart().charAt(0) + "" + currentDaytime.getDaytimeStart().charAt(1);
+        String daytimeStartMM = currentDaytime.getDaytimeStart().charAt(3) + "" + currentDaytime.getDaytimeStart().charAt(4);
+        String daytimeEndHH = currentDaytime.getDaytimeEnd().charAt(0) + "" + currentDaytime.getDaytimeEnd().charAt(1);
+        String daytimeEndMM = currentDaytime.getDaytimeEnd().charAt(3) + "" + currentDaytime.getDaytimeEnd().charAt(4);
+
+        Integer correctionFactor = currentDaytime.getCorrectionFactor();
+        Float buFactor = currentDaytime.getBuFactor();
+
+        editTextDaytimeStartHH.setText(daytimeStartHH);
+        editTextDaytimeStartMM.setText(daytimeStartMM);
+        editTextDaytimeEndHH.setText(daytimeEndHH);
+        editTextDaytimeEndMM.setText(daytimeEndMM);
+        editTextCorrectionFactor.setText(correctionFactor.toString());
+        editTextBuFactor.setText(buFactor.toString());
+
+        buttonConfirmDaytimes.setVisibility(View.GONE);
+        buttonNewDaytime.setVisibility(View.GONE);
+        newDaytimeLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        return false;
+    }
+
+    public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        menu.add("Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Daytime daytime = arrayAdapter.getItem(info.position);
+                viewModel.deleteDaytime(daytime);
+                return true;
+            }
+        });
     }
 
     public interface OnDaytimesDialogFragmentInteractionListener {
@@ -290,5 +349,4 @@ class DaytimeArrayAdapter extends ArrayAdapter<Daytime> {
 
         return convertView;
     }
-
 }

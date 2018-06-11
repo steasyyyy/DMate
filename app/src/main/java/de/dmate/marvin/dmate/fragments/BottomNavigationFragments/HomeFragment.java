@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter
             public boolean onMenuItemClick(MenuItem item) {
                 Entry entry = entriesRecyclerViewAdapter.getItemByPosition(position);
                 viewModel.deleteEntry(entry);
-                return false;
+                return true;
             }
         });
     }
