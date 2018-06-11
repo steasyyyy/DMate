@@ -39,6 +39,8 @@ public class DaytimesDialogFragment extends DialogFragment {
     private EditText editTextDaytimeStartMM;
     private EditText editTextDaytimeEndHH;
     private EditText editTextDaytimeEndMM;
+    private EditText editTextCorrectionFactor;
+    private EditText editTextBuFactor;
     private Button buttoncancelNewDaytime;
     private Button buttonConfirmNewDaytime;
     private Button buttonConfirmDaytimes;
@@ -95,6 +97,8 @@ public class DaytimesDialogFragment extends DialogFragment {
         editTextDaytimeStartMM = view.findViewById(R.id.editText_daytimeStart_MM);
         editTextDaytimeEndHH = view.findViewById(R.id.editText_daytimeEnd_HH);
         editTextDaytimeEndMM = view.findViewById(R.id.editText_daytimeEnd_MM);
+        editTextCorrectionFactor = view.findViewById(R.id.editText_correctionFactor);
+        editTextBuFactor = view.findViewById(R.id.editText_buFactor);
         buttoncancelNewDaytime = view.findViewById(R.id.button_cancel_new_daytime);
         buttonConfirmNewDaytime = view.findViewById(R.id.button_confirm_new_daytime);
         buttonConfirmDaytimes = view.findViewById(R.id.button_confirm_daytimes);
@@ -136,6 +140,8 @@ public class DaytimesDialogFragment extends DialogFragment {
                 editTextDaytimeStartMM.setText("");
                 editTextDaytimeEndHH.setText("");
                 editTextDaytimeEndMM.setText("");
+                editTextCorrectionFactor.setText("");
+                editTextBuFactor.setText("");
             }
         });
 
@@ -148,11 +154,14 @@ public class DaytimesDialogFragment extends DialogFragment {
                 buttonNewDaytime.setVisibility(View.VISIBLE);
                 String daytimeStartString = editTextDaytimeStartHH.getText().toString() + ":" + editTextDaytimeStartMM.getText().toString();
                 String daytimeEndString = editTextDaytimeEndHH.getText().toString() + ":" + editTextDaytimeEndMM.getText().toString();
+                Integer correctionFactor = Integer.parseInt(editTextCorrectionFactor.getText().toString());
+                Float buFactor = Float.parseFloat(editTextBuFactor.getText().toString());
 
                 Daytime daytime = new Daytime();
                 daytime.setDaytimeStart(daytimeStartString);
                 daytime.setDaytimeEnd(daytimeEndString);
-                //TODO set buFactor, correctionFactor and buFactorConsultingArithMean
+                daytime.setCorrectionFactor(correctionFactor);
+                daytime.setBuFactor(buFactor);
 
                 viewModel.addDaytime(daytime);
             }
@@ -217,14 +226,18 @@ class DaytimeArrayAdapter extends ArrayAdapter<Daytime> {
         Daytime currentDaytime = getItem(position);
 
         if(convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.daytime_layout_new, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.daytime_layout, parent, false);
         }
 
         TextView textViewStart = convertView.findViewById(R.id.textView_daytime_start);
         TextView textViewEnd = convertView.findViewById(R.id.textView_daytime_end);
+        TextView textViewCorrectionFactor = convertView.findViewById(R.id.textView_correctionFactor_new);
+        TextView textViewBuFactor = convertView.findViewById(R.id.textView_buFactor_new);
 
         textViewStart.setText(currentDaytime.getDaytimeStart());
         textViewEnd.setText(currentDaytime.getDaytimeEnd());
+        textViewCorrectionFactor.setText(currentDaytime.getCorrectionFactor().toString());
+        textViewBuFactor.setText(currentDaytime.getBuFactor().toString());
 
         return convertView;
     }

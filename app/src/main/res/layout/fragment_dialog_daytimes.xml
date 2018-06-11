@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/button_new_daytime"
-        android:layout_marginTop="-12dp"
+        android:padding="4dp"
         android:visibility="gone">
 
         <Button
@@ -19,8 +19,9 @@
             android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/button_confirm_new_daytime"
+            android:layout_below="@+id/editText_buFactor"
             android:layout_marginStart="62dp"
+            android:padding="4dp"
             android:text="Cancel"
             android:textAllCaps="false" />
 
@@ -29,9 +30,9 @@
             android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_below="@+id/editText_daytimeEnd_HH"
+            android:layout_alignTop="@+id/button_cancel_new_daytime"
             android:layout_marginEnd="62dp"
-            android:layout_marginTop="8dp"
+            android:padding="4dp"
             android:text="Confirm"
             android:textAllCaps="false" />
 
@@ -110,6 +111,26 @@
             android:text=":"
             android:textAlignment="center" />
 
+        <EditText
+            android:id="@+id/editText_correctionFactor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText_daytimeEnd_HH"
+            android:layout_centerHorizontal="true"
+            android:ems="10"
+            android:hint="Correction factor"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/editText_buFactor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText_correctionFactor"
+            android:layout_centerHorizontal="true"
+            android:ems="10"
+            android:hint="Bread unit factor"
+            android:inputType="numberDecimal" />
+
     </RelativeLayout>
 
     <TextView
@@ -129,8 +150,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/listView_daytimes"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="12dp"
-        android:layout_marginTop="12dp"
+        android:padding="4dp"
         android:text="New daytime"
         android:textAllCaps="false" />
 
@@ -140,7 +160,7 @@
         android:layout_height="135dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="59dp" />
+        android:layout_marginTop="49dp" />
 
     <Button
         android:id="@+id/button_confirm_daytimes"
@@ -148,6 +168,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/new_daytime_layout"
         android:layout_centerHorizontal="true"
+        android:padding="4dp"
         android:text="Confirm"
         android:textAlignment="center"
         android:textAllCaps="false" />

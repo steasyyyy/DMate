@@ -21,7 +21,7 @@ public class Daytime {
     private String daytimeStart;
     private String daytimeEnd;
     private Integer correctionFactor;
-    private Integer buFactor;
+    private Float buFactor;
     private Float buFactorConsultingArithMean;
 
     //getter
@@ -41,7 +41,7 @@ public class Daytime {
         return correctionFactor;
     }
 
-    public Integer getBuFactor() {
+    public Float getBuFactor() {
         return buFactor;
     }
 
@@ -66,7 +66,7 @@ public class Daytime {
         this.correctionFactor = correctionFactor;
     }
 
-    public void setBuFactor(Integer buFactor) {
+    public void setBuFactor(Float buFactor) {
         this.buFactor = buFactor;
     }
 

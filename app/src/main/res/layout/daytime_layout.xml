@@ -1,11 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/textView_Daytime_list_element"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentStart="true"
-    android:layout_alignParentTop="true"
-    android:padding="4dp"
-    android:text="Daytime x"
-    android:textAlignment="viewStart"
-    android:textSize="14sp" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/cfTest"
+        android:padding="4dp">
+
+        <TextView
+            android:id="@+id/textView_static_buFactor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:padding="4dp"
+            android:text="BU factor: " />
+
+        <TextView
+            android:id="@+id/textView_buFactor_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView_static_buFactor"
+            android:layout_centerHorizontal="true"
+            android:padding="4dp"
+            android:text="TextView" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cfTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/textView_daytime_end"
+        android:padding="4dp">
+
+        <TextView
+            android:id="@+id/textView_static_correctionFactor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:padding="4dp"
+            android:text="Correction factor: " />
+
+        <TextView
+            android:id="@+id/textView_correctionFactor_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView_static_correctionFactor"
+            android:layout_centerHorizontal="true"
+            android:padding="4dp"
+            android:text="TextView" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView_daytime_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:padding="4dp"
+        android:text="Start" />
+
+    <TextView
+        android:id="@+id/textView_daytime_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/textView_separator"
+        android:padding="4dp"
+        android:text="End" />
+
+    <TextView
+        android:id="@+id/textView_separator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/textView_daytime_start"
+        android:padding="4dp"
+        android:text="-" />
+
+</RelativeLayout>
