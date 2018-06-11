@@ -45,7 +45,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:padding="4dp"
-            android:text="Correction factor: " />
+            android:text="Correction factor " />
 
         <TextView
             android:id="@+id/textView_correctionFactor_new"

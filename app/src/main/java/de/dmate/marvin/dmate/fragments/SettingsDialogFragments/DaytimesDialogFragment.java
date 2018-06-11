@@ -19,9 +19,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import javax.xml.datatype.Duration;
 
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
@@ -148,14 +152,55 @@ public class DaytimesDialogFragment extends DialogFragment {
         buttonConfirmNewDaytime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO save new daytime
-                buttonConfirmDaytimes.setVisibility(View.VISIBLE);
-                newDaytimeLayout.setVisibility(View.GONE);
-                buttonNewDaytime.setVisibility(View.VISIBLE);
+
+                //check if hours are = "" and trigger Toast if so
+                if (editTextDaytimeStartHH.getText().toString().equals("") || editTextDaytimeEndHH.getText().toString().equals("")) {
+                    Toast toast = Toast.makeText(getContext(), "Please define daytime hours", Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+
+                //check if minutes are = "" and set to "00" if so
+                if (editTextDaytimeStartMM.getText().toString().equals("")) editTextDaytimeStartMM.setText("00");
+                if (editTextDaytimeEndMM.getText().toString().equals("")) editTextDaytimeEndMM.setText("00");
+
+                //check if correction factor is = "" and trigger Toast if so
+                if (editTextCorrectionFactor.getText().toString().equals("")) {
+                    Toast toast = Toast.makeText(getContext(), "Please define a correction factor", Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+
+                //check if BU factor is = "" and trigger Toast if so
+                if (editTextBuFactor.getText().toString().equals("")) {
+                    Toast toast = Toast.makeText(getContext(), "Please define a bread unit factor", Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+
                 String daytimeStartString = editTextDaytimeStartHH.getText().toString() + ":" + editTextDaytimeStartMM.getText().toString();
                 String daytimeEndString = editTextDaytimeEndHH.getText().toString() + ":" + editTextDaytimeEndMM.getText().toString();
                 Integer correctionFactor = Integer.parseInt(editTextCorrectionFactor.getText().toString());
                 Float buFactor = Float.parseFloat(editTextBuFactor.getText().toString());
+
+                //validate hours of daytimes -> must be between 0 and 23
+                if (!(Integer.parseInt(editTextDaytimeStartHH.getText().toString()) <= 23
+                        && Integer.parseInt(editTextDaytimeStartHH.getText().toString()) >= 0
+                        && Integer.parseInt(editTextDaytimeEndHH.getText().toString()) <= 23
+                        && Integer.parseInt(editTextDaytimeEndHH.getText().toString()) >= 0)) {
+                    Toast toast = Toast.makeText(getContext(), "Daytime hours must be between 0 and 23", Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+                //validate minutes of daytimes -> must be between 0 and 59
+                if (!(Integer.parseInt(editTextDaytimeStartMM.getText().toString()) <= 59
+                        && Integer.parseInt(editTextDaytimeStartMM.getText().toString()) >= 0
+                        && Integer.parseInt(editTextDaytimeEndMM.getText().toString()) <= 59
+                        && Integer.parseInt(editTextDaytimeEndMM.getText().toString()) >= 0)) {
+                    Toast toast = Toast.makeText(getContext(), "Daytime minutes must be between 0 and 59", Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
 
                 Daytime daytime = new Daytime();
                 daytime.setDaytimeStart(daytimeStartString);
@@ -164,6 +209,10 @@ public class DaytimesDialogFragment extends DialogFragment {
                 daytime.setBuFactor(buFactor);
 
                 viewModel.addDaytime(daytime);
+
+                buttonConfirmDaytimes.setVisibility(View.VISIBLE);
+                newDaytimeLayout.setVisibility(View.GONE);
+                buttonNewDaytime.setVisibility(View.VISIBLE);
             }
         });
 
