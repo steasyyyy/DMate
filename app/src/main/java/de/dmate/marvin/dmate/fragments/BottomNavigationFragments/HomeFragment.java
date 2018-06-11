@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter
 
         //start observing LiveData in ViewModel and define what should happen when "LiveData<List<Entry>> entries;" in ViewModel changes
         //because it is LiveData the collection in ViewModel is always up to date (automatically gets updated when changes to database are made)
-        viewModel.getAllEntries().observe(HomeFragment.this, new Observer<List<Entry>>() {
+        viewModel.getEntries().observe(HomeFragment.this, new Observer<List<Entry>>() {
             @Override
             public void onChanged(@Nullable List<Entry> entries) {
                 entriesRecyclerViewAdapter.addItems(entries);

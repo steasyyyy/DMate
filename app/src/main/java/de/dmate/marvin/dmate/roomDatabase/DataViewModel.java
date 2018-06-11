@@ -61,15 +61,15 @@ public class DataViewModel extends AndroidViewModel {
         new addDaytimeAsyncTask(appDatabase).execute(daytime);
     }
 
-    //delte a daytime from the database
-    public void deleteDaytimeAsyncTask(Daytime daytime) {
+    //delete a daytime from the database
+    public void deleteDaytime(Daytime daytime) {
         new deleteDaytimeAsyncTask(appDatabase).execute(daytime);
     }
 
 
     //ENTRIES
     //get all entries
-    public LiveData<List<Entry>> getAllEntries() {
+    public LiveData<List<Entry>> getEntries() {
         return entries;
     }
 

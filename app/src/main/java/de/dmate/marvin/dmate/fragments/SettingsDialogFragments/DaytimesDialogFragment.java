@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,25 +81,33 @@ public class DaytimesDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dialog_daytimes, container, false);
+        return inflater.inflate(R.layout.fragment_dialog_daytimes, container, false);
+    }
 
-        //initialize all buttons etc.
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        //initialize all views
+        listViewDaytimes = view.findViewById(R.id.listView_daytimes);
         buttonNewDaytime = view.findViewById(R.id.button_new_daytime);
         newDaytimeLayout = view.findViewById(R.id.new_daytime_layout);
-        buttoncancelNewDaytime = view.findViewById(R.id.button_cancel_new_daytime);
-        buttonConfirmNewDaytime = view.findViewById(R.id.button_confirm_new_daytime);
-        buttonConfirmDaytimes = view.findViewById(R.id.button_confirm_daytimes);
         editTextDaytimeStartHH = view.findViewById(R.id.editText_daytimeStart_HH);
         editTextDaytimeStartMM = view.findViewById(R.id.editText_daytimeStart_MM);
         editTextDaytimeEndHH = view.findViewById(R.id.editText_daytimeEnd_HH);
         editTextDaytimeEndMM = view.findViewById(R.id.editText_daytimeEnd_MM);
-
-        arrayAdapter = new DaytimeArrayAdapter(getContext(), new ArrayList<Daytime>());
-
-        //initialize listview
-        listViewDaytimes = view.findViewById(R.id.listView_daytimes);
+        buttoncancelNewDaytime = view.findViewById(R.id.button_cancel_new_daytime);
+        buttonConfirmNewDaytime = view.findViewById(R.id.button_confirm_new_daytime);
+        buttonConfirmDaytimes = view.findViewById(R.id.button_confirm_daytimes);
 
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
+
+        //create DaytimeArrayAdapter with empty data collection
+        arrayAdapter = new DaytimeArrayAdapter(getContext(), new ArrayList<Daytime>());
+
+        //set adapter in listview
+        listViewDaytimes.setAdapter(arrayAdapter);
+
+        //observe LiveData from DB to trigger update of adapter content
         viewModel.getDaytimes().observe(DaytimesDialogFragment.this, new Observer<List<Daytime>>() {
             @Override
             public void onChanged(@Nullable List<Daytime> daytimes) {
@@ -108,26 +115,7 @@ public class DaytimesDialogFragment extends DialogFragment {
             }
         });
 
-//        ArrayList<String> arrayList = new ArrayList<String>();
-//        arrayList.add("Daytime1");
-//        arrayList.add("Daytime2");
-//        arrayList.add("Daytime2");
-//        arrayList.add("Daytime2");
-//        arrayList.add("Daytime2");
-//        arrayList.add("Daytime2");
-//        arrayList.add("Daytime2");
-//        arrayList.add("Daytime2");
-//        arrayList.add("Daytime2");
-//        arrayList.add("Daytime2");
-//        arrayList.add("Daytime2");
-//        arrayList.add("Daytime2");
-//        arrayList.add("Daytime2");
-
-//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.daytime_layout, arrayList);
-        listViewDaytimes.setAdapter(arrayAdapter);
-
-
-
+        //set click listeners to all buttons
         buttonNewDaytime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,7 +167,7 @@ public class DaytimesDialogFragment extends DialogFragment {
             }
         });
 
-        return view;
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -209,19 +197,15 @@ public class DaytimesDialogFragment extends DialogFragment {
     }
 }
 
+//Custom ArrayAdapter to feed ListView with content from DB
 class DaytimeArrayAdapter extends ArrayAdapter<Daytime> {
 
-    private Context context;
-    private List<Daytime> daytimes;
-
-    public DaytimeArrayAdapter(Context context, ArrayList<Daytime> daytimes) {
+    public DaytimeArrayAdapter(Context context, List<Daytime> daytimes) {
         super(context, 0, daytimes);
-
-        this.context = context;
-        this.daytimes = daytimes;
     }
 
     public void updateDaytimes(List<Daytime> daytimes) {
+        this.clear();
         this.addAll(daytimes);
         notifyDataSetChanged();
     }
@@ -230,21 +214,19 @@ class DaytimeArrayAdapter extends ArrayAdapter<Daytime> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        Daytime currentDaytime = getItem(position);
+
         if(convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.daytime_layout_new, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.daytime_layout_new, parent, false);
         }
 
-        View daytimeView = convertView;
-
-        Daytime currentDaytime = daytimes.get(position);
-
-        TextView textViewStart = daytimeView.findViewById(R.id.textView_daytime_start);
-        TextView textViewEnd = daytimeView.findViewById(R.id.textView_daytime_end);
+        TextView textViewStart = convertView.findViewById(R.id.textView_daytime_start);
+        TextView textViewEnd = convertView.findViewById(R.id.textView_daytime_end);
 
         textViewStart.setText(currentDaytime.getDaytimeStart());
         textViewEnd.setText(currentDaytime.getDaytimeEnd());
 
-        return daytimeView;
+        return convertView;
     }
 
 }
