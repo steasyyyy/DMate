@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
@@ -30,6 +31,8 @@ public class DataViewModel extends AndroidViewModel {
     private final LiveData<List<Sport>> sports;
     private final LiveData<List<User>> users;
 
+    private List<User> usersAsList;
+
     private AppDatabase appDatabase;
 
     public DataViewModel(@NonNull Application application) {
@@ -47,8 +50,14 @@ public class DataViewModel extends AndroidViewModel {
         plannedBasalInjections = appDatabase.plannedBasalInjectionDao().getAllPlannedBasalInjections();
         sports = appDatabase.sportDao().getAllSports();
         users = appDatabase.userDao().getAllUsers();
-    }
 
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                usersAsList = appDatabase.userDao().getAllUsersAsArrayList();
+            }
+        });
+    }
 
     //DAYTIMES
     //get all daytimes
@@ -174,6 +183,10 @@ public class DataViewModel extends AndroidViewModel {
         return users;
     }
 
+    public List<User> getUsersAsList() {
+        return usersAsList;
+    }
+
     //add a user to the database
     public void addUser(User user) {
         new addUserAsyncTask(appDatabase).execute(user);
@@ -182,6 +195,11 @@ public class DataViewModel extends AndroidViewModel {
     //delete a user from the database
     public void deleteUser(User user) {
         new deleteUserAsyncTask(appDatabase).execute(user);
+    }
+
+    //delete all users
+    public void deleteAllUsers() {
+        new deleteAllUsersAsyncTask(appDatabase).execute();
     }
 
 
@@ -423,6 +441,20 @@ public class DataViewModel extends AndroidViewModel {
         @Override
         protected Void doInBackground(User... params) {
             db.userDao().deleteUser(params[0]);
+            return null;
+        }
+    }
+
+    private static class deleteAllUsersAsyncTask extends AsyncTask<User, Void, Void> {
+        private AppDatabase db;
+
+        deleteAllUsersAsyncTask(AppDatabase db) {
+            this.db = db;
+        }
+
+        @Override
+        protected Void doInBackground(User... params) {
+            db.userDao().deleteAllUsers();
             return null;
         }
     }

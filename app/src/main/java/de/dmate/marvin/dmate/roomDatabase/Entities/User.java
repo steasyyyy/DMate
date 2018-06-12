@@ -36,19 +36,6 @@ public class User {
 
     private Float divergenceFromInitialValueArithMean;
 
-    @Ignore
-    private List<Entry> entries;
-    @Ignore
-    private List<Observation> observations;
-    @Ignore
-    private List<Notification> notifications;
-    @Ignore
-    private List<PlannedBasalInjection> plannedBasalInjections;
-    @Ignore
-    private List<Daytime> daytimes;
-    @Ignore
-    private List<Sport> sports;
-
     //getter
     public Integer getuId() {
         return uId;
@@ -110,30 +97,6 @@ public class User {
         return divergenceFromInitialValueArithMean;
     }
 
-    public List<Entry> getEntries() {
-        return entries;
-    }
-
-    public List<Observation> getObservations() {
-        return observations;
-    }
-
-    public List<Notification> getNotifications() {
-        return notifications;
-    }
-
-    public List<PlannedBasalInjection> getPlannedBasalInjections() {
-        return plannedBasalInjections;
-    }
-
-    public List<Daytime> getDaytimes() {
-        return daytimes;
-    }
-
-    public List<Sport> getSports() {
-        return sports;
-    }
-
     //setter
     public void setuId(Integer uId) {
         this.uId = uId;
@@ -193,29 +156,5 @@ public class User {
 
     public void setDivergenceFromInitialValueArithMean(Float divergenceFromInitialValueArithMean) {
         this.divergenceFromInitialValueArithMean = divergenceFromInitialValueArithMean;
-    }
-
-    public void setEntries(List<Entry> entries) {
-        this.entries = entries;
-    }
-
-    public void setObservations(List<Observation> observations) {
-        this.observations = observations;
-    }
-
-    public void setNotifications(List<Notification> notifications) {
-        this.notifications = notifications;
-    }
-
-    public void setPlannedBasalInjections(List<PlannedBasalInjection> plannedBasalInjections) {
-        this.plannedBasalInjections = plannedBasalInjections;
-    }
-
-    public void setDaytimes(List<Daytime> daytimes) {
-        this.daytimes = daytimes;
-    }
-
-    public void setSports(List<Sport> sports) {
-        this.sports = sports;
     }
 }

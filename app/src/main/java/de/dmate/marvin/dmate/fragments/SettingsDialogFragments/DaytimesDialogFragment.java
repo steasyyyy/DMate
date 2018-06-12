@@ -113,6 +113,7 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
         buttonConfirmNewDaytime = view.findViewById(R.id.button_confirm_new_daytime);
         buttonConfirmDaytimes = view.findViewById(R.id.button_confirm_daytimes);
 
+        //get DataViewModel
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
 
         //create DaytimeArrayAdapter with empty data collection
@@ -147,6 +148,7 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
                 buttonConfirmDaytimes.setVisibility(View.VISIBLE);
                 newDaytimeLayout.setVisibility(View.GONE);
                 buttonNewDaytime.setVisibility(View.VISIBLE);
+
                 //clear all editTexts
                 editTextDaytimeStartHH.setText("");
                 editTextDaytimeStartMM.setText("");

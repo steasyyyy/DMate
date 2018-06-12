@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialog;
@@ -52,17 +53,22 @@ public class BasalInsulineDialogFragment extends DialogFragment {
         dialog.getWindow().setAttributes(layoutParams);
 
         return dialog;
-
-        //alternative:
-//        layoutParams.width = 1000;
-//        layoutParams.height = 1500;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dialog_basal_insuline, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+
+
+
+
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
