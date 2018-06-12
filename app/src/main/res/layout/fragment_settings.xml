@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.dmate.marvin.dmate.fragments.BottomNavigationFragments.SettingsFragment">
+    tools:context="de.dmate.marvin.dmate.fragments.MainFragments.SettingsFragment">
 
     <Button
         android:id="@+id/button_export"
@@ -75,13 +75,13 @@
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/button_name"
+        android:id="@+id/button_user_name"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:text="Name"
+        android:text="User name"
         android:textAlignment="viewStart"
         android:textAllCaps="false" />
 
@@ -89,7 +89,7 @@
         android:id="@+id/button_daytimes"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button_name"
+        android:layout_below="@+id/button_user_name"
         android:layout_centerHorizontal="true"
         android:text="Daytimes"
         android:textAlignment="viewStart"

@@ -106,7 +106,6 @@ public class BolusInsulineDialogFragment extends DialogFragment {
                     if (user.getBolusName() != null) editTextName.setText(user.getBolusName());
                     if (user.getBolusDuration() != null) editTextDuration.setText(user.getBolusDuration().toString());
                 } catch (IndexOutOfBoundsException e) {
-                    System.out.println("ERROR IN TRY BLOCK: " + e.getMessage());
                     user = new User();
                     viewModel.addUser(user);
                     Toast toast = Toast.makeText(getContext(), "Created new user", Toast.LENGTH_LONG);

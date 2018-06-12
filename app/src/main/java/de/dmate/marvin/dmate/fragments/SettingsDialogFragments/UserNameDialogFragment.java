@@ -5,15 +5,14 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,12 +24,11 @@ import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
 
-public class BasalInsulineDialogFragment extends DialogFragment {
+public class UserNameDialogFragment extends DialogFragment {
 
-    private OnBasalInsulineDialogFragmentInteractionListener mListener;
+    private OnNameDialogFragmentInteractionListener mListener;
 
-    private EditText editTextName;
-    private EditText editTextDuration;
+    private EditText editTextUserName;
 
     private Button buttonCancel;
     private Button buttonConfirm;
@@ -38,12 +36,12 @@ public class BasalInsulineDialogFragment extends DialogFragment {
     private DataViewModel viewModel;
     private User user;
 
-    public BasalInsulineDialogFragment() {
+    public UserNameDialogFragment() {
         // Required empty public constructor
     }
 
-    public static BasalInsulineDialogFragment newInstance() {
-        BasalInsulineDialogFragment fragment = new BasalInsulineDialogFragment();
+    public static UserNameDialogFragment newInstance() {
+        UserNameDialogFragment fragment = new UserNameDialogFragment();
         return fragment;
     }
 
@@ -76,16 +74,16 @@ public class BasalInsulineDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dialog_basal_insuline, container, false);
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_dialog_user_name, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        editTextName = view.findViewById(R.id.editText_name_basal);
-        editTextDuration = view.findViewById(R.id.editText_duration_of_action_basal);
-        buttonCancel = view.findViewById(R.id.button_cancel_basal);
-        buttonConfirm = view.findViewById(R.id.button_confirm_basal);
+        editTextUserName = view.findViewById(R.id.editText_user_name);
+        buttonCancel = view.findViewById(R.id.button_cancel_user_name);
+        buttonConfirm = view.findViewById(R.id.button_confirm_user_name);
 
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
 
@@ -97,7 +95,7 @@ public class BasalInsulineDialogFragment extends DialogFragment {
 //            }
 //        }).start();
 
-        viewModel.getUsers().observe(BasalInsulineDialogFragment.this, new Observer<List<User>>() {
+        viewModel.getUsers().observe(UserNameDialogFragment.this, new Observer<List<User>>() {
             @Override
             public void onChanged(@Nullable final List<User> users) {
 //                initialize user
@@ -105,8 +103,7 @@ public class BasalInsulineDialogFragment extends DialogFragment {
 //                if user does not exist, create new user
                 try {
                     user = users.get(0);
-                    if (user.getBasalName() != null) editTextName.setText(user.getBasalName());
-                    if (user.getBasalDuration() != null) editTextDuration.setText(user.getBasalDuration().toString());
+                    if (user.getName() != null) editTextUserName.setText(user.getName());
                 } catch (IndexOutOfBoundsException e) {
                     user = new User();
                     viewModel.addUser(user);
@@ -127,8 +124,7 @@ public class BasalInsulineDialogFragment extends DialogFragment {
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user.setBasalName(editTextName.getText().toString());
-                user.setBasalDuration(Float.parseFloat(editTextDuration.getText().toString()));
+                user.setName(editTextUserName.getText().toString());
                 viewModel.addUser(user);
                 Toast toast = Toast.makeText(getContext(), "Updated user information", Toast.LENGTH_LONG);
                 toast.show();
@@ -142,11 +138,11 @@ public class BasalInsulineDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnBasalInsulineDialogFragmentInteractionListener) {
-            mListener = (OnBasalInsulineDialogFragmentInteractionListener) context;
+        if (context instanceof OnNameDialogFragmentInteractionListener) {
+            mListener = (OnNameDialogFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnBasalInsulineDialogFragmentInteractionListener");
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -156,7 +152,7 @@ public class BasalInsulineDialogFragment extends DialogFragment {
         mListener = null;
     }
 
-    public interface OnBasalInsulineDialogFragmentInteractionListener {
+    public interface OnNameDialogFragmentInteractionListener {
 
     }
 }

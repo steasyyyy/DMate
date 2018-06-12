@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate.fragments.BottomNavigationFragments;
+package de.dmate.marvin.dmate.fragments.MainFragments;
 
 import android.content.Context;
 import android.os.Bundle;

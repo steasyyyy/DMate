@@ -1,7 +1,6 @@
-package de.dmate.marvin.dmate.fragments.BottomNavigationFragments;
+package de.dmate.marvin.dmate.fragments.MainFragments;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,8 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import de.dmate.marvin.dmate.R;
@@ -18,7 +15,7 @@ import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BasalInsulineDial
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BolusInsulineDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.DaytimesDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.ExportDialogFragment;
-import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.NameDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.UserNameDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.NotificationsDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.SportiveActivitiesDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.TargetAreaDialogFragment;
@@ -58,7 +55,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         super.onViewCreated(view, savedInstanceState);
 
         //get buttons used in SettingsFragment and set ClickListener to "this"
-        nameButton = getView().findViewById(R.id.button_name);
+        nameButton = getView().findViewById(R.id.button_user_name);
         nameButton.setOnClickListener(this);
         daytimesButton = getView().findViewById(R.id.button_daytimes);
         daytimesButton.setOnClickListener(this);
@@ -82,8 +79,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case R.id.button_name:
-                new NameDialogFragment().show(getFragmentManager(), "nameDialog");
+            case R.id.button_user_name:
+                new UserNameDialogFragment().show(getFragmentManager(), "nameDialog");
                 break;
             case R.id.button_daytimes:
                 new DaytimesDialogFragment().show(getFragmentManager(), "daytimesDialog");

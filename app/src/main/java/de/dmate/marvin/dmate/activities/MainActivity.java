@@ -13,14 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 import de.dmate.marvin.dmate.R;
-import de.dmate.marvin.dmate.fragments.BottomNavigationFragments.HomeFragment;
-import de.dmate.marvin.dmate.fragments.BottomNavigationFragments.NotificationsFragment;
-import de.dmate.marvin.dmate.fragments.BottomNavigationFragments.SettingsFragment;
+import de.dmate.marvin.dmate.fragments.MainFragments.HomeFragment;
+import de.dmate.marvin.dmate.fragments.MainFragments.NotificationsFragment;
+import de.dmate.marvin.dmate.fragments.MainFragments.SettingsFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BasalInsulineDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BolusInsulineDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.DaytimesDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.ExportDialogFragment;
-import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.NameDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.UserNameDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.NotificationsDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.SportiveActivitiesDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.TargetAreaDialogFragment;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements
         SportiveActivitiesDialogFragment.OnSportiveActivitiesDialogFragmentListener,
         TargetAreaDialogFragment.OnTargetAreaDialogFragmentInteractionListener,
         UnitsDialogFragment.OnUnitsDialogFragmentInteractionListener,
-        NameDialogFragment.OnNameDialogFragmentInteractionListener {
+        UserNameDialogFragment.OnNameDialogFragmentInteractionListener {
 
     //used to determine state of NewEntryActivity (Add new entry OR edit existing entry)
     public static final int NEW_ENTRY_REQUEST = 1;

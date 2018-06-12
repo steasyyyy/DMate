@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import de.dmate.marvin.dmate.R;
 
@@ -34,9 +35,21 @@ public class UnitsDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        //get alert dialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(R.layout.fragment_dialog_units);
-        AlertDialog dialog = builder.create();
+
+        //set new View to the builder and create the Dialog
+        Dialog dialog = builder.setView(new View(getActivity())).create();
+
+        //get WindowManager.LayoutParams, copy attributes from Dialog to LayoutParams and override them with MATCH_PARENT
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        layoutParams.copyFrom(dialog.getWindow().getAttributes());
+        layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        //show the Dialog before setting new LayoutParams to the Dialog
+        dialog.show();
+        dialog.getWindow().setAttributes(layoutParams);
+
         return dialog;
     }
 
