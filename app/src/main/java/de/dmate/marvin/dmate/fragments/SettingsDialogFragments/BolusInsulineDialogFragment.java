@@ -137,10 +137,6 @@ public class BolusInsulineDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-//    private void updateUser(User user) {
-//        this.user = user;
-//    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
