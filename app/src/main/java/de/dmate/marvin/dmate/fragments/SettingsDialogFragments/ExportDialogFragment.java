@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
@@ -308,19 +309,19 @@ public class ExportDialogFragment extends DialogFragment {
 
         //set header including user name
         if (user.getName() != null) {
-            Paragraph p1 = new Paragraph("DMate export for " + user.getName());
-            p1.setSpacingAfter(72f);
+            Paragraph p1 = new Paragraph(new Phrase("DMate export for " + user.getName(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 28f)));
+            p1.setSpacingBefore(72f);
             document.add(p1);
         }
         else {
-            Paragraph p1 = new Paragraph("DMate export");
-            p1.setSpacingAfter(72f);
+            Paragraph p1 = new Paragraph(new Phrase("DMate export " + user.getName(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 28f)));
+            p1.setSpacingBefore(72f);
             document.add(p1);
         }
 
         //set date
         String date = Helper.formatMillisToDateString(System.currentTimeMillis());
-        Paragraph p2 = new Paragraph(date);
+        Paragraph p2 = new Paragraph(new Phrase(date, FontFactory.getFont(FontFactory.HELVETICA, 16f)));
         p2.setSpacingAfter(72f);
         document.add(p2);
 
