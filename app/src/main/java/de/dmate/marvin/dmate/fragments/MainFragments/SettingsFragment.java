@@ -15,6 +15,7 @@ import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BasalInsulineDial
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BolusInsulineDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.DaytimesDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.ExportDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.PlannedBasalInjectionsDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.UserNameDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.NotificationsDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.SportiveActivitiesDialogFragment;
@@ -29,6 +30,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
     private Button daytimesButton;
     private Button bolusInsulineButton;
     private Button basalInsulineButton;
+    private Button plannedBasalInjectionsButton;
     private Button unitsButton;
     private Button targetAreaButton;
     private Button sportiveActivitiesButton;
@@ -63,6 +65,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         bolusInsulineButton.setOnClickListener(this);
         basalInsulineButton = getView().findViewById(R.id.button_basal_insuline);
         basalInsulineButton.setOnClickListener(this);
+        plannedBasalInjectionsButton = getView().findViewById(R.id.button_planned_basal_injections);
+        plannedBasalInjectionsButton.setOnClickListener(this);
         unitsButton = getView().findViewById(R.id.button_units);
         unitsButton.setOnClickListener(this);
         targetAreaButton = getView().findViewById(R.id.button_blood_sugar_target_area);
@@ -107,6 +111,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
             case R.id.button_export:
                 new ExportDialogFragment().show(getFragmentManager(), "exportDialog");
                 break;
+            case R.id.button_planned_basal_injections:
+                new PlannedBasalInjectionsDialogFragment().show(getFragmentManager(), "plannedBasalInjectionsDialog");
             default:
                 System.out.println("Error! Could not find ID of this button.");
         }

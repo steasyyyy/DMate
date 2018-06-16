@@ -20,6 +20,7 @@ import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BasalInsulineDial
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BolusInsulineDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.DaytimesDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.ExportDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.PlannedBasalInjectionsDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.UserNameDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.NotificationsDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.SportiveActivitiesDialogFragment;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements
         NotificationsFragment.OnNotificationFragmentInteractionListener,
         SettingsFragment.OnSettingsFragmentInteractionListener,
         BasalInsulineDialogFragment.OnBasalInsulineDialogFragmentInteractionListener,
+        PlannedBasalInjectionsDialogFragment.OnPlannedBasalInjectionsDialogFragmentInteractionListener,
         BolusInsulineDialogFragment.OnBolusInsulineDialogFragmentInteractionListener,
         DaytimesDialogFragment.OnDaytimesDialogFragmentInteractionListener,
         ExportDialogFragment.OnExportDialogFragmentInteractionListener,

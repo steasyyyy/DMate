@@ -48,7 +48,7 @@
         android:id="@+id/button_units"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button_basal_insuline"
+        android:layout_below="@+id/button_planned_basal_injections"
         android:layout_centerHorizontal="true"
         android:text="Units"
         android:textAlignment="viewStart"
@@ -92,6 +92,16 @@
         android:layout_below="@+id/button_user_name"
         android:layout_centerHorizontal="true"
         android:text="Daytimes"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/button_planned_basal_injections"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_basal_insuline"
+        android:layout_centerHorizontal="true"
+        android:text="Planned basal insuline injections"
         android:textAlignment="viewStart"
         android:textAllCaps="false" />
 </RelativeLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".fragments.SettingsDialogFragments.PlannedBasalInjectionsDialogFragment">
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="17dp"
+        android:text="Planned basal insuline injections"
+        android:textSize="18sp" />
+
+    <ListView
+        android:id="@+id/listView_plannedBasalInjections"
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="87dp" />
+
+    <Button
+        android:id="@+id/button_new_planned_injection"
+        android:layout_width="305dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listView_plannedBasalInjections"
+        android:layout_centerHorizontal="true"
+        android:padding="4dp"
+        android:text="New planned injection" />
+
+    <Button
+        android:id="@+id/button_confirm_planned_basal_injections"
+        android:layout_width="305dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_new_planned_injection"
+        android:layout_centerHorizontal="true"
+        android:padding="4dp"
+        android:text="Confirm" />
+</RelativeLayout>
