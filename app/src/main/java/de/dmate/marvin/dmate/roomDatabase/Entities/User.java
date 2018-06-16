@@ -28,9 +28,9 @@ public class User {
     private String minAcceptanceTime;
     private String maxAcceptanceTime;
 
-    private Boolean unitBu;
-    private Boolean unitMgdl;
-    private Boolean notificationsEnabled;
+    private Boolean unitBu = true;
+    private Boolean unitMgdl = true;
+    private Boolean notificationsEnabled = true;
 
     private Float bloodsugarArithMean;
 
