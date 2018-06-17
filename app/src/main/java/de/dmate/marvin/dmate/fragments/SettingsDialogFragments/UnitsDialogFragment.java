@@ -1,22 +1,37 @@
 package de.dmate.marvin.dmate.fragments.SettingsDialogFragments;
 
 import android.app.Dialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.Toast;
+
+import java.util.List;
 
 import de.dmate.marvin.dmate.R;
+import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
+import de.dmate.marvin.dmate.roomDatabase.Entities.User;
 
 public class UnitsDialogFragment extends DialogFragment {
 
     private OnUnitsDialogFragmentInteractionListener mListener;
+
+    private Switch switchMgdlMmol;
+    private Switch switchBuCu;
+
+    private DataViewModel viewModel;
+    private User user;
 
     public UnitsDialogFragment() {
         // Required empty public constructor
@@ -58,6 +73,49 @@ public class UnitsDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dialog_units, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        switchMgdlMmol = view.findViewById(R.id.switch_bu);
+        switchBuCu = view.findViewById(R.id.switch_mgdl);
+
+        viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
+
+        viewModel.getUsers().observe(UnitsDialogFragment.this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(@Nullable List<User> users) {
+                try {
+                    user = users.get(0);
+                    switchMgdlMmol.setChecked(user.getUnitMgdl());
+                    switchBuCu.setChecked(user.getUnitBu());
+                } catch (IndexOutOfBoundsException e) {
+                    user = new User();
+                    viewModel.addUser(user);
+                    Toast toast = Toast.makeText(getContext(), "Created new user", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }
+        });
+
+        switchMgdlMmol.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                user.setUnitMgdl(isChecked);
+                viewModel.addUser(user);
+            }
+        });
+
+        switchBuCu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                user.setUnitBu(isChecked);
+                viewModel.addUser(user);
+            }
+        });
+
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

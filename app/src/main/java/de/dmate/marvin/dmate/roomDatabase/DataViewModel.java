@@ -31,8 +31,6 @@ public class DataViewModel extends AndroidViewModel {
     private final LiveData<List<Sport>> sports;
     private final LiveData<List<User>> users;
 
-    private List<User> usersAsList;
-
     private AppDatabase appDatabase;
 
     public DataViewModel(@NonNull Application application) {
@@ -50,13 +48,6 @@ public class DataViewModel extends AndroidViewModel {
         plannedBasalInjections = appDatabase.plannedBasalInjectionDao().getAllPlannedBasalInjections();
         sports = appDatabase.sportDao().getAllSports();
         users = appDatabase.userDao().getAllUsers();
-
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                usersAsList = appDatabase.userDao().getAllUsersAsArrayList();
-            }
-        });
     }
 
     //DAYTIMES
@@ -181,10 +172,6 @@ public class DataViewModel extends AndroidViewModel {
     //get all users
     public LiveData<List<User>> getUsers() {
         return users;
-    }
-
-    public List<User> getUsersAsList() {
-        return usersAsList;
     }
 
     //add a user to the database

@@ -1,14 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
     tools:context=".fragments.SettingsDialogFragments.UnitsDialogFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="17dp"
+        android:text="Units"
+        android:textSize="18sp" />
 
-</FrameLayout>
+    <Switch
+        android:id="@+id/switch_mgdl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp"
+        android:padding="16dp" />
+
+    <Switch
+        android:id="@+id/switch_bu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/switch_mgdl"
+        android:layout_centerHorizontal="true"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/switch_mgdl"
+        android:layout_toStartOf="@+id/switch_mgdl"
+        android:padding="4dp"
+        android:text="mmol/l"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/switch_mgdl"
+        android:layout_toEndOf="@+id/switch_mgdl"
+        android:padding="4dp"
+        android:text="mg/dl"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/switch_bu"
+        android:layout_toStartOf="@+id/switch_mgdl"
+        android:padding="4dp"
+        android:text="Carbohydrate units"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/switch_bu"
+        android:layout_toEndOf="@+id/switch_mgdl"
+        android:padding="4dp"
+        android:text="Bread units"
+        android:textSize="16sp" />
+</RelativeLayout>
