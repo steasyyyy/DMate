@@ -37,7 +37,7 @@ import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 
-public class DaytimesDialogFragment extends DialogFragment implements ListView.OnItemClickListener, ListView.OnItemLongClickListener {
+public class DaytimesDialogFragment extends DialogFragment implements ListView.OnItemClickListener {
 
     private OnDaytimesDialogFragmentInteractionListener mListener;
     private Dialog dialog;
@@ -146,8 +146,8 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
             @Override
             public void onClick(View v) {
                 buttonConfirmDaytimes.setVisibility(View.VISIBLE);
-                newDaytimeLayout.setVisibility(View.GONE);
                 buttonNewDaytime.setVisibility(View.VISIBLE);
+                newDaytimeLayout.setVisibility(View.GONE);
 
                 //clear all editTexts
                 editTextDaytimeStartHH.setText("");
@@ -215,7 +215,7 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
                     return;
                 }
 
-                //TODO validate daytimes
+                //TODO validate that there are no overlapping daytimes
 //                //validate that there are no overlapping Daytimes
 //                Integer daytimeStartHH = Integer.parseInt(editTextDaytimeStartHH.getText().toString());
 //                Integer daytimeStartMM = Integer.parseInt(editTextDaytimeStartMM.getText().toString());
@@ -274,8 +274,8 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
                 viewModel.addDaytime(daytime);
 
                 buttonConfirmDaytimes.setVisibility(View.VISIBLE);
-                newDaytimeLayout.setVisibility(View.GONE);
                 buttonNewDaytime.setVisibility(View.VISIBLE);
+                newDaytimeLayout.setVisibility(View.GONE);
 
                 //clear all editTexts
                 editTextDaytimeStartHH.setText("");
@@ -290,8 +290,6 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
         buttonConfirmDaytimes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO save daytimes if any changed
-                buttonConfirmDaytimes.setVisibility(View.VISIBLE);
                 dismiss();
             }
         });
@@ -344,11 +342,6 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
         buttonConfirmDaytimes.setVisibility(View.GONE);
         buttonNewDaytime.setVisibility(View.GONE);
         newDaytimeLayout.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        return false;
     }
 
     public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {

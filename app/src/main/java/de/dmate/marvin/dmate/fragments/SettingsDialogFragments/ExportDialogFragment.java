@@ -556,17 +556,3 @@ public class ExportDialogFragment extends DialogFragment {
         getContext().startActivity(intent);
     }
 }
-
-
-class createPdfTask extends AsyncTask<Document, Void, Document> {
-
-    @Override
-    protected Document doInBackground(Document... documents) {
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(Document document) {
-        super.onPostExecute(document);
-    }
-}
