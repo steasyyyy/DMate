@@ -1,14 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.SettingsDialogFragments.SportiveActivitiesDialogFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="17dp"
+        android:text="Sportive activities"
+        android:textSize="18sp" />
 
-</FrameLayout>
+    <ListView
+        android:id="@+id/listView_sportive_activities"
+        android:layout_width="300dp"
+        android:layout_height="140dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="50dp" />
+
+    <Button
+        android:id="@+id/button_new_sportive_activity"
+        android:layout_width="305dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listView_sportive_activities"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="4dp"
+        android:text="New sportive activity"
+        android:textAllCaps="false" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout_new_sportive_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/button_new_sportive_activity"
+        android:layout_marginTop="4dp"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/editText_sport_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/relativeLayout_new_sportive_activity"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editText_sport_effect_per_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText_sport_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:ems="10"
+            android:hint="Effect per unit"
+            android:inputType="numberDecimal" />
+
+        <Button
+            android:id="@+id/button_cancel_new_sportive_activity"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/editText_sport_effect_per_unit"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="62dp"
+            android:layout_marginTop="4dp"
+            android:text="Cancel"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/button_confirm_new_sportive_activity"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/editText_sport_effect_per_unit"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="62dp"
+            android:layout_marginTop="4dp"
+            android:text="Confirm"
+            android:textAllCaps="false" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button_confirm_sportive_activities"
+        android:layout_width="305dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout_new_sportive_activity"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:text="Confirm"
+        android:textAllCaps="false" />
+</RelativeLayout>

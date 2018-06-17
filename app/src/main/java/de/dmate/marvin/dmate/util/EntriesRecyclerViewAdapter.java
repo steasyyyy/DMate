@@ -68,7 +68,7 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RecyclerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_layout, parent, false));
+        return new RecyclerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_entry, parent, false));
     }
 
     @Override

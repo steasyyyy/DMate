@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,7 +11,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,15 +25,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-
-import javax.xml.datatype.Duration;
 
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
-import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 
 public class DaytimesDialogFragment extends DialogFragment implements ListView.OnItemClickListener {
 
@@ -102,7 +96,7 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
         //initialize all views
         listViewDaytimes = view.findViewById(R.id.listView_daytimes);
         buttonNewDaytime = view.findViewById(R.id.button_new_daytime);
-        newDaytimeLayout = view.findViewById(R.id.new_daytime_layout);
+        newDaytimeLayout = view.findViewById(R.id.relativeLayout_new_daytime);
         editTextDaytimeStartHH = view.findViewById(R.id.editText_daytimeStart_HH);
         editTextDaytimeStartMM = view.findViewById(R.id.editText_daytimeStart_MM);
         editTextDaytimeEndHH = view.findViewById(R.id.editText_daytimeEnd_HH);
@@ -284,12 +278,17 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
                 editTextDaytimeEndMM.setText("");
                 editTextCorrectionFactor.setText("");
                 editTextBuFactor.setText("");
+
+                Toast toast = Toast.makeText(getContext(), "New daytime added", Toast.LENGTH_LONG);
+                toast.show();
             }
         });
 
         buttonConfirmDaytimes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast toast = Toast.makeText(getContext(), "Daytimes updated", Toast.LENGTH_LONG);
+                toast.show();
                 dismiss();
             }
         });
@@ -352,6 +351,8 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
             public boolean onMenuItemClick(MenuItem item) {
                 Daytime daytime = arrayAdapter.getItem(info.position);
                 viewModel.deleteDaytime(daytime);
+                Toast toast = Toast.makeText(getContext(), "Daytime deleted", Toast.LENGTH_LONG);
+                toast.show();
                 return true;
             }
         });
@@ -382,7 +383,7 @@ class DaytimeArrayAdapter extends ArrayAdapter<Daytime> {
         Daytime currentDaytime = getItem(position);
 
         if(convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.daytime_layout, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_daytime, parent, false);
         }
 
         TextView textViewStart = convertView.findViewById(R.id.textView_daytime_start);

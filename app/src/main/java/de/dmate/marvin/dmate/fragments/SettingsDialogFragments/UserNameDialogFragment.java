@@ -126,7 +126,7 @@ public class UserNameDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 user.setName(editTextUserName.getText().toString());
                 viewModel.addUser(user);
-                Toast toast = Toast.makeText(getContext(), "Updated user information", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getContext(), "Updated user name", Toast.LENGTH_LONG);
                 toast.show();
                 dismiss();
             }

@@ -55,22 +55,22 @@
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/button_basal_insuline"
+        android:id="@+id/button_basal_insulin"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button_bolus_insuline"
+        android:layout_below="@+id/button_bolus_insulin"
         android:layout_centerHorizontal="true"
-        android:text="Basal insuline"
+        android:text="Basal insulin"
         android:textAlignment="viewStart"
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/button_bolus_insuline"
+        android:id="@+id/button_bolus_insulin"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button_daytimes"
         android:layout_centerHorizontal="true"
-        android:text="Bolus insuline"
+        android:text="Bolus insulin"
         android:textAlignment="viewStart"
         android:textAllCaps="false" />
 
@@ -99,9 +99,9 @@
         android:id="@+id/button_planned_basal_injections"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button_basal_insuline"
+        android:layout_below="@+id/button_basal_insulin"
         android:layout_centerHorizontal="true"
-        android:text="Planned basal insuline injections"
+        android:text="Planned basal insulin injections"
         android:textAlignment="viewStart"
         android:textAllCaps="false" />
 </RelativeLayout>

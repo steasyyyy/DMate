@@ -194,12 +194,16 @@ public class PlannedBasalInjectionsDialogFragment extends DialogFragment impleme
                 editTextMinutes.setText("");
                 editTextAmount.setText("");
 
+                Toast toast = Toast.makeText(getContext(), "Planned basal insulin injection added", Toast.LENGTH_LONG);
+                toast.show();
             }
         });
 
         buttonConfirmPlannedBasalInjections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast toast = Toast.makeText(getContext(), "Updated planned basal insulin injections", Toast.LENGTH_LONG);
+                toast.show();
                 dismiss();
             }
         });
@@ -252,6 +256,8 @@ public class PlannedBasalInjectionsDialogFragment extends DialogFragment impleme
             public boolean onMenuItemClick(MenuItem item) {
                 PlannedBasalInjection plannedBasalInjection = arrayAdapter.getItem(info.position);
                 viewModel.deletePlannedBasalInjection(plannedBasalInjection);
+                Toast toast = Toast.makeText(getContext(), "Planned basal injection deleted", Toast.LENGTH_LONG);
+                toast.show();
                 return true;
             }
         });
@@ -281,7 +287,7 @@ class PlannedBasalInjectionArrayAdapter extends ArrayAdapter<PlannedBasalInjecti
         PlannedBasalInjection plannedBasalInjection = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.planned_basal_injection_layout, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_planned_basal_injection, parent, false);
         }
 
         TextView plannedBasalTime = convertView.findViewById(R.id.textView_planned_basal_time);

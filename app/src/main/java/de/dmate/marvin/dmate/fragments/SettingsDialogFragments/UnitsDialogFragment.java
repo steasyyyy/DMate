@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -29,6 +30,8 @@ public class UnitsDialogFragment extends DialogFragment {
 
     private Switch switchMgdlMmol;
     private Switch switchBuCu;
+
+    private Button buttonConfirm;
 
     private DataViewModel viewModel;
     private User user;
@@ -80,6 +83,7 @@ public class UnitsDialogFragment extends DialogFragment {
 
         switchMgdlMmol = view.findViewById(R.id.switch_bu);
         switchBuCu = view.findViewById(R.id.switch_mgdl);
+        buttonConfirm = view.findViewById(R.id.button_confirm_units);
 
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
 
@@ -112,6 +116,15 @@ public class UnitsDialogFragment extends DialogFragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 user.setUnitBu(isChecked);
                 viewModel.addUser(user);
+            }
+        });
+
+        buttonConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(getContext(), "Updated unit information", Toast.LENGTH_LONG);
+                toast.show();
+                dismiss();
             }
         });
 

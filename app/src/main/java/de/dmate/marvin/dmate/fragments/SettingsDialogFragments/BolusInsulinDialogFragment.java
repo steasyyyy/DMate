@@ -9,11 +9,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,9 +23,9 @@ import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
 
-public class BasalInsulineDialogFragment extends DialogFragment {
+public class BolusInsulinDialogFragment extends DialogFragment {
 
-    private OnBasalInsulineDialogFragmentInteractionListener mListener;
+    private OnBolusInsulineDialogFragmentInteractionListener mListener;
 
     private EditText editTextName;
     private EditText editTextDuration;
@@ -38,12 +36,12 @@ public class BasalInsulineDialogFragment extends DialogFragment {
     private DataViewModel viewModel;
     private User user;
 
-    public BasalInsulineDialogFragment() {
+    public BolusInsulinDialogFragment() {
         // Required empty public constructor
     }
 
-    public static BasalInsulineDialogFragment newInstance() {
-        BasalInsulineDialogFragment fragment = new BasalInsulineDialogFragment();
+    public static BolusInsulinDialogFragment newInstance() {
+        BolusInsulinDialogFragment fragment = new BolusInsulinDialogFragment();
         return fragment;
     }
 
@@ -55,18 +53,13 @@ public class BasalInsulineDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        //get alert dialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        //set new View to the builder and create the Dialog
         Dialog dialog = builder.setView(new View(getActivity())).create();
 
-        //get WindowManager.LayoutParams, copy attributes from Dialog to LayoutParams and override them with MATCH_PARENT
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.copyFrom(dialog.getWindow().getAttributes());
         layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
         layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        //show the Dialog before setting new LayoutParams to the Dialog
         dialog.show();
         dialog.getWindow().setAttributes(layoutParams);
 
@@ -76,16 +69,16 @@ public class BasalInsulineDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dialog_basal_insuline, container, false);
+        return inflater.inflate(R.layout.fragment_dialog_bolus_insuline, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        editTextName = view.findViewById(R.id.editText_name_basal);
-        editTextDuration = view.findViewById(R.id.editText_duration_of_action_basal);
-        buttonCancel = view.findViewById(R.id.button_cancel_basal);
-        buttonConfirm = view.findViewById(R.id.button_confirm_basal);
+        editTextName = view.findViewById(R.id.editText_name_bolus);
+        editTextDuration = view.findViewById(R.id.editText_duration_bolus);
+        buttonCancel = view.findViewById(R.id.button_cancel_bolus);
+        buttonConfirm = view.findViewById(R.id.button_confirm_bolus);
 
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
 
@@ -97,7 +90,7 @@ public class BasalInsulineDialogFragment extends DialogFragment {
 //            }
 //        }).start();
 
-        viewModel.getUsers().observe(BasalInsulineDialogFragment.this, new Observer<List<User>>() {
+        viewModel.getUsers().observe(BolusInsulinDialogFragment.this, new Observer<List<User>>() {
             @Override
             public void onChanged(@Nullable final List<User> users) {
 //                initialize user
@@ -105,8 +98,8 @@ public class BasalInsulineDialogFragment extends DialogFragment {
 //                if user does not exist, create new user
                 try {
                     user = users.get(0);
-                    if (user.getBasalName() != null) editTextName.setText(user.getBasalName());
-                    if (user.getBasalDuration() != null) editTextDuration.setText(user.getBasalDuration().toString());
+                    if (user.getBolusName() != null) editTextName.setText(user.getBolusName());
+                    if (user.getBolusDuration() != null) editTextDuration.setText(user.getBolusDuration().toString());
                 } catch (IndexOutOfBoundsException e) {
                     user = new User();
                     viewModel.addUser(user);
@@ -127,10 +120,10 @@ public class BasalInsulineDialogFragment extends DialogFragment {
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user.setBasalName(editTextName.getText().toString());
-                user.setBasalDuration(Float.parseFloat(editTextDuration.getText().toString()));
+                user.setBolusName(editTextName.getText().toString());
+                user.setBolusDuration(Float.parseFloat(editTextDuration.getText().toString()));
                 viewModel.addUser(user);
-                Toast toast = Toast.makeText(getContext(), "Updated user information", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getContext(), "Updated bolus insulin information", Toast.LENGTH_LONG);
                 toast.show();
                 dismiss();
             }
@@ -142,8 +135,8 @@ public class BasalInsulineDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnBasalInsulineDialogFragmentInteractionListener) {
-            mListener = (OnBasalInsulineDialogFragmentInteractionListener) context;
+        if (context instanceof OnBolusInsulineDialogFragmentInteractionListener) {
+            mListener = (OnBolusInsulineDialogFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnBasalInsulineDialogFragmentInteractionListener");
@@ -156,7 +149,8 @@ public class BasalInsulineDialogFragment extends DialogFragment {
         mListener = null;
     }
 
-    public interface OnBasalInsulineDialogFragmentInteractionListener {
+
+    public interface OnBolusInsulineDialogFragmentInteractionListener {
 
     }
 }

@@ -132,6 +132,6 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <include layout="@layout/sliding_up_layout_new"/>
+    <include layout="@layout/sliding_up_panel"/>
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

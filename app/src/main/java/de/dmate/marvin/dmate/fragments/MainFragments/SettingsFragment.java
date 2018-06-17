@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import de.dmate.marvin.dmate.R;
-import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BasalInsulineDialogFragment;
-import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BolusInsulineDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BasalInsulinDialogFragment;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BolusInsulinDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.DaytimesDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.ExportDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.PlannedBasalInjectionsDialogFragment;
@@ -61,9 +61,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         nameButton.setOnClickListener(this);
         daytimesButton = getView().findViewById(R.id.button_daytimes);
         daytimesButton.setOnClickListener(this);
-        bolusInsulineButton = getView().findViewById(R.id.button_bolus_insuline);
+        bolusInsulineButton = getView().findViewById(R.id.button_bolus_insulin);
         bolusInsulineButton.setOnClickListener(this);
-        basalInsulineButton = getView().findViewById(R.id.button_basal_insuline);
+        basalInsulineButton = getView().findViewById(R.id.button_basal_insulin);
         basalInsulineButton.setOnClickListener(this);
         plannedBasalInjectionsButton = getView().findViewById(R.id.button_planned_basal_injections);
         plannedBasalInjectionsButton.setOnClickListener(this);
@@ -89,11 +89,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
             case R.id.button_daytimes:
                 new DaytimesDialogFragment().show(getFragmentManager(), "daytimesDialog");
                 break;
-            case R.id.button_bolus_insuline:
-                new BolusInsulineDialogFragment().show(getFragmentManager(), "bolusInsulineDialog");
+            case R.id.button_bolus_insulin:
+                new BolusInsulinDialogFragment().show(getFragmentManager(), "bolusInsulineDialog");
                 break;
-            case R.id.button_basal_insuline:
-                BasalInsulineDialogFragment fragment = new BasalInsulineDialogFragment();
+            case R.id.button_basal_insulin:
+                BasalInsulinDialogFragment fragment = new BasalInsulinDialogFragment();
                 fragment.show(getFragmentManager(),"basalInsulineDialog");
                 break;
             case R.id.button_units:
@@ -122,7 +122,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        return inflater.inflate(R.layout.fragment_main_settings, container, false);
     }
 
     @Override

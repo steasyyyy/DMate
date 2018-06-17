@@ -71,6 +71,7 @@ public class ExportDialogFragment extends DialogFragment {
     private Boolean documentCreated = false;
 
     private Button buttonGetPdf;
+    private Button buttonClose;
 
     private DataViewModel viewModel;
     private User user;
@@ -134,6 +135,7 @@ public class ExportDialogFragment extends DialogFragment {
         }
 
         buttonGetPdf = view.findViewById(R.id.button_get_pdf);
+        buttonClose = view.findViewById(R.id.button_close_export);
 
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
 
@@ -246,6 +248,13 @@ public class ExportDialogFragment extends DialogFragment {
                     Toast toast = Toast.makeText(getContext(), "Please wait for the document to be created", Toast.LENGTH_LONG);
                     toast.show();
                 }
+            }
+        });
+
+        buttonClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
             }
         });
 
