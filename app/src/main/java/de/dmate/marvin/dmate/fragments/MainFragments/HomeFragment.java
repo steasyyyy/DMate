@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
+import de.dmate.marvin.dmate.roomDatabase.Entities.User;
 import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.Helper;
 
@@ -28,6 +30,7 @@ public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter
 
     //ViewModel for entries in Database
     private DataViewModel viewModel;
+    private User user;
 
     //Custom EntriesRecyclerViewAdapter to feed the RecyclerView with data (List of entries)
     private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
@@ -80,12 +83,26 @@ public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
         Helper.getInstance().setDataViewModel(viewModel);
 
+        viewModel.getUsers().observe(HomeFragment.this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(@Nullable List<User> users) {
+                try {
+                    user = users.get(0);
+                } catch (IndexOutOfBoundsException e) {
+                    user = new User();
+                    viewModel.addUser(user);
+                    Toast toast = Toast.makeText(getContext(), "Created new user", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }
+        });
+
         //start observing LiveData in ViewModel and define what should happen when "LiveData<List<Entry>> entries;" in ViewModel changes
         //because it is LiveData the collection in ViewModel is always up to date (automatically gets updated when changes to database are made)
         viewModel.getEntries().observe(HomeFragment.this, new Observer<List<Entry>>() {
             @Override
             public void onChanged(@Nullable List<Entry> entries) {
-                entriesRecyclerViewAdapter.addItems(entries);
+                entriesRecyclerViewAdapter.updateItems(entries);
             }
         });
 

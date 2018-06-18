@@ -1,5 +1,9 @@
 package de.dmate.marvin.dmate.util;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -7,12 +11,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.List;
 
 import de.dmate.marvin.dmate.R;
+import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.UnitsDialogFragment;
+import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
+import de.dmate.marvin.dmate.roomDatabase.Entities.User;
 
 //This EntriesRecyclerViewAdapter is my own implementation of RecyclerView.Adapter
 //It manages the RecyclerView in MainActivity and feeds data to it.
@@ -20,6 +28,7 @@ import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecyclerViewAdapter.RecyclerViewHolder>{
 
     public List<Entry> entries;
+    private User user;
 
     //both listeners are an instance of MainActivtiy which implements the interfaces that are defined here
     private OnItemClickedListener itemClickedListener;
@@ -79,6 +88,18 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
 
         if (entry.getBloodSugar() != null) {
             holder.bloodsugarTextView.setText(entry.getBloodSugar().toString());
+            //first try to set background color depending on the blood sugar level
+//            if (user != null) {
+//                if (entry.getBloodSugar() <= user.getTargetMax() && entry.getBloodSugar() >= user.getTargetMin()) {
+//                    holder.itemView.setBackgroundResource(R.color.colorEntryBackgroundTarget);
+//                }
+//                if (entry.getBloodSugar() < user.getTargetMin()) {
+//                    holder.itemView.setBackgroundResource(R.color.colorEntryBackgroundLow);
+//                }
+//                if (entry.getBloodSugar() > user.getTargetMax()) {
+//                    holder.itemView.setBackgroundResource(R.color.colorEntryBackgroundHigh);
+//                }
+//            }
         } else holder.bloodsugarTextView.setText(null);
 
         if (entry.getBreadUnit() != null) {
@@ -92,6 +113,11 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
         if (entry.getBasal() != null) {
             holder.basalTextView.setText(entry.getBasal().toString());
         } else holder.basalTextView.setText(null);
+
+        if (entry.getReliable()) {
+            holder.itemView.setBackgroundResource(R.color.colorEntryBackgroundDiseased);
+            holder.itemView.findViewById(R.id.constraintLayout_date_separator).setBackgroundColor(Color.WHITE);
+        } else holder.itemView.setBackgroundColor(Color.WHITE);
 
         if (isLastEntryOfDay(entry)) {
             holder.constraintLayout.setVisibility(ConstraintLayout.VISIBLE);
@@ -128,7 +154,7 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
         return entries.size();
     }
 
-    public void addItems(List<Entry> entries) {
+    public void updateItems(List<Entry> entries) {
         this.entries = entries;
         notifyDataSetChanged();
     }

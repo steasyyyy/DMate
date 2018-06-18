@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -41,14 +42,16 @@ public class NewEntryActivity extends AppCompatActivity
     private EditText ETbolus;
     private EditText ETbasal;
     private EditText ETnote;
-    private Button exercisesButton;
-    private Switch diseasedSwitch;
+    private Button buttonExercises;
+    private Switch switchDiseased;
 
     private SlidingUpPanelLayout supl;
     private TextView slideUpTextView;
     private ImageView slideUpImageView;
 
     private Calendar calendar;
+
+    private DataViewModel viewModel;
 
     private RecyclerView recyclerView;
     private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
@@ -82,7 +85,7 @@ public class NewEntryActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataViewModel viewModel = Helper.getInstance().getDataViewModel();
+                viewModel = Helper.getInstance().getDataViewModel();
                 if (requestCode == 1) {
                     newEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
 
@@ -128,8 +131,8 @@ public class NewEntryActivity extends AppCompatActivity
         ETbolus = (EditText) findViewById(R.id.editText_bolusInjection);
         ETbasal = (EditText) findViewById(R.id.editText_basalInjection);
         ETnote = (EditText) findViewById(R.id.editText_note);
-        exercisesButton = (Button) findViewById(R.id.button_exercises);
-        diseasedSwitch = (Switch) findViewById(R.id.switch_diseased);
+        buttonExercises = (Button) findViewById(R.id.button_exercises);
+        switchDiseased = (Switch) findViewById(R.id.switch_diseased);
 
 
         //initialize SlidingUpPanelLayout (Slide up to show ratio wizard in NewEntryActivity)
@@ -173,6 +176,8 @@ public class NewEntryActivity extends AppCompatActivity
 
             //get the timeButton and set the text to current time
             timeButton.setText(Helper.formatMillisToTimeString(dateMillis));
+
+            switchDiseased.setChecked(false);
         }
 
         //if request code = 2 -> edit entry
@@ -202,6 +207,9 @@ public class NewEntryActivity extends AppCompatActivity
 
             String note = currentEntry.getNote();
             if (note != null) ETnote.setText(note);
+
+            Boolean diseased = currentEntry.getReliable();
+            switchDiseased.setChecked(diseased);
         }
 
         //set OnClickListener for dateButton to open DatePickerFragment
@@ -227,6 +235,14 @@ public class NewEntryActivity extends AppCompatActivity
                 args.putLong("dateMillis", dateMillis);
                 timePickerFragment.setArguments(args);
                 timePickerFragment.show(getFragmentManager(), "timePicker");
+            }
+        });
+
+        switchDiseased.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(requestCode == 1) newEntry.setReliable(isChecked);
+                if (requestCode == 2) currentEntry.setReliable(isChecked);
             }
         });
     }

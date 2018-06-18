@@ -5,4 +5,8 @@
     <color name="colorAccent">#b1cc00</color>
     <color name="primary_text_material_light">#deffffff</color>
     <color name="primary_text_material_dark">#000000</color>
+    <color name="colorEntryBackgroundLow">#eda7a7</color>
+    <color name="colorEntryBackgroundTarget">#b1cc00</color>
+    <color name="colorEntryBackgroundHigh">#eda7a7</color>
+    <color name="colorEntryBackgroundDiseased">#e3e3e3</color>
 </resources>
