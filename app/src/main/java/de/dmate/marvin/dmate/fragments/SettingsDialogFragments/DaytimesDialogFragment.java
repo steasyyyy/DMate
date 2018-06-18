@@ -256,7 +256,7 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
 
                 String daytimeStartString = editTextDaytimeStartHH.getText().toString() + ":" + editTextDaytimeStartMM.getText().toString();
                 String daytimeEndString = editTextDaytimeEndHH.getText().toString() + ":" + editTextDaytimeEndMM.getText().toString();
-                Integer correctionFactor = Integer.parseInt(editTextCorrectionFactor.getText().toString());
+                Float correctionFactor = Float.parseFloat(editTextCorrectionFactor.getText().toString());
                 Float buFactor = Float.parseFloat(editTextBuFactor.getText().toString());
 
                 Daytime daytime = new Daytime();
@@ -328,7 +328,7 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
         String daytimeEndHH = currentDaytime.getDaytimeEnd().charAt(0) + "" + currentDaytime.getDaytimeEnd().charAt(1);
         String daytimeEndMM = currentDaytime.getDaytimeEnd().charAt(3) + "" + currentDaytime.getDaytimeEnd().charAt(4);
 
-        Integer correctionFactor = currentDaytime.getCorrectionFactor();
+        Float correctionFactor = currentDaytime.getCorrectionFactor();
         Float buFactor = currentDaytime.getBuFactor();
 
         editTextDaytimeStartHH.setText(daytimeStartHH);

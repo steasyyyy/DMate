@@ -119,7 +119,7 @@
             android:layout_centerHorizontal="true"
             android:ems="10"
             android:hint="Correction factor"
-            android:inputType="number" />
+            android:inputType="numberDecimal" />
 
         <EditText
             android:id="@+id/editText_buFactor"

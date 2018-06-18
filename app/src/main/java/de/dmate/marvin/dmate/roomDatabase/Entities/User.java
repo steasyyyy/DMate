@@ -22,8 +22,8 @@ public class User {
     private String basalName;
     private Float basalDuration;
 
-    private Integer targetMin;
-    private Integer targetMax;
+    private Float targetMin;
+    private Float targetMax;
 
     private String minAcceptanceTime;
     private String maxAcceptanceTime;
@@ -61,11 +61,11 @@ public class User {
         return basalDuration;
     }
 
-    public Integer getTargetMin() {
+    public Float getTargetMin() {
         return targetMin;
     }
 
-    public Integer getTargetMax() {
+    public Float getTargetMax() {
         return targetMax;
     }
 
@@ -122,11 +122,11 @@ public class User {
         this.basalDuration = basalDuration;
     }
 
-    public void setTargetMin(Integer targetMin) {
+    public void setTargetMin(Float targetMin) {
         this.targetMin = targetMin;
     }
 
-    public void setTargetMax(Integer targetMax) {
+    public void setTargetMax(Float targetMax) {
         this.targetMax = targetMax;
     }
 

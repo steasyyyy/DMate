@@ -108,8 +108,8 @@ public class TargetAreaDialogFragment extends DialogFragment {
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user.setTargetMin(Integer.parseInt(editTextMin.getText().toString()));
-                user.setTargetMax(Integer.parseInt(editTextMax.getText().toString()));
+                user.setTargetMin(Float.parseFloat(editTextMin.getText().toString()));
+                user.setTargetMax(Float.parseFloat(editTextMax.getText().toString()));
                 viewModel.addUser(user);
                 Toast toast = Toast.makeText(getContext(), "Blood sugar target area updated", Toast.LENGTH_LONG);
                 toast.show();

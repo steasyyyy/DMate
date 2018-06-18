@@ -20,7 +20,7 @@ public class Daytime {
 
     private String daytimeStart;
     private String daytimeEnd;
-    private Integer correctionFactor;
+    private Float correctionFactor;
     private Float buFactor;
     private Float buFactorConsultingArithMean;
 
@@ -37,7 +37,7 @@ public class Daytime {
         return daytimeEnd;
     }
 
-    public Integer getCorrectionFactor() {
+    public Float getCorrectionFactor() {
         return correctionFactor;
     }
 
@@ -62,7 +62,7 @@ public class Daytime {
         this.daytimeEnd = daytimeEnd;
     }
 
-    public void setCorrectionFactor(Integer correctionFactor) {
+    public void setCorrectionFactor(Float correctionFactor) {
         this.correctionFactor = correctionFactor;
     }
 

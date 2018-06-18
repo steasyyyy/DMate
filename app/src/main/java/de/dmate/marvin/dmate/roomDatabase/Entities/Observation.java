@@ -21,8 +21,8 @@ public class Observation {
     @TypeConverters(RoomConverter.class)
     private Timestamp timestamp;
 
-    private Integer initialValue;
-    private Integer divergenceFromInitialValue;
+    private Float initialValue;
+    private Float divergenceFromInitialValue;
 
 
     //getter
@@ -34,11 +34,11 @@ public class Observation {
         return timestamp;
     }
 
-    public Integer getInitialValue() {
+    public Float getInitialValue() {
         return initialValue;
     }
 
-    public Integer getDivergenceFromInitialValue() {
+    public Float getDivergenceFromInitialValue() {
         return divergenceFromInitialValue;
     }
 
@@ -51,11 +51,11 @@ public class Observation {
         this.timestamp = timestamp;
     }
 
-    public void setInitialValue(Integer initialValue) {
+    public void setInitialValue(Float initialValue) {
         this.initialValue = initialValue;
     }
 
-    public void setDivergenceFromInitialValue(Integer divergenceFromInitialValue) {
+    public void setDivergenceFromInitialValue(Float divergenceFromInitialValue) {
         this.divergenceFromInitialValue = divergenceFromInitialValue;
     }
 }

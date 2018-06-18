@@ -19,7 +19,7 @@ public class Sport {
     public Integer sId;
 
     private String sportName;
-    private Integer sportEffectPerUnit;
+    private Float sportEffectPerUnit;
 
 
     //getter
@@ -31,7 +31,7 @@ public class Sport {
         return sportName;
     }
 
-    public Integer getSportEffectPerUnit() {
+    public Float getSportEffectPerUnit() {
         return sportEffectPerUnit;
     }
 
@@ -44,7 +44,7 @@ public class Sport {
         this.sportName = sportName;
     }
 
-    public void setSportEffectPerUnit(Integer sportEffectPerUnit) {
+    public void setSportEffectPerUnit(Float sportEffectPerUnit) {
         this.sportEffectPerUnit = sportEffectPerUnit;
     }
 }

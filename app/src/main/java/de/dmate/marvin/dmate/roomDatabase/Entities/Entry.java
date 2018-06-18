@@ -38,7 +38,7 @@ public class Entry {
     @TypeConverters(RoomConverter.class)
     private Timestamp timestamp = null;
 
-    private Integer bloodSugar = null;
+    private Float bloodSugar = null;
     private Float breadUnit = null;
     private Float bolus = null;
     private Float basal = null;
@@ -49,7 +49,7 @@ public class Entry {
     private Float reqBolusConsulting = null;
     private Float buFactorReal = null;
     private Float buFactorConsulting = null;
-    private Integer divergenceFromTarget = null;
+    private Float divergenceFromTarget = null;
     private Float bolusCorrectionByBloodSugar = null;
     private Float bolusCorrectionBySport = null;
 
@@ -65,7 +65,7 @@ public class Entry {
         return timestamp;
     }
 
-    public Integer getBloodSugar() {
+    public Float getBloodSugar() {
         return bloodSugar;
     }
 
@@ -109,7 +109,7 @@ public class Entry {
         return buFactorConsulting;
     }
 
-    public Integer getDivergenceFromTarget() {
+    public Float getDivergenceFromTarget() {
         return divergenceFromTarget;
     }
 
@@ -130,7 +130,7 @@ public class Entry {
         this.timestamp = timestamp;
     }
 
-    public void setBloodSugar(Integer bloodSugar) {
+    public void setBloodSugar(Float bloodSugar) {
         this.bloodSugar = bloodSugar;
     }
 
@@ -174,7 +174,7 @@ public class Entry {
         this.buFactorConsulting = buFactorConsulting;
     }
 
-    public void setDivergenceFromTarget(Integer divergenceFromTarget) {
+    public void setDivergenceFromTarget(Float divergenceFromTarget) {
         this.divergenceFromTarget = divergenceFromTarget;
     }
 

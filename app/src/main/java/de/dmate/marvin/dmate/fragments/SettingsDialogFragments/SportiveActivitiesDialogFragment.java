@@ -155,7 +155,7 @@ public class SportiveActivitiesDialogFragment extends DialogFragment implements 
 
                 Sport sport = new Sport();
                 sport.setSportName(editTextName.getText().toString());
-                sport.setSportEffectPerUnit(Integer.parseInt(editTextEffect.getText().toString()));
+                sport.setSportEffectPerUnit(Float.parseFloat(editTextEffect.getText().toString()));
 
                 viewModel.addSport(sport);
 
