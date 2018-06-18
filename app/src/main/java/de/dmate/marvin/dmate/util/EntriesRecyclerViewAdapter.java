@@ -1,6 +1,7 @@
 package de.dmate.marvin.dmate.util;
 
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
@@ -28,6 +29,8 @@ import de.dmate.marvin.dmate.roomDatabase.Entities.User;
 public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecyclerViewAdapter.RecyclerViewHolder>{
 
     public List<Entry> entries;
+
+    DataViewModel viewModel;
     private User user;
 
     //both listeners are an instance of MainActivtiy which implements the interfaces that are defined here
