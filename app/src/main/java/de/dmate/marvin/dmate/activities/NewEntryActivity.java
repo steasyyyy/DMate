@@ -1,5 +1,6 @@
 package de.dmate.marvin.dmate.activities;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -65,6 +66,8 @@ public class NewEntryActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_entry);
 
+        viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
+
         //set requestCode to differ between editing an newEntry or creating a new one
         Intent intent = getIntent();
         requestCode = intent.getIntExtra("REQUEST_CODE", Integer.MAX_VALUE);
@@ -85,7 +88,6 @@ public class NewEntryActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel = Helper.getInstance().getDataViewModel();
                 if (requestCode == 1) {
                     newEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
 

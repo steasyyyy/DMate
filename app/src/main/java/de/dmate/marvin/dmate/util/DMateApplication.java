@@ -1,15 +1,38 @@
 package de.dmate.marvin.dmate.util;
 
 import android.app.Application;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+
+import de.dmate.marvin.dmate.services.CalculationService;
 
 public class DMateApplication extends Application {
 
-    private Context context;
+    private CalculationService service;
+    private ServiceConnection serviceConnection;
 
-    public void initialize(Context context) {
-        //initialize entryPrefs and miscPrefs attributes
-        this.context = context;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder iBinder) {
+                service = ((CalculationService.LocalBinder) iBinder ).getService();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        };
+
+        Intent intent = new Intent(this, CalculationService.class);
+        getApplicationContext().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
     }
 
     //check for Internet connection (not needed atm)

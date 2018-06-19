@@ -27,9 +27,7 @@ import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.SportiveActivitie
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.TargetAreaDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.UnitsDialogFragment;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
-import de.dmate.marvin.dmate.util.DMateApplication;
 import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
-import de.dmate.marvin.dmate.util.Helper;
 
 public class MainActivity extends AppCompatActivity implements
         HomeFragment.OnHomeFragmentInteractionListener,
@@ -63,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements
     private BottomNavigationView bottomNavView;
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,13 +73,6 @@ public class MainActivity extends AppCompatActivity implements
         setTitle("DMate");
         toolbar.setTitleTextColor(getResources().getColor(R.color.primary_text_material_light));
         getSupportActionBar().setIcon(R.mipmap.ic_launcher_round);
-
-        //set application context in DMateApplication (custom application object)
-        DMateApplication app = (DMateApplication) getApplication();
-        app.initialize(getApplicationContext());
-
-        //pass Application Object to Helper
-        Helper.getInstance().setApplication(app);
 
         //set up BottomNavigationView and listener
         bottomNavView = (BottomNavigationView) findViewById(R.id.navigation);

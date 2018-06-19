@@ -10,37 +10,13 @@ public class Helper {
     private static final Helper instance = new Helper();
     private DMateApplication app;
     private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
-    private DataViewModel dataViewModel;
 
     public static Helper getInstance() {
         return instance;
     }
 
     private Helper() {
-    }
 
-    public void setApplication(DMateApplication application) {
-        app = application;
-    }
-
-    public DMateApplication getApplication() {
-        return app;
-    }
-
-    public void setEntriesRecyclerViewAdapter(EntriesRecyclerViewAdapter entriesRecyclerViewAdapter) {
-        this.entriesRecyclerViewAdapter = entriesRecyclerViewAdapter;
-    }
-
-    public EntriesRecyclerViewAdapter getEntriesRecyclerViewAdapter() {
-        return this.entriesRecyclerViewAdapter;
-    }
-
-    public void setDataViewModel(DataViewModel dataViewModel) {
-        this.dataViewModel = dataViewModel;
-    }
-
-    public DataViewModel getDataViewModel() {
-        return this.dataViewModel;
     }
 
     public static String formatMillisToDateString(Long dateMillis) {
@@ -55,5 +31,22 @@ public class Helper {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         String time = sdf.format(date);
         return time;
+    }
+
+    //getters and setters
+    public DMateApplication getApp() {
+        return app;
+    }
+
+    public void setApp(DMateApplication app) {
+        this.app = app;
+    }
+
+    public EntriesRecyclerViewAdapter getEntriesRecyclerViewAdapter() {
+        return entriesRecyclerViewAdapter;
+    }
+
+    public void setEntriesRecyclerViewAdapter(EntriesRecyclerViewAdapter entriesRecyclerViewAdapter) {
+        this.entriesRecyclerViewAdapter = entriesRecyclerViewAdapter;
     }
 }

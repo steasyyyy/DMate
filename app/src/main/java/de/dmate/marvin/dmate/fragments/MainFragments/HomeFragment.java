@@ -81,7 +81,6 @@ public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter
         recyclerView.setAdapter(entriesRecyclerViewAdapter);
 
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
-        Helper.getInstance().setDataViewModel(viewModel);
 
         viewModel.getUsers().observe(HomeFragment.this, new Observer<List<User>>() {
             @Override
