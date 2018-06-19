@@ -138,7 +138,7 @@ public class UnitsDialogFragment extends DialogFragment {
             mListener = (OnUnitsDialogFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnBasalInsulineDialogFragmentInteractionListener");
+                    + " must implement OnBasalinsulinDialogFragmentInteractionListener");
         }
     }
 

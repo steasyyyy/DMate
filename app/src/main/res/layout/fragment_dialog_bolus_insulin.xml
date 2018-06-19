@@ -3,59 +3,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SettingsDialogFragments.BasalInsulinDialogFragment">
+    tools:context=".fragments.SettingsDialogFragments.BolusInsulinDialogFragment">
+
+
+    <TextView
+        android:id="@+id/textView_name_bolus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="16dp"
+        android:text="Bolus insulin"
+        android:textSize="18sp" />
 
     <EditText
-        android:id="@+id/editText_name_basal"
+        android:id="@+id/editText_name_bolus"
         android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="61dp"
         android:ems="10"
         android:hint="Name"
         android:inputType="textPersonName" />
 
     <EditText
-        android:id="@+id/editText_duration_of_action_basal"
+        android:id="@+id/editText_duration_bolus"
         android:layout_width="295dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText_name_basal"
+        android:layout_below="@+id/editText_name_bolus"
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:hint="Duration of action (hours)"
         android:inputType="numberDecimal" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="17dp"
-        android:text="Basal insuline"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
     <Button
-        android:id="@+id/button_confirm_basal"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/button_cancel_basal"
-        android:layout_marginEnd="61dp"
-        android:text="Confirm"
-        android:textAllCaps="false" />
-
-    <Button
-        android:id="@+id/button_cancel_basal"
+        android:id="@+id/button_cancel_bolus"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="62dp"
-        android:layout_marginTop="169dp"
+        android:layout_marginTop="168dp"
         android:text="Cancel"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/button_confirm_bolus"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/button_cancel_bolus"
+        android:layout_marginEnd="62dp"
+        android:text="Confirm"
         android:textAllCaps="false" />
 </RelativeLayout>

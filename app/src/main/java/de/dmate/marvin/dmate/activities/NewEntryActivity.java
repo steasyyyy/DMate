@@ -73,7 +73,7 @@ public class NewEntryActivity extends AppCompatActivity
         requestCode = intent.getIntExtra("REQUEST_CODE", Integer.MAX_VALUE);
 
         //set up the toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (requestCode == 1) setTitle("New entry");
         if (requestCode == 2) setTitle("Edit entry");
@@ -84,7 +84,7 @@ public class NewEntryActivity extends AppCompatActivity
 
         //set up OnClickListener for FAB
         //when clicked, open NewEntryActivity and set requestCode to NEW_ENTRY_REQUEST
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_fragment_save);
+        FloatingActionButton fab = findViewById(R.id.fab_fragment_save);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,21 +126,21 @@ public class NewEntryActivity extends AppCompatActivity
         });
 
         //get Buttons and EditTexts
-        dateButton = (Button) findViewById(R.id.button_date);
-        timeButton = (Button) findViewById(R.id.button_time);
-        ETbloodsugar = (EditText) findViewById(R.id.editText_bloodSugar);
-        ETbreadunit = (EditText) findViewById(R.id.editText_breadUnits);
-        ETbolus = (EditText) findViewById(R.id.editText_bolusInjection);
-        ETbasal = (EditText) findViewById(R.id.editText_basalInjection);
-        ETnote = (EditText) findViewById(R.id.editText_note);
-        buttonExercises = (Button) findViewById(R.id.button_exercises);
-        switchDiseased = (Switch) findViewById(R.id.switch_diseased);
+        dateButton = findViewById(R.id.button_date);
+        timeButton = findViewById(R.id.button_time);
+        ETbloodsugar = findViewById(R.id.editText_bloodSugar);
+        ETbreadunit = findViewById(R.id.editText_breadUnits);
+        ETbolus = findViewById(R.id.editText_bolusInjection);
+        ETbasal = findViewById(R.id.editText_basalInjection);
+        ETnote = findViewById(R.id.editText_note);
+        buttonExercises = findViewById(R.id.button_exercises);
+        switchDiseased = findViewById(R.id.switch_diseased);
 
 
         //initialize SlidingUpPanelLayout (Slide up to show ratio wizard in NewEntryActivity)
         supl = findViewById(R.id.sliding_layout);
-        slideUpTextView = (TextView) supl.findViewById(R.id.slide_up_textview);
-        slideUpImageView = (ImageView) supl.findViewById(R.id.slide_up_imageView);
+        slideUpTextView = supl.findViewById(R.id.slide_up_textview);
+        slideUpImageView = supl.findViewById(R.id.slide_up_imageView);
         supl.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {

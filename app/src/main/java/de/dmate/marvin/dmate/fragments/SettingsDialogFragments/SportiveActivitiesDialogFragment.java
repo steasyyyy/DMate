@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -30,7 +29,6 @@ import java.util.List;
 
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
-import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Sport;
 
 public class SportiveActivitiesDialogFragment extends DialogFragment implements AdapterView.OnItemClickListener {
@@ -190,7 +188,7 @@ public class SportiveActivitiesDialogFragment extends DialogFragment implements 
             mListener = (OnSportiveActivitiesDialogFragmentListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnBasalInsulineDialogFragmentInteractionListener");
+                    + " must implement OnBasalinsulinDialogFragmentInteractionListener");
         }
     }
 

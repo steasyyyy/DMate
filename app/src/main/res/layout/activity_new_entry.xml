@@ -47,7 +47,8 @@
                 android:layout_centerHorizontal="true"
                 android:text="Time"
                 android:textAlignment="viewStart"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/button_date"
@@ -58,7 +59,8 @@
                 android:layout_marginTop="20dp"
                 android:text="Date"
                 android:textAlignment="viewStart"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/editText_bloodSugar"
@@ -68,7 +70,8 @@
                 android:layout_centerHorizontal="true"
                 android:ems="10"
                 android:hint="Bloodsugar"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/editText_basalInjection"
@@ -78,7 +81,8 @@
                 android:layout_centerHorizontal="true"
                 android:ems="10"
                 android:hint="Basal injection"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/editText_bolusInjection"
@@ -88,7 +92,8 @@
                 android:layout_centerHorizontal="true"
                 android:ems="10"
                 android:hint="Bolus injection"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/editText_breadUnits"
@@ -98,7 +103,8 @@
                 android:layout_centerHorizontal="true"
                 android:ems="10"
                 android:hint="Bread units"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/editText_note"
@@ -108,7 +114,8 @@
                 android:layout_centerHorizontal="true"
                 android:ems="10"
                 android:hint="Note"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:textSize="18sp" />
 
             <Switch
                 android:id="@+id/switch_diseased"
@@ -116,8 +123,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/button_exercises"
                 android:layout_centerHorizontal="true"
+                android:padding="12dp"
                 android:text="Diseased"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/button_exercises"
@@ -127,7 +135,8 @@
                 android:layout_below="@+id/editText_basalInjection"
                 android:text="Exercises"
                 android:textAlignment="viewStart"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textSize="16sp" />
 
         </RelativeLayout>
     </RelativeLayout>

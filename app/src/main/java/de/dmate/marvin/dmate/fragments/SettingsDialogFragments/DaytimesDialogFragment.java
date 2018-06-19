@@ -303,7 +303,7 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
             mListener = (OnDaytimesDialogFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnBasalInsulineDialogFragmentInteractionListener");
+                    + " must implement OnBasalinsulinDialogFragmentInteractionListener");
         }
     }
 

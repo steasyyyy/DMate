@@ -1,10 +1,6 @@
 package de.dmate.marvin.dmate.util;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -12,13 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.List;
 
 import de.dmate.marvin.dmate.R;
-import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.UnitsDialogFragment;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
@@ -65,7 +59,7 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
 
         for (Entry e : entries) {
             calendarTemp.setTimeInMillis(e.getTimestamp().getTime());
-            if (entry.geteId() != e.geteId()) {
+            if (!entry.geteId().equals(e.geteId())) {
                 if (calendarCurrent.get(Calendar.YEAR) == calendarTemp.get(Calendar.YEAR)
                         && calendarCurrent.get(Calendar.MONTH) == calendarTemp.get(Calendar.MONTH)
                         && calendarCurrent.get(Calendar.DAY_OF_MONTH) == calendarTemp.get(Calendar.DAY_OF_MONTH)) {
@@ -187,20 +181,20 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
         public RecyclerViewHolder(View itemView) {
             super(itemView);
 
-            dateTextView = (TextView) itemView.findViewById(R.id.entry_date);
-            bloodsugarTextView = (TextView) itemView.findViewById(R.id.entry_bloodsugar);
-            breadunitTextView = (TextView) itemView.findViewById(R.id.entry_breadunit);
-            bolusTextView = (TextView) itemView.findViewById(R.id.entry_bolus);
-            basalTextView = (TextView) itemView.findViewById(R.id.entry_basal);
+            dateTextView = itemView.findViewById(R.id.entry_date);
+            bloodsugarTextView = itemView.findViewById(R.id.entry_bloodsugar);
+            breadunitTextView = itemView.findViewById(R.id.entry_breadunit);
+            bolusTextView = itemView.findViewById(R.id.entry_bolus);
+            basalTextView = itemView.findViewById(R.id.entry_basal);
 
-            staticdateTextView = (TextView) itemView.findViewById(R.id.static_date);
-            staticbloodsugarTextView = (TextView) itemView.findViewById(R.id.static_bloodsugar);
-            staticbreadunitTextView = (TextView) itemView.findViewById(R.id.static_breadunit);
-            staticbolusTextView = (TextView) itemView.findViewById(R.id.static_bolus);
-            staticbasalTextView = (TextView) itemView.findViewById(R.id.static_basal);
+            staticdateTextView = itemView.findViewById(R.id.static_date);
+            staticbloodsugarTextView = itemView.findViewById(R.id.static_bloodsugar);
+            staticbreadunitTextView = itemView.findViewById(R.id.static_breadunit);
+            staticbolusTextView = itemView.findViewById(R.id.static_bolus);
+            staticbasalTextView = itemView.findViewById(R.id.static_basal);
 
-            constraintLayout = (ConstraintLayout) itemView.findViewById(R.id.constraintLayout_date_separator);
-            dateSeperatorTextView = (TextView) constraintLayout.findViewById(R.id.textView_date_separator);
+            constraintLayout = itemView.findViewById(R.id.constraintLayout_date_separator);
+            dateSeperatorTextView = constraintLayout.findViewById(R.id.textView_date_separator);
         }
     }
 }

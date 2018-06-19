@@ -4,14 +4,12 @@ import android.app.Service;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import java.util.List;
 
-import de.dmate.marvin.dmate.roomDatabase.AppDatabase;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
@@ -129,137 +127,137 @@ public class CalculationService extends Service {
         });
     }
 
-    //getters and setters
+    //getter
     public List<Daytime> getDaytimes() {
         return daytimes;
-    }
-
-    public void setDaytimes(List<Daytime> daytimes) {
-        this.daytimes = daytimes;
     }
 
     public List<Entry> getEntries() {
         return entries;
     }
 
-    public void setEntries(List<Entry> entries) {
-        this.entries = entries;
-    }
-
     public List<Exercise> getExercises() {
         return exercises;
-    }
-
-    public void setExercises(List<Exercise> exercises) {
-        this.exercises = exercises;
     }
 
     public List<Notification> getNotifications() {
         return notifications;
     }
 
-    public void setNotifications(List<Notification> notifications) {
-        this.notifications = notifications;
-    }
-
     public List<Observation> getObservations() {
         return observations;
-    }
-
-    public void setObservations(List<Observation> observations) {
-        this.observations = observations;
     }
 
     public List<PlannedBasalInjection> getPlannedBasalInjections() {
         return plannedBasalInjections;
     }
 
-    public void setPlannedBasalInjections(List<PlannedBasalInjection> plannedBasalInjections) {
-        this.plannedBasalInjections = plannedBasalInjections;
-    }
-
     public List<Sport> getSports() {
         return sports;
-    }
-
-    public void setSports(List<Sport> sports) {
-        this.sports = sports;
     }
 
     public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
     public User getUser() {
         return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Boolean getDaytimesLoaded() {
         return daytimesLoaded;
     }
 
-    public void setDaytimesLoaded(Boolean daytimesLoaded) {
-        this.daytimesLoaded = daytimesLoaded;
-    }
-
     public Boolean getEntriesLoaded() {
         return entriesLoaded;
-    }
-
-    public void setEntriesLoaded(Boolean entriesLoaded) {
-        this.entriesLoaded = entriesLoaded;
     }
 
     public Boolean getExercisesLoaded() {
         return exercisesLoaded;
     }
 
-    public void setExercisesLoaded(Boolean exercisesLoaded) {
-        this.exercisesLoaded = exercisesLoaded;
-    }
-
     public Boolean getNotificationsLoaded() {
         return notificationsLoaded;
-    }
-
-    public void setNotificationsLoaded(Boolean notificationsLoaded) {
-        this.notificationsLoaded = notificationsLoaded;
     }
 
     public Boolean getObservationsLoaded() {
         return observationsLoaded;
     }
 
-    public void setObservationsLoaded(Boolean observationsLoaded) {
-        this.observationsLoaded = observationsLoaded;
-    }
-
     public Boolean getPlannedBasalInjectionsLoaded() {
         return plannedBasalInjectionsLoaded;
-    }
-
-    public void setPlannedBasalInjectionsLoaded(Boolean plannedBasalInjectionsLoaded) {
-        this.plannedBasalInjectionsLoaded = plannedBasalInjectionsLoaded;
     }
 
     public Boolean getSportsLoaded() {
         return sportsLoaded;
     }
 
-    public void setSportsLoaded(Boolean sportsLoaded) {
-        this.sportsLoaded = sportsLoaded;
-    }
-
     public Boolean getUsersLoaded() {
         return usersLoaded;
+    }
+    //setter
+    public void setDaytimes(List<Daytime> daytimes) {
+        this.daytimes = daytimes;
+    }
+
+    public void setEntries(List<Entry> entries) {
+        this.entries = entries;
+    }
+
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public void setObservations(List<Observation> observations) {
+        this.observations = observations;
+    }
+
+    public void setPlannedBasalInjections(List<PlannedBasalInjection> plannedBasalInjections) {
+        this.plannedBasalInjections = plannedBasalInjections;
+    }
+
+    public void setSports(List<Sport> sports) {
+        this.sports = sports;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setDaytimesLoaded(Boolean daytimesLoaded) {
+        this.daytimesLoaded = daytimesLoaded;
+    }
+
+    public void setEntriesLoaded(Boolean entriesLoaded) {
+        this.entriesLoaded = entriesLoaded;
+    }
+
+    public void setExercisesLoaded(Boolean exercisesLoaded) {
+        this.exercisesLoaded = exercisesLoaded;
+    }
+
+    public void setNotificationsLoaded(Boolean notificationsLoaded) {
+        this.notificationsLoaded = notificationsLoaded;
+    }
+
+    public void setObservationsLoaded(Boolean observationsLoaded) {
+        this.observationsLoaded = observationsLoaded;
+    }
+
+    public void setPlannedBasalInjectionsLoaded(Boolean plannedBasalInjectionsLoaded) {
+        this.plannedBasalInjectionsLoaded = plannedBasalInjectionsLoaded;
+    }
+
+    public void setSportsLoaded(Boolean sportsLoaded) {
+        this.sportsLoaded = sportsLoaded;
     }
 
     public void setUsersLoaded(Boolean usersLoaded) {

@@ -3,8 +3,6 @@ package de.dmate.marvin.dmate.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
-
 public class Helper {
 
     private static final Helper instance = new Helper();

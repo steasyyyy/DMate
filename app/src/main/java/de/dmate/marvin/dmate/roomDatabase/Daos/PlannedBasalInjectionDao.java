@@ -8,8 +8,6 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
-import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
-import de.dmate.marvin.dmate.roomDatabase.Entities.Exercise;
 import de.dmate.marvin.dmate.roomDatabase.Entities.PlannedBasalInjection;
 
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;

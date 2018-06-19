@@ -2,7 +2,6 @@ package de.dmate.marvin.dmate.util;
 
 import android.app.Application;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
@@ -27,13 +26,17 @@ public class DMateApplication extends Application {
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-
+                //possibility to restart service on disconnect (behaviour not tested yet)
+//                Intent intent = new Intent(DMateApplication.this, CalculationService.class);
+//                getApplicationContext().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
             }
         };
 
         Intent intent = new Intent(this, CalculationService.class);
         getApplicationContext().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
     }
+
+
 
     //check for Internet connection (not needed atm)
     /*

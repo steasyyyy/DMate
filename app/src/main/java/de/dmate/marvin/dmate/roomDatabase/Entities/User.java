@@ -1,10 +1,7 @@
 package de.dmate.marvin.dmate.roomDatabase.Entities;
 
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-
-import java.util.List;
 
 @Entity(tableName = "users")
 public class User {

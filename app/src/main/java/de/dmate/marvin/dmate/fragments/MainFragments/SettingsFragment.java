@@ -28,8 +28,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
 
     private Button nameButton;
     private Button daytimesButton;
-    private Button bolusInsulineButton;
-    private Button basalInsulineButton;
+    private Button bolusinsulinButton;
+    private Button basalinsulinButton;
     private Button plannedBasalInjectionsButton;
     private Button unitsButton;
     private Button targetAreaButton;
@@ -61,10 +61,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         nameButton.setOnClickListener(this);
         daytimesButton = getView().findViewById(R.id.button_daytimes);
         daytimesButton.setOnClickListener(this);
-        bolusInsulineButton = getView().findViewById(R.id.button_bolus_insulin);
-        bolusInsulineButton.setOnClickListener(this);
-        basalInsulineButton = getView().findViewById(R.id.button_basal_insulin);
-        basalInsulineButton.setOnClickListener(this);
+        bolusinsulinButton = getView().findViewById(R.id.button_bolus_insulin);
+        bolusinsulinButton.setOnClickListener(this);
+        basalinsulinButton = getView().findViewById(R.id.button_basal_insulin);
+        basalinsulinButton.setOnClickListener(this);
         plannedBasalInjectionsButton = getView().findViewById(R.id.button_planned_basal_injections);
         plannedBasalInjectionsButton.setOnClickListener(this);
         unitsButton = getView().findViewById(R.id.button_units);
@@ -90,11 +90,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
                 new DaytimesDialogFragment().show(getFragmentManager(), "daytimesDialog");
                 break;
             case R.id.button_bolus_insulin:
-                new BolusInsulinDialogFragment().show(getFragmentManager(), "bolusInsulineDialog");
+                new BolusInsulinDialogFragment().show(getFragmentManager(), "bolusinsulinDialog");
                 break;
             case R.id.button_basal_insulin:
                 BasalInsulinDialogFragment fragment = new BasalInsulinDialogFragment();
-                fragment.show(getFragmentManager(),"basalInsulineDialog");
+                fragment.show(getFragmentManager(),"basalinsulinDialog");
                 break;
             case R.id.button_units:
                 new UnitsDialogFragment().show(getFragmentManager(), "unitsDialog");

@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="16dp"
         android:layout_marginTop="17dp"
-        android:text="Planned basal insuline injections"
+        android:text="Planned basal insulin injections"
         android:textSize="18sp" />
 
     <ListView

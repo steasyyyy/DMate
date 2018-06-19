@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -31,11 +30,9 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.draw.DottedLineSeparator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -268,7 +265,7 @@ public class ExportDialogFragment extends DialogFragment {
             mListener = (OnExportDialogFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnBasalInsulineDialogFragmentInteractionListener");
+                    + " must implement OnBasalinsulinDialogFragmentInteractionListener");
         }
     }
 
@@ -346,19 +343,19 @@ public class ExportDialogFragment extends DialogFragment {
         if (user.getName() != null) tableUserInfo.addCell(user.getName());
         else tableUserInfo.addCell("");
 
-        //set bolus insuline information
-        tableUserInfo.addCell("Bolus insuline name");
+        //set bolus insulin information
+        tableUserInfo.addCell("Bolus insulin name");
         if (user.getBolusName() != null) tableUserInfo.addCell(user.getBolusName());
         else tableUserInfo.addCell("");
-        tableUserInfo.addCell("Bolus insuline duration of action");
+        tableUserInfo.addCell("Bolus insulin duration of action");
         if (user.getBolusDuration() != null) tableUserInfo.addCell(user.getBolusDuration().toString());
         else tableUserInfo.addCell("");
 
-        //set basal insuline information
-        tableUserInfo.addCell("Basal insuline name");
+        //set basal insulin information
+        tableUserInfo.addCell("Basal insulin name");
         if (user.getBasalName() != null) tableUserInfo.addCell(user.getBasalName());
         else tableUserInfo.addCell("");
-        tableUserInfo.addCell("Basal insuline duration of action");
+        tableUserInfo.addCell("Basal insulin duration of action");
         if (user.getBasalDuration() != null) tableUserInfo.addCell(user.getBasalDuration().toString());
         else tableUserInfo.addCell("");
 
@@ -388,7 +385,7 @@ public class ExportDialogFragment extends DialogFragment {
         tablePbi.setSpacingAfter(72f);
 
         if (plannedBasalInjectionList.size() == 0) {
-            tablePbi.addCell("No planned basal insuline injections defined");
+            tablePbi.addCell("No planned basal insulin injections defined");
             tablePbi.addCell("-");
             tablePbi.addCell("-");
             tablePbi.addCell("-");
@@ -398,13 +395,13 @@ public class ExportDialogFragment extends DialogFragment {
                 PdfPCell cellDaytimeColored = new PdfPCell();
                 BaseColor color = new BaseColor(getResources().getColor(R.color.colorAccent));
                 cellDaytimeColored.setBackgroundColor(color);
-                cellDaytimeColored.setPhrase(new Phrase("Planned basal insuline injection " + counter));
+                cellDaytimeColored.setPhrase(new Phrase("Planned basal insulin injection " + counter));
                 tablePbi.addCell(cellDaytimeColored);
                 cellDaytimeColored.setPhrase(new Phrase(""));
                 tablePbi.addCell(cellDaytimeColored);
                 tablePbi.addCell("Time of day");
                 tablePbi.addCell(pbi.getTimeOfDay());
-                tablePbi.addCell("Basal insuline injection");
+                tablePbi.addCell("Basal insulin injection");
                 tablePbi.addCell(pbi.getBasal().toString());
                 counter++;
             }
@@ -514,7 +511,7 @@ public class ExportDialogFragment extends DialogFragment {
                 tableEntries.addCell("Bolus insulin injection");
                 if (e.getBolus() != null) tableEntries.addCell(e.getBolus().toString());
                 else tableEntries.addCell("-");
-                tableEntries.addCell("Basal insuline injection");
+                tableEntries.addCell("Basal insulin injection");
                 if (e.getBasal() != null) tableEntries.addCell(e.getBasal().toString());
                 else tableEntries.addCell("-");
                 tableEntries.addCell("Note");

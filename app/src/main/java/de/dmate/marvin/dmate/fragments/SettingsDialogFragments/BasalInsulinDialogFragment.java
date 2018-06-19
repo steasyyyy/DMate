@@ -25,7 +25,7 @@ import de.dmate.marvin.dmate.roomDatabase.Entities.User;
 
 public class BasalInsulinDialogFragment extends DialogFragment {
 
-    private OnBasalInsulineDialogFragmentInteractionListener mListener;
+    private OnBasalinsulinDialogFragmentInteractionListener mListener;
 
     private EditText editTextName;
     private EditText editTextDuration;
@@ -74,7 +74,7 @@ public class BasalInsulinDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dialog_basal_insuline, container, false);
+        return inflater.inflate(R.layout.fragment_dialog_basal_insulin, container, false);
     }
 
     @Override
@@ -140,11 +140,11 @@ public class BasalInsulinDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnBasalInsulineDialogFragmentInteractionListener) {
-            mListener = (OnBasalInsulineDialogFragmentInteractionListener) context;
+        if (context instanceof OnBasalinsulinDialogFragmentInteractionListener) {
+            mListener = (OnBasalinsulinDialogFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnBasalInsulineDialogFragmentInteractionListener");
+                    + " must implement OnBasalinsulinDialogFragmentInteractionListener");
         }
     }
 
@@ -154,7 +154,7 @@ public class BasalInsulinDialogFragment extends DialogFragment {
         mListener = null;
     }
 
-    public interface OnBasalInsulineDialogFragmentInteractionListener {
+    public interface OnBasalinsulinDialogFragmentInteractionListener {
 
     }
 }

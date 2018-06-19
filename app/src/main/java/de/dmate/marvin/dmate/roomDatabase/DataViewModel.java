@@ -6,7 +6,6 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;

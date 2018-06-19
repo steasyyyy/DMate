@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity implements
         HomeFragment.OnHomeFragmentInteractionListener,
         NotificationsFragment.OnNotificationFragmentInteractionListener,
         SettingsFragment.OnSettingsFragmentInteractionListener,
-        BasalInsulinDialogFragment.OnBasalInsulineDialogFragmentInteractionListener,
+        BasalInsulinDialogFragment.OnBasalinsulinDialogFragmentInteractionListener,
         PlannedBasalInjectionsDialogFragment.OnPlannedBasalInjectionsDialogFragmentInteractionListener,
-        BolusInsulinDialogFragment.OnBolusInsulineDialogFragmentInteractionListener,
+        BolusInsulinDialogFragment.OnBolusinsulinDialogFragmentInteractionListener,
         DaytimesDialogFragment.OnDaytimesDialogFragmentInteractionListener,
         ExportDialogFragment.OnExportDialogFragmentInteractionListener,
         NotificationsDialogFragment.OnNotificationsDialogFragmentInteractionListener,
@@ -68,14 +68,14 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         //set up the toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("DMate");
         toolbar.setTitleTextColor(getResources().getColor(R.color.primary_text_material_light));
         getSupportActionBar().setIcon(R.mipmap.ic_launcher_round);
 
         //set up BottomNavigationView and listener
-        bottomNavView = (BottomNavigationView) findViewById(R.id.navigation);
+        bottomNavView = findViewById(R.id.navigation);
         bottomNavView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
