@@ -22,9 +22,6 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @TypeConverters(RoomConverter.class)
 public interface EntryDao {
 
-    //when method gets called via DataViewModel, the defined query is executed
-    //Room understands insert, delete and update by itself (no need to define a query)
-
     //get a complete list of all entries by user ordered by dateTime
     @Query("SELECT * FROM entries ORDER BY timestamp DESC")
     LiveData<List<Entry>> getAllEntries();
@@ -35,19 +32,10 @@ public interface EntryDao {
 
     //insert entry
     @Insert(onConflict = REPLACE)
-    void insertEntry(Entry entry);
-
-    //insert multiple entries
-    @Insert(onConflict = REPLACE)
-    void insertEntries(List<Entry> entries);
+    long insertEntry(Entry entry);
 
     //delete entry
     @Delete
     void deleteEntryRoom(Entry entry);
-
-    //update entry
-    @Update
-    void updateEntryRoom(Entry entry);
-
 
 }

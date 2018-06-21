@@ -74,7 +74,7 @@ public class UserNameDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dialog_user_name, container, false);
+        return inflater.inflate(R.layout.fragment_settings_dialog_user_name, container, false);
     }
 
     @Override

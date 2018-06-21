@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate.fragments.PickerFragments;
+package de.dmate.marvin.dmate.fragments.PickerDialogFragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -14,17 +14,17 @@ import java.util.Calendar;
 
 import de.dmate.marvin.dmate.R;
 
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class DatePickerDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private OnDatePickerFragmentInteractionListener mListener;
     private Calendar calendar;
 
-    public DatePickerFragment() {
+    public DatePickerDialogFragment() {
         // Required empty public constructor
     }
 
-    public static DatePickerFragment newInstance(String param1, String param2) {
-        DatePickerFragment fragment = new DatePickerFragment();
+    public static DatePickerDialogFragment newInstance(String param1, String param2) {
+        DatePickerDialogFragment fragment = new DatePickerDialogFragment();
         return fragment;
     }
 

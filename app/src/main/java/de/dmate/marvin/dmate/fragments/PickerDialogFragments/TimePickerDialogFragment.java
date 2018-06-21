@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate.fragments.PickerFragments;
+package de.dmate.marvin.dmate.fragments.PickerDialogFragments;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -15,17 +15,17 @@ import java.util.Calendar;
 
 import de.dmate.marvin.dmate.R;
 
-public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+public class TimePickerDialogFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     private OnTimePickerFragmentInteractionListener mListener;
     private Calendar calendar;
 
-    public TimePickerFragment() {
+    public TimePickerDialogFragment() {
         // Required empty public constructor
     }
 
-    public static TimePickerFragment newInstance(String param1, String param2) {
-        TimePickerFragment fragment = new TimePickerFragment();
+    public static TimePickerDialogFragment newInstance(String param1, String param2) {
+        TimePickerDialogFragment fragment = new TimePickerDialogFragment();
         return fragment;
     }
 

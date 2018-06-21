@@ -45,6 +45,15 @@ public class CalculationService extends Service {
     private Boolean sportsLoaded = false;
     private Boolean usersLoaded = false;
 
+    private Observer<List<Daytime>> obsDaytimes;
+    private Observer<List<Entry>> obsEntries;
+    private Observer<List<Exercise>> obsExercises;
+    private Observer<List<Notification>> obsNotifications;
+    private Observer<List<Observation>> obsObservations;
+    private Observer<List<PlannedBasalInjection>> obsPlannedBasalInjections;
+    private Observer<List<Sport>> obsSports;
+    private Observer<List<User>> obsUsers;
+
     //empty default constructor
     public CalculationService() {
 
@@ -52,13 +61,12 @@ public class CalculationService extends Service {
 
     //Binder class definition
     public class LocalBinder extends Binder {
-
         public CalculationService getService() {
             return CalculationService.this;
         }
     }
 
-    //onBind -> return binder interface
+    //onBind -> return custom binder interface
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
@@ -70,61 +78,91 @@ public class CalculationService extends Service {
 
         //get viewModel and start observing LiveData for all tables
         viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(DataViewModel.class);
-        viewModel.getDaytimes().observeForever(new Observer<List<Daytime>>() {
+
+
+        obsDaytimes = new Observer<List<Daytime>>() {
             @Override
             public void onChanged(@Nullable List<Daytime> daytimes) {
 
             }
-        });
+        };
+        viewModel.getDaytimes().observeForever(obsDaytimes);
 
-        viewModel.getEntries().observeForever(new Observer<List<Entry>>() {
+
+        obsEntries = new Observer<List<Entry>>() {
             @Override
             public void onChanged(@Nullable List<Entry> entries) {
-
+                //perform calculations with entries in here
             }
-        });
+        };
+        viewModel.getEntries().observeForever(obsEntries);
 
-        viewModel.getExercises().observeForever(new Observer<List<Exercise>>() {
+
+        obsExercises = new Observer<List<Exercise>>() {
             @Override
             public void onChanged(@Nullable List<Exercise> exercises) {
 
             }
-        });
+        };
+        viewModel.getExercises().observeForever(obsExercises);
 
-        viewModel.getNotifications().observeForever(new Observer<List<Notification>>() {
+
+        obsNotifications = new Observer<List<Notification>>() {
             @Override
             public void onChanged(@Nullable List<Notification> notifications) {
 
             }
-        });
+        };
+        viewModel.getNotifications().observeForever(obsNotifications);
 
-        viewModel.getObservations().observeForever(new Observer<List<Observation>>() {
+
+        obsObservations = new Observer<List<Observation>>() {
             @Override
             public void onChanged(@Nullable List<Observation> observations) {
 
             }
-        });
+        };
+        viewModel.getObservations().observeForever(obsObservations);
 
-        viewModel.getPlannedBasalInjections().observeForever(new Observer<List<PlannedBasalInjection>>() {
+
+        obsPlannedBasalInjections = new Observer<List<PlannedBasalInjection>>() {
             @Override
             public void onChanged(@Nullable List<PlannedBasalInjection> plannedBasalInjections) {
 
             }
-        });
+        };
+        viewModel.getPlannedBasalInjections().observeForever(obsPlannedBasalInjections);
 
-        viewModel.getSports().observeForever(new Observer<List<Sport>>() {
+
+        obsSports = new Observer<List<Sport>>() {
             @Override
             public void onChanged(@Nullable List<Sport> sports) {
 
             }
-        });
+        };
+        viewModel.getSports().observeForever(obsSports);
 
-        viewModel.getUsers().observeForever(new Observer<List<User>>() {
+
+        obsUsers = new Observer<List<User>>() {
             @Override
             public void onChanged(@Nullable List<User> users) {
 
             }
-        });
+        };
+        viewModel.getUsers().observeForever(obsUsers);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        viewModel.getDaytimes().removeObserver(obsDaytimes);
+        viewModel.getEntries().removeObserver(obsEntries);
+        viewModel.getExercises().removeObserver(obsExercises);
+        viewModel.getNotifications().removeObserver(obsNotifications);
+        viewModel.getObservations().removeObserver(obsObservations);
+        viewModel.getPlannedBasalInjections().removeObserver(obsPlannedBasalInjections);
+        viewModel.getSports().removeObserver(obsSports);
+        viewModel.getUsers().removeObserver(obsUsers);
     }
 
     //getter

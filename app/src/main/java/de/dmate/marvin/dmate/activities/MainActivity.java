@@ -48,15 +48,6 @@ public class MainActivity extends AppCompatActivity implements
     public static final int NEW_ENTRY_REQUEST = 1;
     public static final int EDIT_ENTRY_REQUEST = 2;
 
-    //ViewModel for entries in Database
-    private DataViewModel viewModel;
-
-    //Custom EntriesRecyclerViewAdapter to feed the RecyclerView with data (List of entries)
-    private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
-
-    //RecyclerView = rework of ListView to show list of entries
-    private RecyclerView recyclerView;
-
     //bottom navigation bar and listener
     private BottomNavigationView bottomNavView;
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener;
@@ -106,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements
         transaction.commit();
     }
 
-    //from HomeFragment
+    //passed through from HomeFragment
     @Override
     public void fabNewEntry(View v) {
         Intent intent = new Intent(MainActivity.this, NewEntryActivity.class);
@@ -114,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    //from HomeFragment
+    //passed through from HomeFragment
     @Override
     public void onItemClickCustom(View v, int position) {
         Intent intent = new Intent(MainActivity.this, NewEntryActivity.class);

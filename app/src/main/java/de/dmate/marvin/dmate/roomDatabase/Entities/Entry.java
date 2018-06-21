@@ -8,6 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.dmate.marvin.dmate.roomDatabase.RoomConverter;
@@ -27,7 +28,7 @@ import de.dmate.marvin.dmate.roomDatabase.RoomConverter;
 public class Entry {
 
     public Entry() {
-
+        exercises = new ArrayList<>();
     }
 
     @PrimaryKey(autoGenerate = true)

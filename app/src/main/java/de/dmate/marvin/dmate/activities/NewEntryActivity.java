@@ -1,14 +1,15 @@
 package de.dmate.marvin.dmate.activities;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,17 +23,21 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.List;
 
 import de.dmate.marvin.dmate.R;
-import de.dmate.marvin.dmate.fragments.PickerFragments.DatePickerFragment;
-import de.dmate.marvin.dmate.fragments.PickerFragments.TimePickerFragment;
+import de.dmate.marvin.dmate.fragments.PickerDialogFragments.DatePickerDialogFragment;
+import de.dmate.marvin.dmate.fragments.PickerDialogFragments.TimePickerDialogFragment;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
+import de.dmate.marvin.dmate.roomDatabase.Entities.Exercise;
 import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
 import de.dmate.marvin.dmate.util.Helper;
 
-public class NewEntryActivity extends AppCompatActivity
-        implements TimePickerFragment.OnTimePickerFragmentInteractionListener, DatePickerFragment.OnDatePickerFragmentInteractionListener {
+public class NewEntryActivity extends AppCompatActivity implements
+        TimePickerDialogFragment.OnTimePickerFragmentInteractionListener,
+        DatePickerDialogFragment.OnDatePickerFragmentInteractionListener,
+        ExercisesDialogFragment.OnExercisesDialogFragmentListener, DialogInterface.OnDismissListener {
 
     private int requestCode;
 
@@ -54,19 +59,20 @@ public class NewEntryActivity extends AppCompatActivity
 
     private DataViewModel viewModel;
 
-    private RecyclerView recyclerView;
     private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
 
     private Entry newEntry;
     private Entry currentEntry;
     private Long dateMillis;
 
+    private List<Exercise> exercises;
+
+    private ExercisesDialogFragment exercisesDialogFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_entry);
-
-        viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
 
         //set requestCode to differ between editing an newEntry or creating a new one
         Intent intent = getIntent();
@@ -82,49 +88,6 @@ public class NewEntryActivity extends AppCompatActivity
         //activate up navigation (back button on app bar)
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //set up OnClickListener for FAB
-        //when clicked, open NewEntryActivity and set requestCode to NEW_ENTRY_REQUEST
-        FloatingActionButton fab = findViewById(R.id.fab_fragment_save);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (requestCode == 1) {
-                    newEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
-
-                    if (!ETbloodsugar.getText().toString().equals("")) newEntry.setBloodSugar(Float.parseFloat(ETbloodsugar.getText().toString()));
-                    else newEntry.setBloodSugar(null);
-
-                    if (!ETbreadunit.getText().toString().equals("")) newEntry.setBreadUnit(Float.parseFloat(ETbreadunit.getText().toString()));
-                    else newEntry.setBreadUnit(null);
-
-                    if (!ETbolus.getText().toString().equals("")) newEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
-                    else newEntry.setBolus(null);
-
-                    if (!ETbasal.getText().toString().equals("")) newEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
-                    else newEntry.setBasal(null);
-
-                    if (!ETnote.getText().toString().equals("")) newEntry.setNote(ETnote.getText().toString());
-                    else newEntry.setNote(null);
-
-                    viewModel.addEntry(newEntry);
-                }
-
-                if (requestCode == 2) {
-                    currentEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
-                    if (!ETbloodsugar.getText().toString().equals("")) currentEntry.setBloodSugar(Float.parseFloat(ETbloodsugar.getText().toString()));
-                    if (!ETbreadunit.getText().toString().equals("")) currentEntry.setBreadUnit(Float.parseFloat(ETbreadunit.getText().toString()));
-                    if (!ETbolus.getText().toString().equals("")) currentEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
-                    if (!ETbasal.getText().toString().equals("")) currentEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
-                    if (!ETnote.getText().toString().equals("")) currentEntry.setNote(ETnote.getText().toString());
-                    viewModel.addEntry(currentEntry);
-                }
-
-                Intent intent = new Intent(NewEntryActivity.this, MainActivity.class);
-                startActivity(intent);
-                finishAndRemoveTaskCustom();
-            }
-        });
-
         //get Buttons and EditTexts
         dateButton = findViewById(R.id.button_date);
         timeButton = findViewById(R.id.button_time);
@@ -136,7 +99,6 @@ public class NewEntryActivity extends AppCompatActivity
         buttonExercises = findViewById(R.id.button_exercises);
         switchDiseased = findViewById(R.id.switch_diseased);
 
-
         //initialize SlidingUpPanelLayout (Slide up to show ratio wizard in NewEntryActivity)
         supl = findViewById(R.id.sliding_layout);
         slideUpTextView = supl.findViewById(R.id.slide_up_textview);
@@ -146,7 +108,6 @@ public class NewEntryActivity extends AppCompatActivity
             public void onPanelSlide(View panel, float slideOffset) {
 
             }
-
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
                 //when panel state changes, adjust labels from slide "up" to slide "down" and vice versa
@@ -161,12 +122,19 @@ public class NewEntryActivity extends AppCompatActivity
             }
         });
 
-
         calendar = Calendar.getInstance();
 
+        viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
         entriesRecyclerViewAdapter = Helper.getInstance().getEntriesRecyclerViewAdapter();
 
-        //if requestCode == 1 -> new entry
+        viewModel.getExercises().observe(NewEntryActivity.this, new Observer<List<Exercise>>() {
+            @Override
+            public void onChanged(@Nullable List<Exercise> exercises) {
+
+            }
+        });
+
+        //if requestCode == 1 -> initialize new entry
         if (requestCode == 1) {
             //save the current time (when the activity was started)
             dateMillis = calendar.getTimeInMillis();
@@ -182,7 +150,7 @@ public class NewEntryActivity extends AppCompatActivity
             switchDiseased.setChecked(false);
         }
 
-        //if request code = 2 -> edit entry
+        //if request code = 2 -> initialize existing entry
         if (requestCode == 2) {
             //get entry object to update
             int position = getIntent().getIntExtra("POSITION", Integer.MAX_VALUE);
@@ -214,32 +182,33 @@ public class NewEntryActivity extends AppCompatActivity
             switchDiseased.setChecked(diseased);
         }
 
-        //set OnClickListener for dateButton to open DatePickerFragment
+        //set OnClickListener for dateButton to open DatePickerDialogFragment
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //create fragment and show it
-                DatePickerFragment datePickerFragment = new DatePickerFragment();
+                DatePickerDialogFragment datePickerDialogFragment = new DatePickerDialogFragment();
                 Bundle args = new Bundle();
                 args.putLong("dateMillis", dateMillis);
-                datePickerFragment.setArguments(args);
-                datePickerFragment.show(getFragmentManager(), "datePicker");
+                datePickerDialogFragment.setArguments(args);
+                datePickerDialogFragment.show(getFragmentManager(), "datePicker");
             }
         });
 
-        //set OnClickListener for timeButton to open TimePickerFragment
+        //set OnClickListener for timeButton to open TimePickerDialogFragment
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //create fragment and show it
-                TimePickerFragment timePickerFragment = new TimePickerFragment();
+                TimePickerDialogFragment timePickerDialogFragment = new TimePickerDialogFragment();
                 Bundle args = new Bundle();
                 args.putLong("dateMillis", dateMillis);
-                timePickerFragment.setArguments(args);
-                timePickerFragment.show(getFragmentManager(), "timePicker");
+                timePickerDialogFragment.setArguments(args);
+                timePickerDialogFragment.show(getFragmentManager(), "timePicker");
             }
         });
 
+        //set OnCheckedChangeListener for the Switch and react to switch status changes
         switchDiseased.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -247,36 +216,67 @@ public class NewEntryActivity extends AppCompatActivity
                 if (requestCode == 2) currentEntry.setReliable(isChecked);
             }
         });
+
+        //set OnClickListener for exercise button and open Dialog on click
+        buttonExercises.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exercisesDialogFragment = new ExercisesDialogFragment();
+                if (requestCode == 1) exercisesDialogFragment.setEntry(newEntry);
+                if(requestCode == 2) exercisesDialogFragment.setEntry(currentEntry);
+
+                exercisesDialogFragment.show(getSupportFragmentManager(), "exercisesDialog");
+
+            }
+        });
+
+        //set up OnClickListener for FAB
+        //FAB is used to save the current entry
+        FloatingActionButton fab = findViewById(R.id.fab_fragment_save);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (requestCode == 1) {
+                    newEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
+
+                    if (!ETbloodsugar.getText().toString().equals("")) newEntry.setBloodSugar(Float.parseFloat(ETbloodsugar.getText().toString()));
+                    else newEntry.setBloodSugar(null);
+
+                    if (!ETbreadunit.getText().toString().equals("")) newEntry.setBreadUnit(Float.parseFloat(ETbreadunit.getText().toString()));
+                    else newEntry.setBreadUnit(null);
+
+                    if (!ETbolus.getText().toString().equals("")) newEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
+                    else newEntry.setBolus(null);
+
+                    if (!ETbasal.getText().toString().equals("")) newEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
+                    else newEntry.setBasal(null);
+
+                    if (!ETnote.getText().toString().equals("")) newEntry.setNote(ETnote.getText().toString());
+                    else newEntry.setNote(null);
+
+                    viewModel.addEntryWithExercises(newEntry, newEntry.getExercises());
+
+                }
+
+                if (requestCode == 2) {
+                    currentEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
+                    if (!ETbloodsugar.getText().toString().equals("")) currentEntry.setBloodSugar(Float.parseFloat(ETbloodsugar.getText().toString()));
+                    if (!ETbreadunit.getText().toString().equals("")) currentEntry.setBreadUnit(Float.parseFloat(ETbreadunit.getText().toString()));
+                    if (!ETbolus.getText().toString().equals("")) currentEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
+                    if (!ETbasal.getText().toString().equals("")) currentEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
+                    if (!ETnote.getText().toString().equals("")) currentEntry.setNote(ETnote.getText().toString());
+
+                    viewModel.addEntryWithExercises(currentEntry, currentEntry.getExercises());
+                }
+
+                Intent intent = new Intent(NewEntryActivity.this, MainActivity.class);
+                startActivity(intent);
+                NewEntryActivity.this.finishAndRemoveTask();
+            }
+        });
     }
 
-    @Override
-    //set menu (containing the actions) for the app bar
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.app_bar_actions, menu);
-        menu.findItem(R.id.action_refresh).setVisible(false);
-        menu.findItem(R.id.action_delete_forever).setVisible(false);
-        menu.findItem(R.id.action_save).setVisible(false);
-        menu.findItem(R.id.action_settings).setVisible(false);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    //react to action clicked on app bar
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case android.R.id.home :
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    //helper function (allows to finish and remove task from inside the FAB clicklistener)
-    private void finishAndRemoveTaskCustom() {
-        this.finishAndRemoveTask();
-    }
-
-    //defined and called by DatePickerFragment (and nested interface)
+    //defined and called by DatePickerDialogFragment (and nested interface)
     @Override
     public void updateDate(int year, int month, int dayOfMonth) {
         calendar.set(year, month, dayOfMonth);
@@ -284,7 +284,7 @@ public class NewEntryActivity extends AppCompatActivity
         dateButton.setText(Helper.formatMillisToDateString(dateMillis));
     }
 
-    //defined and called by TimePickerFragment (and nested interface)
+    //defined and called by TimePickerDialogFragment (and nested interface)
     @Override
     public void updateTime(int hourOfDay, int minute) {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -298,5 +298,14 @@ public class NewEntryActivity extends AppCompatActivity
         this.dateMillis = calendar.getTimeInMillis();
         if (requestCode == 1) this.newEntry.setTimestamp(new Timestamp(dateMillis));
         if (requestCode == 2) this.currentEntry.setTimestamp(new Timestamp(dateMillis));
+    }
+
+    //called when (or slightly before?) ExercisesDialogFragment is dismissed
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        //check if new exercises were added
+        //update buttonExercises to indicate that there are exercises
+        if (requestCode == 1) this.newEntry = exercisesDialogFragment.getEntry();
+        if (requestCode == 2) this.currentEntry = exercisesDialogFragment.getEntry();
     }
 }

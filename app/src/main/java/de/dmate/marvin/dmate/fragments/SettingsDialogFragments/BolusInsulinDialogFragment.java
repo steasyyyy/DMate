@@ -69,7 +69,7 @@ public class BolusInsulinDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dialog_bolus_insulin, container, false);
+        return inflater.inflate(R.layout.fragment_settings_dialog_bolus_insulin, container, false);
     }
 
     @Override

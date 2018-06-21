@@ -37,8 +37,6 @@ public class DataViewModel extends AndroidViewModel {
 
         appDatabase = AppDatabase.getDatabase(this.getApplication());
 
-        //get the content of all tables from the database as LiveData
-        //whenever the content of the database changes, LiveData objects change as well
         daytimes = appDatabase.daytimeDao().getAllDaytimes();
         entries = appDatabase.entryDao().getAllEntries();
         exercises = appDatabase.exerciseDao().getAllExercises();
@@ -75,6 +73,14 @@ public class DataViewModel extends AndroidViewModel {
     //add an entry to the database
     public void addEntry(Entry entry) {
         new addEntryAsyncTask(appDatabase).execute(entry);
+    }
+
+    public void addEntryWithExercises(Entry entry, List<Exercise> exercises) {
+        new addEntryWithExercisesAsyncTask(appDatabase, entry, exercises).execute();
+    }
+
+    public void updateEntryReference(Integer eId, Integer exId) {
+        new updateEntryReferenceAsyncTask(appDatabase, eId, exId).execute();
     }
 
     //delete an entry from the database
@@ -233,6 +239,52 @@ public class DataViewModel extends AndroidViewModel {
         @Override
         protected Void doInBackground(Entry... params) {
             db.entryDao().insertEntry(params[0]);
+            return null;
+        }
+    }
+
+    private static class updateEntryReferenceAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private AppDatabase db;
+        private Integer eId;
+        private Integer exId;
+
+        updateEntryReferenceAsyncTask(AppDatabase db, Integer eId, Integer exId) {
+            this.db = db;
+            this.eId = eId;
+            this.exId = exId;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            db.exerciseDao().updateEntryReference(eId, exId);
+            return null;
+        }
+    }
+
+    private static class addEntryWithExercisesAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private AppDatabase db;
+        private Entry entry;
+        private List<Exercise> exercises;
+
+        addEntryWithExercisesAsyncTask(AppDatabase db, Entry entry, List<Exercise> exercises) {
+            this.db = db;
+            this.entry = entry;
+            this.exercises = exercises;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            long rowId = db.entryDao().insertEntry(entry);
+
+            //if exercises exist, write them to the database and set the foreign key to the EntryID of the entry that was just inserted
+            if (exercises.size() > 0) {
+                for (Exercise ex : exercises) {
+                    ex.seteIdF((int) rowId);
+                    db.exerciseDao().insertExercise(ex);
+                }
+            }
             return null;
         }
     }

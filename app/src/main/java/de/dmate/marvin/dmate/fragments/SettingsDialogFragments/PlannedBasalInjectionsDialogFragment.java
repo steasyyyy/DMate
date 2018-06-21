@@ -88,7 +88,7 @@ public class PlannedBasalInjectionsDialogFragment extends DialogFragment impleme
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dialog_planned_basal_injections, container, false);
+        return inflater.inflate(R.layout.fragment_settings_dialog_planned_basal_injections, container, false);
     }
 
     @Override
