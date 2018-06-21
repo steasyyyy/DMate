@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -64,8 +65,6 @@ public class NewEntryActivity extends AppCompatActivity implements
     private Entry newEntry;
     private Entry currentEntry;
     private Long dateMillis;
-
-    private List<Exercise> exercises;
 
     private ExercisesDialogFragment exercisesDialogFragment;
 
@@ -130,7 +129,15 @@ public class NewEntryActivity extends AppCompatActivity implements
         viewModel.getExercises().observe(NewEntryActivity.this, new Observer<List<Exercise>>() {
             @Override
             public void onChanged(@Nullable List<Exercise> exercises) {
-
+                updateButtonExercises();
+                if (requestCode == 2) {
+                    for (Exercise ex : exercises) {
+                        if (ex.geteIdF() != null && ex.geteIdF().intValue() == currentEntry.geteId()) {
+                            if (!currentEntry.getExercises().contains(ex)) currentEntry.getExercises().add(ex);
+                        }
+                    }
+                }
+                updateButtonExercises();
             }
         });
 
@@ -304,8 +311,23 @@ public class NewEntryActivity extends AppCompatActivity implements
     @Override
     public void onDismiss(DialogInterface dialog) {
         //check if new exercises were added
-        //update buttonExercises to indicate that there are exercises
         if (requestCode == 1) this.newEntry = exercisesDialogFragment.getEntry();
         if (requestCode == 2) this.currentEntry = exercisesDialogFragment.getEntry();
+        updateButtonExercises();
+        
+    }
+
+    //update buttonExercises to indicate that there are exercises
+    private void updateButtonExercises() {
+        if (requestCode == 1) {
+            buttonExercises.setText("Exercises" + " (" + newEntry.getExercises().size() + ")");
+            if (newEntry.getExercises().size() > 0) buttonExercises.setBackgroundResource(R.color.colorAccent);
+            else buttonExercises.setBackground(timeButton.getBackground());
+        }
+        if (requestCode == 2) {
+            buttonExercises.setText("Exercises" + " (" + currentEntry.getExercises().size() + ")");
+            if (currentEntry.getExercises().size() > 0) buttonExercises.setBackgroundResource(R.color.colorAccent);
+            else buttonExercises.setBackground(timeButton.getBackground());
+        }
     }
 }
