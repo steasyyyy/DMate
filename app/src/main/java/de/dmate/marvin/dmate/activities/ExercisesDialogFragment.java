@@ -149,8 +149,8 @@ public class ExercisesDialogFragment extends DialogFragment implements AdapterVi
 
                 //if there is an exercise that did not exist during initialization, it must have been newly added
                 //so add it to the current entry
-                for (Exercise exercise : exercises) {
-                    if (!exercises.contains(exercise)) {
+                for (Exercise exercise : entry.getExercises()) {
+                    if (!entry.getExercises().contains(exercise)) {
                         entry.getExercises().add(exercise);
                         //add newly added exercise to initialExercises as it should not be added again on the next change
                         initialExercises.add(exercise);
@@ -198,7 +198,7 @@ public class ExercisesDialogFragment extends DialogFragment implements AdapterVi
                 exercise.setsIdF(((Sport)spinnerSelectSport.getSelectedItem()).getsId());
                 exercise.setExerciseUnits(Float.parseFloat(editTextUnits.getText().toString()));
 
-                entry.getExercises().add(exercise);
+                if (!entry.getExercises().contains(exercise)) entry.getExercises().add(exercise);
                 viewModel.addExercise(exercise);
 
                 buttonConfirmExercises.setVisibility(View.VISIBLE);

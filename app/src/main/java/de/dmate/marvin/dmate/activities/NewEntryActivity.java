@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -65,6 +66,9 @@ public class NewEntryActivity extends AppCompatActivity implements
     private Entry newEntry;
     private Entry currentEntry;
     private Long dateMillis;
+
+    private List<Exercise> exercisesInitial;
+    private Boolean exercisesInitialized = false;
 
     private ExercisesDialogFragment exercisesDialogFragment;
 
@@ -129,11 +133,17 @@ public class NewEntryActivity extends AppCompatActivity implements
         viewModel.getExercises().observe(NewEntryActivity.this, new Observer<List<Exercise>>() {
             @Override
             public void onChanged(@Nullable List<Exercise> exercises) {
-                updateButtonExercises();
+
+                if (!exercisesInitialized) {
+                    exercisesInitial = exercises;
+                    exercisesInitialized = true;
+                }
+
                 if (requestCode == 2) {
                     for (Exercise ex : exercises) {
                         if (ex.geteIdF() != null && ex.geteIdF().intValue() == currentEntry.geteId()) {
                             if (!currentEntry.getExercises().contains(ex)) currentEntry.getExercises().add(ex);
+                            exercisesInitial.add(ex);
                         }
                     }
                 }
@@ -233,7 +243,6 @@ public class NewEntryActivity extends AppCompatActivity implements
                 if(requestCode == 2) exercisesDialogFragment.setEntry(currentEntry);
 
                 exercisesDialogFragment.show(getSupportFragmentManager(), "exercisesDialog");
-
             }
         });
 
@@ -261,8 +270,13 @@ public class NewEntryActivity extends AppCompatActivity implements
                     if (!ETnote.getText().toString().equals("")) newEntry.setNote(ETnote.getText().toString());
                     else newEntry.setNote(null);
 
-                    viewModel.addEntryWithExercises(newEntry, newEntry.getExercises());
-
+                    List<Exercise> exercisesToAdd = new ArrayList<>();
+                    for (Exercise e : newEntry.getExercises()) {
+                        if (!exercisesInitial.contains(e)) {
+                            exercisesToAdd.add(e);
+                        }
+                    }
+                    viewModel.addEntryWithExercises(newEntry, exercisesToAdd);
                 }
 
                 if (requestCode == 2) {
@@ -273,7 +287,13 @@ public class NewEntryActivity extends AppCompatActivity implements
                     if (!ETbasal.getText().toString().equals("")) currentEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
                     if (!ETnote.getText().toString().equals("")) currentEntry.setNote(ETnote.getText().toString());
 
-                    viewModel.addEntryWithExercises(currentEntry, currentEntry.getExercises());
+                    List<Exercise> exercisesToAdd = new ArrayList<>();
+                    for (Exercise e : currentEntry.getExercises()) {
+                        if (!exercisesInitial.contains(e)) {
+                            exercisesToAdd.add(e);
+                        }
+                    }
+                    viewModel.addEntryWithExercises(currentEntry, exercisesToAdd);
                 }
 
                 Intent intent = new Intent(NewEntryActivity.this, MainActivity.class);
@@ -314,7 +334,7 @@ public class NewEntryActivity extends AppCompatActivity implements
         if (requestCode == 1) this.newEntry = exercisesDialogFragment.getEntry();
         if (requestCode == 2) this.currentEntry = exercisesDialogFragment.getEntry();
         updateButtonExercises();
-        
+
     }
 
     //update buttonExercises to indicate that there are exercises
