@@ -135,7 +135,7 @@ public class NewEntryActivity extends AppCompatActivity implements
             public void onChanged(@Nullable List<Exercise> exercises) {
 
                 if (!exercisesInitialized) {
-                    exercisesInitial = exercises;
+                    exercisesInitial = new ArrayList<>(exercises);
                     exercisesInitialized = true;
                 }
 
