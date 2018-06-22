@@ -72,6 +72,12 @@ public class NewEntryActivity extends AppCompatActivity implements
 
     private ExercisesDialogFragment exercisesDialogFragment;
 
+    //TODO following process still cause bugs:
+    //create a new entry, add exercises, save them and save the entry
+    //reopen the entry from HomeFragment
+    //open exercises dialog, add a new entry
+    //instead of only the new entry being added, the two existing entries are added again
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -274,6 +280,7 @@ public class NewEntryActivity extends AppCompatActivity implements
                     for (Exercise e : newEntry.getExercises()) {
                         if (!exercisesInitial.contains(e)) {
                             exercisesToAdd.add(e);
+                            exercisesInitial.add(e);
                         }
                     }
                     viewModel.addEntryWithExercises(newEntry, exercisesToAdd);
@@ -291,6 +298,7 @@ public class NewEntryActivity extends AppCompatActivity implements
                     for (Exercise e : currentEntry.getExercises()) {
                         if (!exercisesInitial.contains(e)) {
                             exercisesToAdd.add(e);
+                            exercisesInitial.add(e);
                         }
                     }
                     viewModel.addEntryWithExercises(currentEntry, exercisesToAdd);
