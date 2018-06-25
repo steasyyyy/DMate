@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate.util;
+package de.dmate.marvin.dmate.application;
 
 import android.app.Application;
 import android.content.ComponentName;
@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import de.dmate.marvin.dmate.services.CalculationService;
+import de.dmate.marvin.dmate.services.BackgroundService;
 
 public class DMateApplication extends Application {
 
-    private CalculationService service;
+    private BackgroundService service;
     private ServiceConnection serviceConnection;
 
 
@@ -21,18 +21,18 @@ public class DMateApplication extends Application {
         serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder iBinder) {
-                service = ((CalculationService.LocalBinder) iBinder ).getService();
+                service = ((BackgroundService.LocalBinder) iBinder ).getService();
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
                 //possibility to restart service on disconnect (behaviour not tested yet)
-//                Intent intent = new Intent(DMateApplication.this, CalculationService.class);
+//                Intent intent = new Intent(DMateApplication.this, BackgroundService.class);
 //                getApplicationContext().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
             }
         };
 
-        Intent intent = new Intent(this, CalculationService.class);
+        Intent intent = new Intent(this, BackgroundService.class);
         getApplicationContext().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
     }
 

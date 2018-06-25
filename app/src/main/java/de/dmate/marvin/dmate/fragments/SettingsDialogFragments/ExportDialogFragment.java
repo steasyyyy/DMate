@@ -552,6 +552,8 @@ public class ExportDialogFragment extends DialogFragment {
                 tableEntries.addCell(cellEntryColored);
                 cellEntryColored.setPhrase(new Phrase(""));
                 tableEntries.addCell(cellEntryColored);
+                tableEntries.addCell("ID");
+                tableEntries.addCell(e.geteId().toString());
                 tableEntries.addCell("Date");
                 tableEntries.addCell(Helper.formatMillisToDateString(e.getTimestamp().getTime()));
                 tableEntries.addCell("Time");

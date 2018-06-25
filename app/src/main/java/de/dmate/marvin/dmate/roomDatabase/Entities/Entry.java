@@ -44,7 +44,7 @@ public class Entry {
     private Float bolus = null;
     private Float basal = null;
     private String note = null;
-    private Boolean reliable = false; //when the user is ill, this value will be false
+    private Boolean reliable = true; //when the user is ill, this value will be false
 
     private Float reqBolusSimple = null;
     private Float reqBolusConsulting = null;

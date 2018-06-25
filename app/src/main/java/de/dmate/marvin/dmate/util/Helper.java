@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import de.dmate.marvin.dmate.application.DMateApplication;
+
 public class Helper {
 
     private static final Helper instance = new Helper();

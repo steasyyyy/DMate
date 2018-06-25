@@ -9,6 +9,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,14 +26,15 @@ import de.dmate.marvin.dmate.roomDatabase.Entities.Sport;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
 import de.dmate.marvin.dmate.util.RunnableHelper;
 
-public class CalculationService extends Service {
+public class BackgroundService extends Service {
 
     private IBinder binder = new LocalBinder();
 
     private DataViewModel viewModel;
 
     private List<Daytime> daytimes;
-    private List<Entry> entries;
+    private List<Entry> entries; //sometimes it is necessary to consider all entries though
+    private List<Entry> entriesFromPastTwoWeeks; //NOTE: only entries from the past two weeks are considered as specified in the requirements
     private List<Exercise> exercises;
     private List<Notification> notifications;
     private List<Observation> observations;
@@ -65,14 +68,14 @@ public class CalculationService extends Service {
     private RunnableHelper helper;
 
     //empty default constructor
-    public CalculationService() {
+    public BackgroundService() {
 
     }
 
     //Binder class definition
     public class LocalBinder extends Binder {
-        public CalculationService getService() {
-            return CalculationService.this;
+        public BackgroundService getService() {
+            return BackgroundService.this;
         }
     }
 
@@ -86,13 +89,7 @@ public class CalculationService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        //initialize ThreadPoolExecutor
-//        int corePoolSize = Runtime.getRuntime().availableProcessors();
-//        queue = new LinkedBlockingQueue<Runnable>();
-//        executor = new ThreadPoolExecutor(corePoolSize, corePoolSize*2, 1, TimeUnit.MINUTES, queue);
-
         executor = Executors.newSingleThreadExecutor();
-
 
         //get viewModel and start observing LiveData for all tables
         viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(DataViewModel.class);
@@ -100,8 +97,8 @@ public class CalculationService extends Service {
         obsDaytimes = new Observer<List<Daytime>>() {
             @Override
             public void onChanged(@Nullable List<Daytime> daytimes) {
-                CalculationService.this.daytimes = daytimes;
-                CalculationService.this.daytimesLoaded = true;
+                BackgroundService.this.daytimes = daytimes;
+                BackgroundService.this.daytimesLoaded = true;
 
                 //check if every list is loaded before performing calculations
                 if (daytimesLoaded
@@ -113,10 +110,12 @@ public class CalculationService extends Service {
                         && sportsLoaded
                         && usersLoaded) {
                     performCalculations();
-                    //update DaytimeID in all Entries
-                    //trigger notification if some entries do not have a DaytimeID assigned
-                    //update buFactorConsultingArithMean in Daytime
-                    //update reqBolusSimple in ALL ENTRIES
+                    //update DaytimeID in all Entries (CHECK)
+                    //trigger notification if some entries do not have a DaytimeID assigned (CHECK)
+                    //update buFactorConsultingArithMean in Daytime (NOT TESTED YET)
+                    //update reqBolusSimple in ALL ENTRIES (NOT TESTED YET)
+                    //update buFactorConsulting in ALL ENTRIES
+                    //update reqBolusConsulting in ALL ENTRIES
                     //update more
                 }
             }
@@ -127,8 +126,20 @@ public class CalculationService extends Service {
         obsEntries = new Observer<List<Entry>>() {
             @Override
             public void onChanged(@Nullable List<Entry> entries) {
-                CalculationService.this.entries = entries;
-                CalculationService.this.entriesLoaded = true;
+
+                List<Entry> entriesFromPastTwoWeeks = new ArrayList<>();
+                long millisPerDay = 24*60*60*1000;
+                long now = System.currentTimeMillis();
+                long twoWeeksAgo = now - (14*millisPerDay);
+                for (Entry e : entries) {
+                    if (e.getTimestamp().getTime() >= twoWeeksAgo) {
+                        entriesFromPastTwoWeeks.add(e);
+                    }
+                }
+
+                BackgroundService.this.entries = entries;
+                BackgroundService.this.entriesFromPastTwoWeeks = entriesFromPastTwoWeeks;
+                BackgroundService.this.entriesLoaded = true;
 
                 if (daytimesLoaded
                         && entriesLoaded
@@ -260,8 +271,8 @@ public class CalculationService extends Service {
         obsExercises = new Observer<List<Exercise>>() {
             @Override
             public void onChanged(@Nullable List<Exercise> exercises) {
-                CalculationService.this.exercises = exercises;
-                CalculationService.this.exercisesLoaded = true;
+                BackgroundService.this.exercises = exercises;
+                BackgroundService.this.exercisesLoaded = true;
 
                 if (daytimesLoaded
                         && entriesLoaded
@@ -286,8 +297,8 @@ public class CalculationService extends Service {
         obsNotifications = new Observer<List<Notification>>() {
             @Override
             public void onChanged(@Nullable List<Notification> notifications) {
-                CalculationService.this.notifications = notifications;
-                CalculationService.this.notificationsLoaded = true;
+                BackgroundService.this.notifications = notifications;
+                BackgroundService.this.notificationsLoaded = true;
 
                 if (daytimesLoaded
                         && entriesLoaded
@@ -311,8 +322,8 @@ public class CalculationService extends Service {
         obsObservations = new Observer<List<Observation>>() {
             @Override
             public void onChanged(@Nullable List<Observation> observations) {
-                CalculationService.this.observations = observations;
-                CalculationService.this.observationsLoaded = true;
+                BackgroundService.this.observations = observations;
+                BackgroundService.this.observationsLoaded = true;
 
                 if (daytimesLoaded
                         && entriesLoaded
@@ -336,8 +347,8 @@ public class CalculationService extends Service {
         obsPlannedBasalInjections = new Observer<List<PlannedBasalInjection>>() {
             @Override
             public void onChanged(@Nullable List<PlannedBasalInjection> plannedBasalInjections) {
-                CalculationService.this.plannedBasalInjections = plannedBasalInjections;
-                CalculationService.this.plannedBasalInjectionsLoaded = true;
+                BackgroundService.this.plannedBasalInjections = plannedBasalInjections;
+                BackgroundService.this.plannedBasalInjectionsLoaded = true;
 
                 if (daytimesLoaded
                         && entriesLoaded
@@ -359,8 +370,8 @@ public class CalculationService extends Service {
         obsSports = new Observer<List<Sport>>() {
             @Override
             public void onChanged(@Nullable List<Sport> sports) {
-                CalculationService.this.sports = sports;
-                CalculationService.this.sportsLoaded = true;
+                BackgroundService.this.sports = sports;
+                BackgroundService.this.sportsLoaded = true;
 
                 if (daytimesLoaded
                         && entriesLoaded
@@ -396,10 +407,10 @@ public class CalculationService extends Service {
             @Override
             public void onChanged(@Nullable List<User> users) {
                 try {
-                    CalculationService.this.user = users.get(0);
-                    CalculationService.this.usersLoaded = true;
+                    BackgroundService.this.user = users.get(0);
+                    BackgroundService.this.usersLoaded = true;
                 } catch (IndexOutOfBoundsException e) {
-                    CalculationService.this.user = new User();
+                    BackgroundService.this.user = new User();
                     viewModel.addUser(user);
                     Toast toast = Toast.makeText(getApplicationContext(), "Created new user", Toast.LENGTH_LONG);
                     toast.show();
@@ -432,8 +443,11 @@ public class CalculationService extends Service {
     //gets called when onChanged of any LiveData is called and all other LiveData objects were initialized
     private void performCalculations() {
 
-        executor.execute(helper.getInstance().getRunnableUpdateDaytimeIdsInAllEntries(viewModel, daytimes, entries));
-        executor.execute(helper.getInstance().getRunnableTriggerNotificationIfDaytimesNotSetProperly(viewModel, entries, notifications));
+        executor.execute(RunnableHelper.getRunnableUpdateDaytimeIdsInAllEntries(viewModel, daytimes, entries));
+        executor.execute(RunnableHelper.getRunnableTriggerNotificationIfDaytimesNotSetProperly(viewModel, entries, notifications));
+        executor.execute(RunnableHelper.getRunnableUpdateBuFactorConsultingArithMeanInDaytimes(viewModel, entriesFromPastTwoWeeks, daytimes));
+        executor.execute(RunnableHelper.getRunnableUpdateReqBolusSimpleInAllEntries(viewModel, entries, daytimes));
+        executor.execute(RunnableHelper.getRunnableUpdateBloodSugarArithMean(viewModel, user, entriesFromPastTwoWeeks));
 
         //1 - general checks
         //-> remove daytimes, entries etc. without IDs
