@@ -223,4 +223,89 @@ public class RunnableHelper {
             System.out.println("BLOOD SUGAR ARITH MEAN: " + user.getBloodsugarArithMean());
         }
     }
+
+    public static Runnable getRunnableUpdateDivergenceFromTargetInAllEntries(DataViewModel viewModel, User user, List<Entry> entries, List<Notification> notifications) {
+        return new UpdateDivergenceFromTargetInAllEntries(viewModel, user, entries, notifications);
+    }
+    private static class UpdateDivergenceFromTargetInAllEntries implements Runnable {
+
+        private final DataViewModel viewModel;
+        private final User user;
+        private final List<Entry> entries;
+        private final List<Notification> notifications;
+
+        public UpdateDivergenceFromTargetInAllEntries(DataViewModel viewModel, User user, List<Entry> entries, List<Notification> notifications) {
+            this.viewModel = viewModel;
+            this.user = user;
+            this.entries = entries;
+            this.notifications = notifications;
+        }
+
+        @Override
+        public void run() {
+            Float targetMin = user.getTargetMin();
+            Float targetMax = user.getTargetMax();
+
+            Boolean alreadyExisting = false;
+
+            if (targetMin == null || targetMax == null) {
+                //trigger Notification (Target not set)
+                for (Notification n : notifications) {
+                    if (n.getNotificationType().equals(Notification.TARGET_NOT_SET_WARNING)) {
+                        alreadyExisting = true;
+                    }
+                }
+                if (!alreadyExisting) {
+                    Notification n = new Notification();
+                    n.setTimestamp(new Timestamp(System.currentTimeMillis()));
+                    n.setNotificationType(Notification.TARGET_NOT_SET_WARNING);
+                    n.setMessage(Notification.MESSAGE_TARGET_NOT_SET_WARNING);
+                    viewModel.addNotification(n);
+                    System.out.println("NEW NOTIFICATION ADDED (TARGET NOT SET)");
+                }
+            }
+            if (targetMin != null && targetMax != null) {
+                for (Entry e : entries) {
+                    if (e.getBloodSugar() != null) {
+                        Float divergenceFromTarget;
+                        if (e.getBloodSugar() < targetMin) {
+                            divergenceFromTarget = e.getBloodSugar() - targetMin;
+                            if (e.getDivergenceFromTarget() == null) {
+                                e.setDivergenceFromTarget(divergenceFromTarget);
+                                viewModel.addEntry(e);
+                            } else {
+                                if (!(e.getDivergenceFromTarget().equals(divergenceFromTarget))) {
+                                    e.setDivergenceFromTarget(divergenceFromTarget);
+                                    viewModel.addEntry(e);
+                                }
+                            }
+                        }
+                        if (e.getBloodSugar() > targetMax) {
+                            divergenceFromTarget = e.getBloodSugar() - targetMax;
+                            if (e.getDivergenceFromTarget() == null) {
+                                e.setDivergenceFromTarget(divergenceFromTarget);
+                                viewModel.addEntry(e);
+                            } else {
+                                if (!(e.getDivergenceFromTarget().equals(divergenceFromTarget))) {
+                                    e.setDivergenceFromTarget(divergenceFromTarget);
+                                    viewModel.addEntry(e);
+                                }
+                            }
+                        }
+                        if (e.getBloodSugar() >= targetMin && e.getBloodSugar() <= targetMax) {
+                            if (e.getDivergenceFromTarget() == null) {
+                                e.setDivergenceFromTarget(0f);
+                                viewModel.addEntry(e);
+                            } else {
+                                if (!(e.getDivergenceFromTarget().equals(0f))) {
+                                    e.setDivergenceFromTarget(0f);
+                                    viewModel.addEntry(e);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

@@ -61,9 +61,6 @@ public class BackgroundService extends Service {
     private Observer<List<Sport>> obsSports;
     private Observer<List<User>> obsUsers;
 
-//    private ThreadPoolExecutor executor;
-//    private LinkedBlockingQueue<Runnable> queue;
-
     private ExecutorService executor;
     private RunnableHelper helper;
 
@@ -153,11 +150,11 @@ public class BackgroundService extends Service {
 
 
                     //1 - check if a new entry was added
-                    //-> update bloodSugarArithMean in User
+                    //-> update bloodSugarArithMean in User (CHECK)
                     //-> -> update trend calculations for notification type 2 (Adjustment of basal insulin dose)
                     //-> -> update notifications
                     //-> check if blood sugar value exists
-                    //-> -> update divergenceFromTarget in new entry
+                    //-> -> update divergenceFromTarget in all entries (WORKING ON IT)
                     //-> check if bread units exist
                     //-> -> update reqBolusSimple
                     //-> check if the new entry counts as a result of an existing entry
@@ -448,6 +445,7 @@ public class BackgroundService extends Service {
         executor.execute(RunnableHelper.getRunnableUpdateBuFactorConsultingArithMeanInDaytimes(viewModel, entriesFromPastTwoWeeks, daytimes));
         executor.execute(RunnableHelper.getRunnableUpdateReqBolusSimpleInAllEntries(viewModel, entries, daytimes));
         executor.execute(RunnableHelper.getRunnableUpdateBloodSugarArithMean(viewModel, user, entriesFromPastTwoWeeks));
+        executor.execute(RunnableHelper.getRunnableUpdateDivergenceFromTargetInAllEntries(viewModel, user, entries, notifications));
 
         //1 - general checks
         //-> remove daytimes, entries etc. without IDs
