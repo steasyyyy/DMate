@@ -154,9 +154,9 @@ public class BackgroundService extends Service {
                     //-> -> update trend calculations for notification type 2 (Adjustment of basal insulin dose)
                     //-> -> update notifications
                     //-> check if blood sugar value exists
-                    //-> -> update divergenceFromTarget in all entries (WORKING ON IT)
+                    //-> -> update divergenceFromTarget in all entries (CHECK)
                     //-> check if bread units exist
-                    //-> -> update reqBolusSimple
+                    //-> -> update reqBolusSimple (CHECK)
                     //-> check if the new entry counts as a result of an existing entry
                     //-> -> update divergenceFromTarget in existing entry
                     //-> -> update buFactorConsulting in existing entry
