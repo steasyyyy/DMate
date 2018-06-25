@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,8 +26,7 @@ import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.NotificationsDial
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.SportiveActivitiesDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.TargetAreaDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.UnitsDialogFragment;
-import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
-import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
+import de.dmate.marvin.dmate.roomDatabase.Entities.Notification;
 
 public class MainActivity extends AppCompatActivity implements
         HomeFragment.OnHomeFragmentInteractionListener,
@@ -107,10 +106,25 @@ public class MainActivity extends AppCompatActivity implements
 
     //passed through from HomeFragment
     @Override
-    public void onItemClickCustom(View v, int position) {
+    public void onItemClickCustomHome(View v, int position) {
         Intent intent = new Intent(MainActivity.this, NewEntryActivity.class);
         intent.putExtra("REQUEST_CODE", EDIT_ENTRY_REQUEST);
         intent.putExtra("POSITION", position);
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemClickCustomNotifications(View v, int position) {
+        Notification notification = (Notification) v.getTag();
+        if (notification.getNotificationType().intValue() == Notification.BASAL_RATIO_ADJUST) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.content, SettingsFragment.newInstance());
+            transaction.commit();
+        }
+        if (notification.getNotificationType().intValue() == Notification.BASAL_INJECTION_FORGOTTEN) {
+            Intent intent = new Intent(MainActivity.this, NewEntryActivity.class);
+            intent.putExtra("REQUEST_CODE", NEW_ENTRY_REQUEST);
+            startActivity(intent);
+        }
     }
 }

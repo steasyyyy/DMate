@@ -17,10 +17,10 @@ import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
 
-//This EntriesRecyclerViewAdapter is my own implementation of RecyclerView.Adapter
+//This RecyclerViewAdapterEntries is my own implementation of RecyclerView.Adapter
 //It manages the RecyclerView in MainActivity and feeds data to it.
 //Also there is a ViewHolder implemented which helps reducing the calls of findViewById to make scrolling smoother.
-public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecyclerViewAdapter.RecyclerViewHolder>{
+public class RecyclerViewAdapterEntries extends RecyclerView.Adapter<RecyclerViewAdapterEntries.RecyclerViewHolder>{
 
     public List<Entry> entries;
 
@@ -31,7 +31,7 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
     private OnItemClickedListener itemClickedListener;
     private OnContextMenuCreatedListener contextMenuListener;
 
-    public EntriesRecyclerViewAdapter(List<Entry> entries, EntriesRecyclerViewAdapter.OnItemClickedListener itemClickListener, EntriesRecyclerViewAdapter.OnContextMenuCreatedListener contextMenuListener) {
+    public RecyclerViewAdapterEntries(List<Entry> entries, RecyclerViewAdapterEntries.OnItemClickedListener itemClickListener, RecyclerViewAdapterEntries.OnContextMenuCreatedListener contextMenuListener) {
         this.entries = entries;
         this.contextMenuListener = contextMenuListener;
         this.itemClickedListener = itemClickListener;
@@ -85,18 +85,6 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
 
         if (entry.getBloodSugar() != null) {
             holder.bloodsugarTextView.setText(entry.getBloodSugar().toString());
-            //first try to set background color depending on the blood sugar level
-//            if (user != null) {
-//                if (entry.getBloodSugar() <= user.getTargetMax() && entry.getBloodSugar() >= user.getTargetMin()) {
-//                    holder.itemView.setBackgroundResource(R.color.colorEntryBackgroundTarget);
-//                }
-//                if (entry.getBloodSugar() < user.getTargetMin()) {
-//                    holder.itemView.setBackgroundResource(R.color.colorEntryBackgroundLow);
-//                }
-//                if (entry.getBloodSugar() > user.getTargetMax()) {
-//                    holder.itemView.setBackgroundResource(R.color.colorEntryBackgroundHigh);
-//                }
-//            }
         } else holder.bloodsugarTextView.setText(null);
 
         if (entry.getBreadUnit() != null) {

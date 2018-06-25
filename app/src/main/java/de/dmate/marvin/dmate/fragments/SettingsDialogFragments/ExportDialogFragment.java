@@ -45,6 +45,7 @@ import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Exercise;
+import de.dmate.marvin.dmate.roomDatabase.Entities.Notification;
 import de.dmate.marvin.dmate.roomDatabase.Entities.PlannedBasalInjection;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Sport;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
@@ -62,6 +63,7 @@ public class ExportDialogFragment extends DialogFragment {
     private Boolean plannedBasalInjectionsAdded = false;
     private Boolean exercisesAdded = false;
     private Boolean entriesAdded = false;
+    private Boolean notificationsAdded = false;
 
     private Boolean permissionGranted = true;
 
@@ -77,6 +79,7 @@ public class ExportDialogFragment extends DialogFragment {
     private List<PlannedBasalInjection> plannedBasalInjectionList;
     private List<Exercise> exerciseList;
     private List<Entry> entryList;
+    private List<Notification> notificationList;
 
     private File myFile;
     private Document document;
@@ -145,7 +148,7 @@ public class ExportDialogFragment extends DialogFragment {
                 try {
                     user = users.get(0);
                     userAdded = true;
-                    if (permissionGranted && userAdded && daytimesAdded && sportsAdded && plannedBasalInjectionsAdded && exercisesAdded && entriesAdded) {
+                    if (permissionGranted && userAdded && daytimesAdded && sportsAdded && plannedBasalInjectionsAdded && exercisesAdded && entriesAdded && notificationsAdded) {
                         try {
                             createDocument();
                         } catch (FileNotFoundException | DocumentException e) {
@@ -166,7 +169,7 @@ public class ExportDialogFragment extends DialogFragment {
             public void onChanged(@Nullable List<Daytime> daytimes) {
                 daytimeList = daytimes;
                 daytimesAdded = true;
-                if (permissionGranted && userAdded && daytimesAdded && sportsAdded && plannedBasalInjectionsAdded && exercisesAdded && entriesAdded) {
+                if (permissionGranted && userAdded && daytimesAdded && sportsAdded && plannedBasalInjectionsAdded && exercisesAdded && entriesAdded && notificationsAdded) {
                     try {
                         createDocument();
                     } catch (FileNotFoundException | DocumentException e) {
@@ -181,7 +184,7 @@ public class ExportDialogFragment extends DialogFragment {
             public void onChanged(@Nullable List<Sport> sports) {
                 sportList = sports;
                 sportsAdded = true;
-                if (permissionGranted && userAdded && daytimesAdded && sportsAdded && plannedBasalInjectionsAdded && exercisesAdded && entriesAdded) {
+                if (permissionGranted && userAdded && daytimesAdded && sportsAdded && plannedBasalInjectionsAdded && exercisesAdded && entriesAdded && notificationsAdded) {
                     try {
                         createDocument();
                     } catch (FileNotFoundException | DocumentException e) {
@@ -196,7 +199,7 @@ public class ExportDialogFragment extends DialogFragment {
             public void onChanged(@Nullable List<PlannedBasalInjection> plannedBasalInjections) {
                 plannedBasalInjectionList = plannedBasalInjections;
                 plannedBasalInjectionsAdded = true;
-                if (permissionGranted && userAdded && daytimesAdded && sportsAdded && plannedBasalInjectionsAdded && exercisesAdded && entriesAdded) {
+                if (permissionGranted && userAdded && daytimesAdded && sportsAdded && plannedBasalInjectionsAdded && exercisesAdded && entriesAdded && notificationsAdded) {
                     try {
                         createDocument();
                     } catch (FileNotFoundException | DocumentException e) {
@@ -211,7 +214,7 @@ public class ExportDialogFragment extends DialogFragment {
             public void onChanged(@Nullable List<Exercise> exercises) {
                 exerciseList = exercises;
                 exercisesAdded = true;
-                if (permissionGranted && userAdded && daytimesAdded && sportsAdded && plannedBasalInjectionsAdded && exercisesAdded && entriesAdded) {
+                if (permissionGranted && userAdded && daytimesAdded && sportsAdded && plannedBasalInjectionsAdded && exercisesAdded && entriesAdded && notificationsAdded) {
                     try {
                         createDocument();
                     } catch (FileNotFoundException | DocumentException e) {
@@ -226,7 +229,22 @@ public class ExportDialogFragment extends DialogFragment {
             public void onChanged(@Nullable List<Entry> entries) {
                 entryList = entries;
                 entriesAdded = true;
-                if (permissionGranted && userAdded && daytimesAdded && sportsAdded && plannedBasalInjectionsAdded && exercisesAdded && entriesAdded) {
+                if (permissionGranted && userAdded && daytimesAdded && sportsAdded && plannedBasalInjectionsAdded && exercisesAdded && entriesAdded && notificationsAdded) {
+                    try {
+                        createDocument();
+                    } catch (FileNotFoundException | DocumentException e) {
+                        System.out.println("EXCEPTION OCCURED WHILE CREATING PDF" + "\n" + e.toString());
+                    }
+                }
+            }
+        });
+
+        viewModel.getNotifications().observe(ExportDialogFragment.this, new Observer<List<Notification>>() {
+            @Override
+            public void onChanged(@Nullable List<Notification> notifications) {
+                notificationList = notifications;
+                notificationsAdded = true;
+                if (permissionGranted && userAdded && daytimesAdded && sportsAdded && plannedBasalInjectionsAdded && exercisesAdded && entriesAdded && notificationsAdded) {
                     try {
                         createDocument();
                     } catch (FileNotFoundException | DocumentException e) {
@@ -431,6 +449,8 @@ public class ExportDialogFragment extends DialogFragment {
                 tableDaytimes.addCell(cellDaytimeColored);
                 cellDaytimeColored.setPhrase(new Phrase(""));
                 tableDaytimes.addCell(cellDaytimeColored);
+                tableDaytimes.addCell("ID");
+                tableDaytimes.addCell(d.getdId().toString());
                 tableDaytimes.addCell("Start of daytime");
                 tableDaytimes.addCell(d.getDaytimeStart());
                 tableDaytimes.addCell("End of daytime");
@@ -478,9 +498,43 @@ public class ExportDialogFragment extends DialogFragment {
         document.add(tableSports);
 
 
+        //create table notifications
+        PdfPTable tableNotifications = new PdfPTable(new float[]{1,1});
+        tableNotifications.setSpacingAfter(72f);
+
+        if (notificationList.size() == 0) {
+            tableNotifications.addCell("No notifications available");
+            tableNotifications.addCell("-");
+            tableNotifications.addCell("-");
+            tableNotifications.addCell("-");
+        } else {
+            int counter = 1;
+            for (Notification n : notificationList) {
+                PdfPCell cellNotificationColored = new PdfPCell();
+                BaseColor color = new BaseColor(getResources().getColor(R.color.colorAccent));
+                cellNotificationColored.setBackgroundColor(color);
+                cellNotificationColored.setPhrase(new Phrase("Notification " + counter));
+                tableNotifications.addCell(cellNotificationColored);
+                cellNotificationColored.setPhrase(new Phrase(""));
+                tableNotifications.addCell(cellNotificationColored);
+                if (n.getTimestamp() != null) {
+                    tableNotifications.addCell("Date");
+                    tableNotifications.addCell(Helper.formatMillisToDateString(n.getTimestamp().getTime()));
+                    tableNotifications.addCell("Time");
+                    tableNotifications.addCell(Helper.formatMillisToTimeString(n.getTimestamp().getTime()));
+                }
+                tableNotifications.addCell("Notification type");
+                tableNotifications.addCell(n.getNotificationType().toString());
+                tableNotifications.addCell("Message");
+                tableNotifications.addCell(n.getMessage());
+                counter++;
+            }
+        }
+        document.add(tableNotifications);
+
+
         //create table entries
         PdfPTable tableEntries = new PdfPTable(new float[]{1,1});
-        tableEntries.setHeaderRows(1);
         tableEntries.setSpacingAfter(72f);
 
         if (entryList.size() == 0) {
@@ -520,6 +574,9 @@ public class ExportDialogFragment extends DialogFragment {
                 tableEntries.addCell("Diseased");
                 if (e.getReliable() != null) tableEntries.addCell(e.getReliable().toString());
                 else tableEntries.addCell("-");
+                tableEntries.addCell("Daytime ID");
+                if (e.getdIdF() != null) tableEntries.addCell(e.getdIdF().toString());
+                else tableEntries.addCell("-");
 
                 int counterEx = 1;
                 for (Exercise ex : exerciseList) {
@@ -527,6 +584,7 @@ public class ExportDialogFragment extends DialogFragment {
                         for (Sport s : sportList) {
                             if (s.getsId().equals(ex.getsIdF())) {
                                 tableEntries.addCell("Exercise " + counterEx);
+                                tableEntries.addCell("-");
                                 tableEntries.addCell("Kind of sport");
                                 tableEntries.addCell(s.getSportName());
                                 tableEntries.addCell("Effect per unit");
@@ -543,8 +601,6 @@ public class ExportDialogFragment extends DialogFragment {
         }
 
         document.add(tableEntries);
-
-
 
 
         //close document

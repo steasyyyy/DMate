@@ -8,31 +8,25 @@ import java.text.SimpleDateFormat;
 
 public class RoomConverter {
 
-//    @TypeConverter
-//    public static Date toDate(Long timestamp) {
-//        return timestamp == null ? null : new java.sql.Date(timestamp);
-//    }
-//
-//    @TypeConverter
-//    public static Long toTimestamp(Date date) {
-//        return date == null ? null : date.getTime();
-//    }
-
     @TypeConverter
     public static Timestamp stringToTimestamp(String timestamp) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-        java.util.Date parsedDate;
-        try {
-            parsedDate = dateFormat.parse(timestamp);
-        } catch (ParseException e) {
-            System.out.println("Wrong string format to parse to Timestamp");
-            parsedDate = new Timestamp(System.currentTimeMillis());
+        if (timestamp != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+            java.util.Date parsedDate;
+            try {
+                parsedDate = dateFormat.parse(timestamp);
+            } catch (ParseException e) {
+                System.out.println("Wrong string format to parse to Timestamp");
+                parsedDate = new Timestamp(System.currentTimeMillis());
+            }
+            return new Timestamp(parsedDate.getTime());
         }
-        return timestamp == null ? null : new Timestamp(parsedDate.getTime());
+        return null;
     }
 
     @TypeConverter
     public static String timestampToString(Timestamp timestamp) {
-        return timestamp.toString();
+        if (timestamp != null) return timestamp.toString();
+        else return null;
     }
 }

@@ -62,6 +62,10 @@ public class Entry {
         return eId;
     }
 
+    public Integer getdIdF() {
+        return dIdF;
+    }
+
     public Timestamp getTimestamp() {
         return timestamp;
     }
@@ -125,6 +129,10 @@ public class Entry {
     //setter
     public void seteId(Integer eId) {
         this.eId = eId;
+    }
+
+    public void setdIdF(Integer dIdF) {
+        this.dIdF = dIdF;
     }
 
     public void setTimestamp(Timestamp timestamp) {

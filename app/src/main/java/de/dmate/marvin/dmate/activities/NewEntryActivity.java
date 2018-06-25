@@ -4,14 +4,11 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -33,7 +30,7 @@ import de.dmate.marvin.dmate.fragments.PickerDialogFragments.TimePickerDialogFra
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Exercise;
-import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
+import de.dmate.marvin.dmate.util.RecyclerViewAdapterEntries;
 import de.dmate.marvin.dmate.util.Helper;
 
 public class NewEntryActivity extends AppCompatActivity implements
@@ -61,7 +58,7 @@ public class NewEntryActivity extends AppCompatActivity implements
 
     private DataViewModel viewModel;
 
-    private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
+    private RecyclerViewAdapterEntries recyclerViewAdapterEntries;
 
     private Entry newEntry;
     private Entry currentEntry;
@@ -134,7 +131,7 @@ public class NewEntryActivity extends AppCompatActivity implements
         calendar = Calendar.getInstance();
 
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
-        entriesRecyclerViewAdapter = Helper.getInstance().getEntriesRecyclerViewAdapter();
+        recyclerViewAdapterEntries = Helper.getInstance().getRecyclerViewAdapterEntries();
 
         viewModel.getExercises().observe(NewEntryActivity.this, new Observer<List<Exercise>>() {
             @Override
@@ -177,7 +174,7 @@ public class NewEntryActivity extends AppCompatActivity implements
         if (requestCode == 2) {
             //get entry object to update
             int position = getIntent().getIntExtra("POSITION", Integer.MAX_VALUE);
-            currentEntry = entriesRecyclerViewAdapter.getItemByPosition(position);
+            currentEntry = recyclerViewAdapterEntries.getItemByPosition(position);
 
             dateMillis = currentEntry.getTimestamp().getTime();
             calendar.setTimeInMillis(dateMillis);

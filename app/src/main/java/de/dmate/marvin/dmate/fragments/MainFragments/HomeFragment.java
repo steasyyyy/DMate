@@ -23,17 +23,17 @@ import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
-import de.dmate.marvin.dmate.util.EntriesRecyclerViewAdapter;
+import de.dmate.marvin.dmate.util.RecyclerViewAdapterEntries;
 import de.dmate.marvin.dmate.util.Helper;
 
-public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter.OnItemClickedListener, EntriesRecyclerViewAdapter.OnContextMenuCreatedListener {
+public class HomeFragment extends Fragment implements RecyclerViewAdapterEntries.OnItemClickedListener, RecyclerViewAdapterEntries.OnContextMenuCreatedListener {
 
     //ViewModel for entries in Database
     private DataViewModel viewModel;
     private User user;
 
-    //Custom EntriesRecyclerViewAdapter to feed the RecyclerView with data (List of entries)
-    private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
+    //Custom RecyclerViewAdapterEntries to feed the RecyclerView with data (List of entries)
+    private RecyclerViewAdapterEntries recyclerViewAdapterEntries;
 
     //RecyclerView = rework of ListView to show list of entries
     private RecyclerView recyclerView;
@@ -73,12 +73,12 @@ public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter
             }
         });
 
-        //set up RecyclerView, EntriesRecyclerViewAdapter and ViewModel
+        //set up RecyclerView, RecyclerViewAdapterEntries and ViewModel
         recyclerView = getView().findViewById(R.id.recyclerView_fragment);
-        entriesRecyclerViewAdapter = new EntriesRecyclerViewAdapter(new ArrayList<Entry>(), this, this);
+        recyclerViewAdapterEntries = new RecyclerViewAdapterEntries(new ArrayList<Entry>(), this, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        recyclerView.setAdapter(entriesRecyclerViewAdapter);
+        recyclerView.setAdapter(recyclerViewAdapterEntries);
 
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
 
@@ -101,11 +101,11 @@ public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter
         viewModel.getEntries().observe(HomeFragment.this, new Observer<List<Entry>>() {
             @Override
             public void onChanged(@Nullable List<Entry> entries) {
-                entriesRecyclerViewAdapter.updateItems(entries);
+                recyclerViewAdapterEntries.updateItems(entries);
             }
         });
 
-        Helper.getInstance().setEntriesRecyclerViewAdapter(entriesRecyclerViewAdapter);
+        Helper.getInstance().setRecyclerViewAdapterEntries(recyclerViewAdapterEntries);
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -130,7 +130,7 @@ public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter
     //pass through the item clicked to MainActivity where the action is performed
     @Override
     public void onItemClick(View v, int position) {
-        mListener.onItemClickCustom(v, position);
+        mListener.onItemClickCustomHome(v, position);
     }
 
     //create Context Menu and add "delete" option
@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter
         menu.add("Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Entry entry = entriesRecyclerViewAdapter.getItemByPosition(position);
+                Entry entry = recyclerViewAdapterEntries.getItemByPosition(position);
                 viewModel.deleteEntry(entry);
                 return true;
             }
@@ -150,6 +150,6 @@ public class HomeFragment extends Fragment implements EntriesRecyclerViewAdapter
     public interface OnHomeFragmentInteractionListener {
         void fabNewEntry(View v);
 
-        void onItemClickCustom(View v, int position);
+        void onItemClickCustomHome(View v, int position);
     }
 }

@@ -10,10 +10,8 @@ import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
@@ -24,6 +22,7 @@ import de.dmate.marvin.dmate.roomDatabase.Entities.Observation;
 import de.dmate.marvin.dmate.roomDatabase.Entities.PlannedBasalInjection;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Sport;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
+import de.dmate.marvin.dmate.util.RunnableHelper;
 
 public class CalculationService extends Service {
 
@@ -59,8 +58,11 @@ public class CalculationService extends Service {
     private Observer<List<Sport>> obsSports;
     private Observer<List<User>> obsUsers;
 
-    private ThreadPoolExecutor executor;
-    private LinkedBlockingQueue<Runnable> queue;
+//    private ThreadPoolExecutor executor;
+//    private LinkedBlockingQueue<Runnable> queue;
+
+    private ExecutorService executor;
+    private RunnableHelper helper;
 
     //empty default constructor
     public CalculationService() {
@@ -85,10 +87,11 @@ public class CalculationService extends Service {
         super.onCreate();
 
         //initialize ThreadPoolExecutor
-        int corePoolSize = Runtime.getRuntime().availableProcessors();
-        queue = new LinkedBlockingQueue<Runnable>();
-        executor = new ThreadPoolExecutor(corePoolSize, corePoolSize*2, 1, TimeUnit.MINUTES, queue);
+//        int corePoolSize = Runtime.getRuntime().availableProcessors();
+//        queue = new LinkedBlockingQueue<Runnable>();
+//        executor = new ThreadPoolExecutor(corePoolSize, corePoolSize*2, 1, TimeUnit.MINUTES, queue);
 
+        executor = Executors.newSingleThreadExecutor();
 
 
         //get viewModel and start observing LiveData for all tables
@@ -99,7 +102,6 @@ public class CalculationService extends Service {
             public void onChanged(@Nullable List<Daytime> daytimes) {
                 CalculationService.this.daytimes = daytimes;
                 CalculationService.this.daytimesLoaded = true;
-
 
                 //check if every list is loaded before performing calculations
                 if (daytimesLoaded
@@ -112,7 +114,9 @@ public class CalculationService extends Service {
                         && usersLoaded) {
                     performCalculations();
                     //update DaytimeID in all Entries
-                    //update bread unit consulting arith mean in Daytime
+                    //trigger notification if some entries do not have a DaytimeID assigned
+                    //update buFactorConsultingArithMean in Daytime
+                    //update reqBolusSimple in ALL ENTRIES
                     //update more
                 }
             }
@@ -136,6 +140,7 @@ public class CalculationService extends Service {
                         && usersLoaded) {
                     performCalculations();
 
+
                     //1 - check if a new entry was added
                     //-> update bloodSugarArithMean in User
                     //-> -> update trend calculations for notification type 2 (Adjustment of basal insulin dose)
@@ -156,6 +161,7 @@ public class CalculationService extends Service {
                     //-> -> update reqBolusConsulting in new entry
                     //-> check if the new entry counts as an initial entry of an existing entry (has bread units, a bolus insulin injection and an existing entry that counts as a result)
                     //-> ->
+                    //-> check exercises
 
                     //2 - check if an entry was deleted
                     //-> update bloodSugarArithMean in User
@@ -165,6 +171,7 @@ public class CalculationService extends Service {
                     //-> -> update divergenceFromTarget in initial entry (NOTE: DO NOT DELETE THE VALUE, BUT RECALCULATE THE OLD ONE, THAT WAS CALCULATED TO GIVE A RECOMMENDATION TO THE USER)
                     //-> -> update buFactorConsulting in initial entry (NOTE: DO NOT DELETE THE VALUE, BUT RECALCULATE THE OLD ONE, THAT WAS CALCULATED TO GIVE A RECOMMENDATION TO THE USER)
                     //-> -> update reqBolusConsulting in initial entry (NOTE: DO NOT DELETE THE VALUE, BUT RECALCULATE THE OLD ONE, THAT WAS CALCULATED TO GIVE A RECOMMENDATION TO THE USER)
+                    //-> check exercises
 
 
                     //3 - check if an entry was updated
@@ -221,6 +228,28 @@ public class CalculationService extends Service {
                     //-> check if the updated entry counted as an initial entry
                     //-> -> update buFactorReal
 
+                    //check if the basal insulin dose was updated
+                    //-> update observations
+                    //-> update notifications
+
+                    //check if diseased status was updated
+                    //-> update bloodSugarArithMean in User (not considering the updated entry)
+                    //-> check if the updated entry counted as a result of an existing entry
+                    //-> -> update buFactorConsulting in existing entry (NOTE: DO NOT DELETE THE VALUE, BUT RECALCULATE THE OLD ONE, THAT WAS CALCULATED TO GIVE A RECOMMENDATION TO THE USER)
+                    //-> -> update reqBolusConsulting in existing entry (NOTE: DO NOT DELETE THE VALUE, BUT RECALCULATE THE OLD ONE, THAT WAS CALCULATED TO GIVE A RECOMMENDATION TO THE USER)
+
+                    //check if exercises were updated
+                    //-> check if bread units an/or insulin dose exist
+                    //-> -> update bolusCorrectionSport
+                    //-> -> update reqBolusConsulting
+
+                    //check if an observation should be started - conditions:
+                    //-> no bolus insulin injection
+                    //-> no bolus in action from earlier
+                    //-> no observation already started for this time interval
+                    //-> -> if an observation for this time interval exists, update it with the current information
+                    //-> -> -> update trend of basal effect
+                    //-> -> -> trigger notification if changed
 
                 }
             }
@@ -243,6 +272,11 @@ public class CalculationService extends Service {
                         && sportsLoaded
                         && usersLoaded) {
                     performCalculations();
+
+                    //check if an exercise was added, deleted or updated
+                    //-> check if bread units an/or insulin dose exist
+                    //-> -> update bolusCorrectionSport
+                    //-> -> update reqBolusConsulting
                 }
             }
         };
@@ -264,6 +298,10 @@ public class CalculationService extends Service {
                         && sportsLoaded
                         && usersLoaded) {
                     performCalculations();
+
+                    //when notifications are added, check for their type and display them (either in-app or in the notification drawer)
+                    //check if notification has been seen (Notification.hasBeenSeen was updated)
+                    //-> remove notification from notification drawer (if necessary) and remove badge in-app
                 }
             }
         };
@@ -285,6 +323,10 @@ public class CalculationService extends Service {
                         && sportsLoaded
                         && usersLoaded) {
                     performCalculations();
+
+                    //check if observation was disrupted or is valid
+                    //if valid -> update divergenceFromInitialValueArithMean in User
+                    //if disrupted -> delete Observation
                 }
             }
         };
@@ -307,6 +349,8 @@ public class CalculationService extends Service {
                         && usersLoaded) {
                     performCalculations();
                 }
+
+                //update triggers for notifications, especially type 1 - forgotten basal injections
             }
         };
         viewModel.getPlannedBasalInjections().observeForever(obsPlannedBasalInjections);
@@ -328,6 +372,21 @@ public class CalculationService extends Service {
                         && usersLoaded) {
                     performCalculations();
                 }
+
+                //1 - check if new sport was added
+                //2 - check if sport was deleted
+                //-> delete all exercises that pointed to this sport
+                //-> update exercises
+                //-> -> check if bread units an/or insulin dose exist
+                //-> -> -> update bolusCorrectionSport
+                //-> -> -> update reqBolusConsulting
+                //check if sport was updated
+                //-> check if effectPerUnit was updated
+                //-> -> update every entry.exercises where this sport was used
+                //-> -> -> check if bread units an/or insulin dose exist
+                //-> -> -> update bolusCorrectionSport
+                //-> -> -> update reqBolusConsulting
+
             }
         };
         viewModel.getSports().observeForever(obsSports);
@@ -355,6 +414,14 @@ public class CalculationService extends Service {
                         && sportsLoaded
                         && usersLoaded) {
                     performCalculations();
+
+                    //check if duration of action of bolus insulin was updated
+                    //-> update minAcceptanceTimeAsResult and maxAcceptanceTimeAsResult in User
+                    //check if targetMin or targetMax was updated
+                    //-> update ALL entries
+                    //-> -> update divergenceFromTarget
+                    //-> -> update bolusCorrectionBS
+                    //-> -> update reqBolusConsulting
                 }
             }
         };
@@ -362,8 +429,15 @@ public class CalculationService extends Service {
     }
 
     //conntrolling method of all calculations
-    //gets called when onChanged of any LiveData is called and all other
+    //gets called when onChanged of any LiveData is called and all other LiveData objects were initialized
     private void performCalculations() {
+
+        executor.execute(helper.getInstance().getRunnableUpdateDaytimeIdsInAllEntries(viewModel, daytimes, entries));
+        executor.execute(helper.getInstance().getRunnableTriggerNotificationIfDaytimesNotSetProperly(viewModel, entries, notifications));
+
+        //1 - general checks
+        //-> remove daytimes, entries etc. without IDs
+        //-> trigger notification if user information is missing (e.g. daytimes not defined completely)
 
     }
 
@@ -381,6 +455,10 @@ public class CalculationService extends Service {
     }
 
     //getter
+    public IBinder getBinder() {
+        return binder;
+    }
+
     public List<Daytime> getDaytimes() {
         return daytimes;
     }
@@ -448,7 +526,44 @@ public class CalculationService extends Service {
     public Boolean getUsersLoaded() {
         return usersLoaded;
     }
+
+    public Observer<List<Daytime>> getObsDaytimes() {
+        return obsDaytimes;
+    }
+
+    public Observer<List<Entry>> getObsEntries() {
+        return obsEntries;
+    }
+
+    public Observer<List<Exercise>> getObsExercises() {
+        return obsExercises;
+    }
+
+    public Observer<List<Notification>> getObsNotifications() {
+        return obsNotifications;
+    }
+
+    public Observer<List<Observation>> getObsObservations() {
+        return obsObservations;
+    }
+
+    public Observer<List<PlannedBasalInjection>> getObsPlannedBasalInjections() {
+        return obsPlannedBasalInjections;
+    }
+
+    public Observer<List<Sport>> getObsSports() {
+        return obsSports;
+    }
+
+    public Observer<List<User>> getObsUsers() {
+        return obsUsers;
+    }
+
     //setter
+    public void setBinder(IBinder binder) {
+        this.binder = binder;
+    }
+
     public void setDaytimes(List<Daytime> daytimes) {
         this.daytimes = daytimes;
     }
@@ -515,5 +630,45 @@ public class CalculationService extends Service {
 
     public void setUsersLoaded(Boolean usersLoaded) {
         this.usersLoaded = usersLoaded;
+    }
+
+    public void setObsDaytimes(Observer<List<Daytime>> obsDaytimes) {
+        this.obsDaytimes = obsDaytimes;
+    }
+
+    public void setObsEntries(Observer<List<Entry>> obsEntries) {
+        this.obsEntries = obsEntries;
+    }
+
+    public void setObsExercises(Observer<List<Exercise>> obsExercises) {
+        this.obsExercises = obsExercises;
+    }
+
+    public void setObsNotifications(Observer<List<Notification>> obsNotifications) {
+        this.obsNotifications = obsNotifications;
+    }
+
+    public void setObsObservations(Observer<List<Observation>> obsObservations) {
+        this.obsObservations = obsObservations;
+    }
+
+    public void setObsPlannedBasalInjections(Observer<List<PlannedBasalInjection>> obsPlannedBasalInjections) {
+        this.obsPlannedBasalInjections = obsPlannedBasalInjections;
+    }
+
+    public void setObsSports(Observer<List<Sport>> obsSports) {
+        this.obsSports = obsSports;
+    }
+
+    public void setObsUsers(Observer<List<User>> obsUsers) {
+        this.obsUsers = obsUsers;
+    }
+
+    public void setExecutor(ExecutorService executor) {
+        this.executor = executor;
+    }
+
+    public void setHelper(RunnableHelper helper) {
+        this.helper = helper;
     }
 }
