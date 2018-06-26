@@ -149,7 +149,7 @@ public class ExercisesDialogFragment extends DialogFragment implements AdapterVi
 
                 //if there is an exercise that did not exist during initialization, it must have been newly added
                 //so add it to the current entry
-                for (Exercise exercise : entry.getExercises()) {
+                for (Exercise exercise : entry.getExercises()) { //TODO ADDING EXERCISE TO THE SAME LIST THAT IT COMES FROM
                     if (!entry.getExercises().contains(exercise)) {
                         entry.getExercises().add(exercise);
                         //add newly added exercise to initialExercises as it should not be added again on the next change
