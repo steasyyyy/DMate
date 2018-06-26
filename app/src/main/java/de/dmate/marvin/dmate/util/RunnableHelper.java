@@ -199,7 +199,7 @@ public class RunnableHelper {
             float result = 0f;
 
             for (Entry e : entries) {
-                if (e.getBloodSugar() != null /* && e.getReliable()*/) { //TODO check reliability
+                if (e.getBloodSugar() != null && e.getReliable()) {
                     amount += e.getBloodSugar();
                     divideBy++;
                 }

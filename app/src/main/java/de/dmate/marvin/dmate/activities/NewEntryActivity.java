@@ -198,7 +198,7 @@ public class NewEntryActivity extends AppCompatActivity implements
             String note = currentEntry.getNote();
             if (note != null) ETnote.setText(note);
 
-            Boolean diseased = currentEntry.getReliable();
+            Boolean diseased = currentEntry.getDiseased();
             switchDiseased.setChecked(diseased);
         }
 
@@ -232,8 +232,8 @@ public class NewEntryActivity extends AppCompatActivity implements
         switchDiseased.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(requestCode == 1) newEntry.setReliable(isChecked);
-                if (requestCode == 2) currentEntry.setReliable(isChecked);
+                if(requestCode == 1) newEntry.setDiseased(isChecked);
+                if (requestCode == 2) currentEntry.setDiseased(isChecked);
             }
         });
 
@@ -286,10 +286,15 @@ public class NewEntryActivity extends AppCompatActivity implements
                 if (requestCode == 2) {
                     currentEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
                     if (!ETbloodsugar.getText().toString().equals("")) currentEntry.setBloodSugar(Float.parseFloat(ETbloodsugar.getText().toString()));
+                    else currentEntry.setBloodSugar(null);
                     if (!ETbreadunit.getText().toString().equals("")) currentEntry.setBreadUnit(Float.parseFloat(ETbreadunit.getText().toString()));
+                    else currentEntry.setBreadUnit(null);
                     if (!ETbolus.getText().toString().equals("")) currentEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
+                    else currentEntry.setBolus(null);
                     if (!ETbasal.getText().toString().equals("")) currentEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
+                    else currentEntry.setBasal(null);
                     if (!ETnote.getText().toString().equals("")) currentEntry.setNote(ETnote.getText().toString());
+                    else currentEntry.setNote(null);
 
                     List<Exercise> exercisesToAdd = new ArrayList<>();
                     for (Exercise e : currentEntry.getExercises()) {

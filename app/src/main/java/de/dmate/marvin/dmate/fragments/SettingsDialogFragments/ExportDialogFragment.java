@@ -574,7 +574,7 @@ public class ExportDialogFragment extends DialogFragment {
                 if (e.getNote() != null) tableEntries.addCell(e.getNote());
                 else tableEntries.addCell("-");
                 tableEntries.addCell("Diseased");
-                if (e.getReliable() != null) tableEntries.addCell(e.getReliable().toString());
+                if (e.getDiseased() != null) tableEntries.addCell(e.getDiseased().toString());
                 else tableEntries.addCell("-");
                 tableEntries.addCell("Daytime ID");
                 if (e.getdIdF() != null) tableEntries.addCell(e.getdIdF().toString());

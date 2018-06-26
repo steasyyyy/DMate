@@ -99,7 +99,7 @@ public class RecyclerViewAdapterEntries extends RecyclerView.Adapter<RecyclerVie
             holder.basalTextView.setText(entry.getBasal().toString());
         } else holder.basalTextView.setText(null);
 
-        if (entry.getReliable()) {
+        if (entry.getDiseased()) {
             holder.itemView.setBackgroundResource(R.color.colorEntryBackgroundDiseased);
             holder.itemView.findViewById(R.id.constraintLayout_date_separator).setBackgroundColor(Color.WHITE);
         } else holder.itemView.setBackgroundColor(Color.WHITE);

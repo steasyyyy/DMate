@@ -44,7 +44,8 @@ public class Entry {
     private Float bolus = null;
     private Float basal = null;
     private String note = null;
-    private Boolean reliable = true; //when the user is ill, this value will be false
+    private Boolean reliable = true;
+    private Boolean diseased = false;
 
     private Float reqBolusSimple = null;
     private Float reqBolusConsulting = null;
@@ -94,8 +95,8 @@ public class Entry {
         return reliable;
     }
 
-    public List<Exercise> getExercises() {
-        return exercises;
+    public Boolean getDiseased() {
+        return diseased;
     }
 
     public Float getReqBolusSimple() {
@@ -124,6 +125,10 @@ public class Entry {
 
     public Float getBolusCorrectionBySport() {
         return bolusCorrectionBySport;
+    }
+
+    public List<Exercise> getExercises() {
+        return exercises;
     }
 
     //setter
@@ -163,8 +168,14 @@ public class Entry {
         this.reliable = reliable;
     }
 
-    public void setExercises(List<Exercise> exercises) {
-        this.exercises = exercises;
+    public void setDiseased(Boolean diseased) {
+        this.diseased = diseased;
+        if (this.diseased == true) {
+            this.setReliable(false);
+        }
+        if (this.diseased == false) {
+            this.setReliable(true);
+        }
     }
 
     public void setReqBolusSimple(Float reqBolusSimple) {
@@ -193,5 +204,9 @@ public class Entry {
 
     public void setBolusCorrectionBySport(Float bolusCorrectionBySport) {
         this.bolusCorrectionBySport = bolusCorrectionBySport;
+    }
+
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
     }
 }
