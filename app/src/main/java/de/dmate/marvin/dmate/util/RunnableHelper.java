@@ -1,12 +1,15 @@
 package de.dmate.marvin.dmate.util;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
+import de.dmate.marvin.dmate.roomDatabase.Entities.Exercise;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Notification;
+import de.dmate.marvin.dmate.roomDatabase.Entities.Sport;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
 
 public class RunnableHelper {
@@ -234,7 +237,7 @@ public class RunnableHelper {
         private final List<Entry> entries;
         private final List<Notification> notifications;
 
-        public UpdateDivergenceFromTargetInAllEntries(DataViewModel viewModel, User user, List<Entry> entries, List<Notification> notifications) {
+        UpdateDivergenceFromTargetInAllEntries(DataViewModel viewModel, User user, List<Entry> entries, List<Notification> notifications) {
             this.viewModel = viewModel;
             this.user = user;
             this.entries = entries;
@@ -305,6 +308,153 @@ public class RunnableHelper {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    public static Runnable getRunnableUpdateBolusCorrectionBSForAllEntries(DataViewModel viewModel, User user, List<Entry> entries, List<Notification> notifications, List<Daytime> daytimes) {
+        return new UpdateBolusCorrectionBSForAllEntries(viewModel, user, entries, notifications, daytimes);
+    }
+    private static class UpdateBolusCorrectionBSForAllEntries implements Runnable {
+
+        private final DataViewModel viewModel;
+        private final User user;
+        private final List<Entry> entries;
+        private final List<Notification> notifications;
+        private final List<Daytime> daytimes;
+
+        UpdateBolusCorrectionBSForAllEntries(DataViewModel viewModel, User user, List<Entry> entries, List<Notification> notifications, List<Daytime> daytimes) {
+            this.viewModel = viewModel;
+            this.user = user;
+            this.entries = entries;
+            this.notifications = notifications;
+            this.daytimes = daytimes;
+        }
+
+        @Override
+        public void run() {
+            boolean alreadyExisting = false;
+            for (Entry e : entries) {
+                if (e.getdIdF() == null) {
+                    for (Notification n : notifications) {
+                        if (n.getNotificationType() != null) {
+                            if (n.getNotificationType().equals(Notification.DAYTIME_WARNING)) {
+                                alreadyExisting = true;
+                            }
+                        }
+                    }
+                    if (!alreadyExisting) {
+                        Notification n = new Notification();
+                        n.setTimestamp(new Timestamp(System.currentTimeMillis()));
+                        n.setNotificationType(Notification.DAYTIME_WARNING);
+                        n.setMessage(Notification.MESSAGE_DAYTIME_WARNING);
+                        viewModel.addNotification(n);
+                        System.out.println("NEW NOTIFICATION ADDED (DAYTIME WARNING)");
+                    }
+                } else {
+                    for (Daytime d : daytimes) {
+                        if (e.getdIdF().equals(d.getdId())) {
+                            float correctionBS = 0f;
+                            if (e.getDivergenceFromTarget() != null) {
+                                if (e.getDivergenceFromTarget() > 0) correctionBS = (float)Math.ceil(e.getDivergenceFromTarget()/d.getCorrectionFactor());
+                                if (e.getDivergenceFromTarget() < 0) correctionBS = (float)Math.floor(e.getDivergenceFromTarget()/d.getCorrectionFactor());
+                            }
+                            if (e.getBolusCorrectionByBloodSugar() == null) {
+                                e.setBolusCorrectionByBloodSugar(correctionBS);
+                                viewModel.addEntry(e);
+                            } else {
+                                if ((!e.getBolusCorrectionByBloodSugar().equals(correctionBS))) {
+                                    e.setBolusCorrectionByBloodSugar(correctionBS);
+                                    viewModel.addEntry(e);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static Runnable getRunnableUpdateBolusCorrectionSportForAllEntries(DataViewModel viewModel, List<Entry> entries, List<Notification> notifications, List<Daytime> daytimes, List<Exercise> exercises, List<Sport> sports) {
+        return new UpdateBolusCorrectionSportForAllEntries(viewModel, entries, notifications, daytimes, exercises, sports);
+    }
+    private static class UpdateBolusCorrectionSportForAllEntries implements Runnable {
+
+        private final DataViewModel viewModel;
+        private final List<Entry> entries;
+        private final List<Notification> notifications;
+        private final List<Daytime> daytimes;
+        private final List<Exercise> exercises;
+        private final List<Sport> sports;
+
+        UpdateBolusCorrectionSportForAllEntries(DataViewModel viewModel, List<Entry> entries, List<Notification> notifications, List<Daytime> daytimes, List<Exercise> exercises, List<Sport> sports) {
+            this.viewModel = viewModel;
+            this.entries = entries;
+            this.notifications = notifications;
+            this.daytimes = daytimes;
+            this.exercises = exercises;
+            this.sports = sports;
+        }
+
+        @Override
+        public void run() {
+            boolean alreadyExisting = false;
+            for (Entry e : entries) {
+                if (e.getdIdF() == null) {
+                    for (Notification n : notifications) {
+                        if (n.getNotificationType() != null) {
+                            if (n.getNotificationType().equals(Notification.DAYTIME_WARNING)) {
+                                alreadyExisting = true;
+                            }
+                        }
+                    }
+                    if (!alreadyExisting) {
+                        Notification n = new Notification();
+                        n.setTimestamp(new Timestamp(System.currentTimeMillis()));
+                        n.setNotificationType(Notification.DAYTIME_WARNING);
+                        n.setMessage(Notification.MESSAGE_DAYTIME_WARNING);
+                        viewModel.addNotification(n);
+                        System.out.println("NEW NOTIFICATION ADDED (DAYTIME WARNING)");
+                    }
+                } else {
+                    for (Daytime d : daytimes) {
+                        if (e.getdIdF().equals(d.getdId())) {
+                            List<Exercise> currentEntryExercises = new ArrayList<>();
+                            for (Exercise ex : exercises) {
+                                if (e.geteId().equals(ex.geteIdF())) {
+                                    currentEntryExercises.add(ex);
+                                }
+                            }
+                            if (currentEntryExercises.size() > 0) {
+                                float effectSum = 0f;
+                                for (Exercise exercise : currentEntryExercises) {
+                                    for (Sport s : sports) {
+                                        if (s.getsId().equals(exercise.getsIdF())) {
+                                            effectSum += exercise.getExerciseUnits()*s.getSportEffectPerUnit();
+                                        }
+                                    }
+                                }
+                                float correctionSport = 0f;
+                                if (effectSum > 0) {
+                                    effectSum = effectSum*(-1f);
+                                    correctionSport = (float)Math.floor(effectSum/d.getCorrectionFactor());
+                                }
+                                if (e.getBolusCorrectionBySport() == null) {
+                                    e.setBolusCorrectionBySport(correctionSport);
+                                    viewModel.addEntry(e);
+                                } else {
+                                    if (!(e.getBolusCorrectionBySport().equals(correctionSport))) {
+                                        e.setBolusCorrectionBySport(correctionSport);
+                                        viewModel.addEntry(e);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            for (Entry e : entries) {
+                System.out.println("BolusCorrectionSport in entry " + e.geteId() + " is: " + e.getBolusCorrectionBySport());
             }
         }
     }

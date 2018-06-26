@@ -157,14 +157,14 @@ public class BackgroundService extends Service {
                     //-> -> update divergenceFromTarget in all entries (CHECK)
                     //-> check if bread units exist
                     //-> -> update reqBolusSimple (CHECK)
-                    //-> check if the new entry counts as a result of an existing entry
-                    //-> -> update divergenceFromTarget in existing entry
+                    //-> check if the new entry counts as a result of an existing entry (IMPORTANT)
+                    //-> -> update divergenceFromTarget in existing entry (CHECK BY DOING IT FOR ALL)
                     //-> -> update buFactorConsulting in existing entry
                     //-> -> update reqBolusConsulting in existing entry
-                    //-> check if the new entry counts as an initial entry (has bread units and a bolus insulin injection)
+                    //-> check if the new entry counts as an initial entry (has bread units and a bolus insulin injection) (IMPORTANT)
                     //-> -> update divergenceFromTarget in new entry
-                    //-> -> update bolusCorrectionBS in new entry
-                    //-> -> update bolusCorrectionSport in new entry
+                    //-> -> update bolusCorrectionBS in new entry (CHECK)
+                    //-> -> update bolusCorrectionSport in new entry (WORKING ON IT)
                     //-> -> update buFactorConsulting in new entry
                     //-> -> update reqBolusConsulting in new entry
                     //-> check if the new entry counts as an initial entry of an existing entry (has bread units, a bolus insulin injection and an existing entry that counts as a result)
@@ -446,6 +446,9 @@ public class BackgroundService extends Service {
         executor.execute(RunnableHelper.getRunnableUpdateReqBolusSimpleInAllEntries(viewModel, entries, daytimes));
         executor.execute(RunnableHelper.getRunnableUpdateBloodSugarArithMean(viewModel, user, entriesFromPastTwoWeeks));
         executor.execute(RunnableHelper.getRunnableUpdateDivergenceFromTargetInAllEntries(viewModel, user, entries, notifications));
+        executor.execute(RunnableHelper.getRunnableUpdateBolusCorrectionBSForAllEntries(viewModel, user, entries, notifications, daytimes));
+        executor.execute(RunnableHelper.getRunnableUpdateBolusCorrectionSportForAllEntries(viewModel, entries, notifications, daytimes, exercises, sports));
+
 
         //1 - general checks
         //-> remove daytimes, entries etc. without IDs
