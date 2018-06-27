@@ -146,11 +146,11 @@ public class NewEntryActivity extends AppCompatActivity implements
                         }
                         calendar.setTimeInMillis(entry.getTimestamp().getTime());
                         dateButton.setText(Helper.formatMillisToDateString(entry.getTimestamp().getTime()));
-                        timeButton.setText(Helper.formatMillisToDateString(entry.getTimestamp().getTime()));
+                        timeButton.setText(Helper.formatMillisToTimeString(entry.getTimestamp().getTime()));
                         if (entry.getBloodSugar() != null) ETbloodsugar.setText(entry.getBloodSugar().toString());
                         else ETbloodsugar.setText("");
                         if (entry.getBreadUnit() != null) ETbreadunit.setText(entry.getBreadUnit().toString());
-                        else ETbloodsugar.setText("");
+                        else ETbreadunit.setText("");
                         if (entry.getBolus() != null) ETbolus.setText(entry.getBolus().toString());
                         else ETbolus.setText("");
                         if (entry.getBasal() != null) ETbasal.setText(entry.getBasal().toString());
