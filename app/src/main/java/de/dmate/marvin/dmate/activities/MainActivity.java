@@ -106,10 +106,10 @@ public class MainActivity extends AppCompatActivity implements
 
     //passed through from HomeFragment
     @Override
-    public void onItemClickCustomHome(View v, int position) {
+    public void onItemClickCustomHome(View v, int entryId) {
         Intent intent = new Intent(MainActivity.this, NewEntryActivity.class);
         intent.putExtra("REQUEST_CODE", EDIT_ENTRY_REQUEST);
-        intent.putExtra("POSITION", position);
+        intent.putExtra("ENTRY_ID", entryId);
         startActivity(intent);
     }
 

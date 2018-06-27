@@ -130,7 +130,7 @@ public class HomeFragment extends Fragment implements RecyclerViewAdapterEntries
     //pass through the item clicked to MainActivity where the action is performed
     @Override
     public void onItemClick(View v, int position) {
-        mListener.onItemClickCustomHome(v, position);
+        mListener.onItemClickCustomHome(v, recyclerViewAdapterEntries.getItemByPosition(position).geteId());
     }
 
     //create Context Menu and add "delete" option
@@ -150,6 +150,6 @@ public class HomeFragment extends Fragment implements RecyclerViewAdapterEntries
     public interface OnHomeFragmentInteractionListener {
         void fabNewEntry(View v);
 
-        void onItemClickCustomHome(View v, int position);
+        void onItemClickCustomHome(View v, int entryId);
     }
 }

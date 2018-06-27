@@ -2,8 +2,6 @@ package de.dmate.marvin.dmate.activities;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -31,8 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.dmate.marvin.dmate.R;
-import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
-import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Exercise;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Sport;
 
@@ -49,27 +45,18 @@ public class ExercisesDialogFragment extends DialogFragment implements AdapterVi
     private Button buttonConfirmNewExercise;
     private Button buttonConfirmExercises;
 
-    private DataViewModel viewModel;
-
     private ExercisesArrayAdapter exercisesAdapter;
     private SpinnerArrayAdapter spinnerAdapter;
 
-    //"entry" is set before showing this DialogFragment in NewEntryActivity
-    // ID might be null though, if it's a new entry that has not been written to the database yet
-    private Entry entry;
     private List<Sport> sports;
-    private List<Exercise> exercises;
-
-    private Boolean exercisesInitialized = false;
-    private List<Exercise> initialExercises;
+    private List<Exercise> exercisesOfEntry;
 
     public ExercisesDialogFragment() {
 
     }
 
     public static ExercisesDialogFragment newInstance() {
-        ExercisesDialogFragment fragment = new ExercisesDialogFragment();
-        return fragment;
+        return new ExercisesDialogFragment();
     }
 
     @Override
@@ -80,21 +67,14 @@ public class ExercisesDialogFragment extends DialogFragment implements AdapterVi
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        //get alert dialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        //set new View to the builder and create the Dialog
         Dialog dialog = builder.setView(new View(getActivity())).create();
-
-        //get WindowManager.LayoutParams, copy attributes from Dialog to LayoutParams and override them with MATCH_PARENT
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.copyFrom(dialog.getWindow().getAttributes());
         layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
         layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        //show the Dialog before setting new LayoutParams to the Dialog
         dialog.show();
         dialog.getWindow().setAttributes(layoutParams);
-
         return dialog;
     }
 
@@ -107,7 +87,6 @@ public class ExercisesDialogFragment extends DialogFragment implements AdapterVi
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
-
         listViewExercises = view.findViewById(R.id.listView_exercises);
         buttonNewExercise = view.findViewById(R.id.button_new_exercise);
         relativeLayoutNewExercise = view.findViewById(R.id.relativeLayout_new_exercise);
@@ -117,48 +96,14 @@ public class ExercisesDialogFragment extends DialogFragment implements AdapterVi
         buttonConfirmNewExercise = view.findViewById(R.id.button_confirm_new_exercise);
         buttonConfirmExercises = view.findViewById(R.id.button_confirm_exercises);
 
-        exercisesAdapter = new ExercisesArrayAdapter(getContext(), new ArrayList<Exercise>());
-        exercisesAdapter.setSpinner(spinnerSelectSport);
+        exercisesAdapter = new ExercisesArrayAdapter(getContext(), exercisesOfEntry, sports);
         listViewExercises.setAdapter(exercisesAdapter);
-        listViewExercises.setOnItemClickListener(this);
-        registerForContextMenu(listViewExercises);
 
-        spinnerAdapter = new SpinnerArrayAdapter(getContext(), new ArrayList<Sport>());
+        spinnerAdapter = new SpinnerArrayAdapter(getContext(), sports);
         spinnerSelectSport.setAdapter(spinnerAdapter);
 
-        viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
-
-        viewModel.getSports().observe(ExercisesDialogFragment.this, new Observer<List<Sport>>() {
-            @Override
-            public void onChanged(@Nullable List<Sport> sports) {
-                ExercisesDialogFragment.this.sports = sports;
-                exercisesAdapter.setSports(sports);
-                spinnerAdapter.updateSports(sports);
-            }
-        });
-
-        viewModel.getExercises().observe(ExercisesDialogFragment.this, new Observer<List<Exercise>>() {
-            @Override
-            public void onChanged(@Nullable List<Exercise> exercises) {
-
-                //save initial state of exercises if it did not already happen
-                if (!exercisesInitialized) {
-                    initialExercises = exercises;
-                    exercisesInitialized = true;
-                }
-
-                //if there is an exercise that did not exist during initialization, it must have been newly added
-                //so add it to the current entry
-                for (Exercise exercise : entry.getExercises()) { //TODO ADDING EXERCISE TO THE SAME LIST THAT IT COMES FROM
-                    if (!entry.getExercises().contains(exercise)) {
-                        entry.getExercises().add(exercise);
-                        //add newly added exercise to initialExercises as it should not be added again on the next change
-                        initialExercises.add(exercise);
-                    }
-                }
-                exercisesAdapter.updateExercises(entry.getExercises());
-            }
-        });
+        listViewExercises.setOnItemClickListener(this);
+        registerForContextMenu(listViewExercises);
 
         buttonNewExercise.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,39 +130,41 @@ public class ExercisesDialogFragment extends DialogFragment implements AdapterVi
             @Override
             public void onClick(View v) {
                 if (spinnerSelectSport.getSelectedItem() == null) {
-                    Toast toast = Toast.makeText(getContext(), "Please select a sportive activity or create a new one in settings first", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getContext(), "Please select a sportive activity or create a new one in the settings first", Toast.LENGTH_LONG);
                     toast.show();
                 }
-
                 if (editTextUnits.getText().toString().equals("")) {
                     Toast toast = Toast.makeText(getContext(), "Please define the number of units you are going to exercise", Toast.LENGTH_LONG);
                     toast.show();
                 }
+                Exercise newExercise = new Exercise();
+                newExercise.setsIdF(((Sport)spinnerSelectSport.getSelectedItem()).getsId());
+                newExercise.setExerciseUnits(Float.parseFloat(editTextUnits.getText().toString()));
 
-                Exercise exercise = new Exercise();
-                exercise.setsIdF(((Sport)spinnerSelectSport.getSelectedItem()).getsId());
-                exercise.setExerciseUnits(Float.parseFloat(editTextUnits.getText().toString()));
-
-                if (!entry.getExercises().contains(exercise)) entry.getExercises().add(exercise);
-                viewModel.addExercise(exercise);
-
+                boolean alreadyExisting = false;
+                for (Exercise exOfEntry : exercisesOfEntry) {
+                    if (exOfEntry.getsIdF().equals(newExercise.getsIdF()) && exOfEntry.getExerciseUnits().equals(newExercise.getExerciseUnits())) {
+                        alreadyExisting = true;
+                        Toast toast = Toast.makeText(getContext(), "Duplicate exercises for the same entry are not allowed", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                }
+                if (!alreadyExisting) {
+                    exercisesOfEntry.add(newExercise);
+//                    exercisesAdapter.updateExercises(exercisesOfEntry);
+                }
                 buttonConfirmExercises.setVisibility(View.VISIBLE);
                 buttonNewExercise.setVisibility(View.VISIBLE);
                 relativeLayoutNewExercise.setVisibility(View.GONE);
 
                 spinnerSelectSport.setSelection(0);
                 editTextUnits.setText("");
-
-                Toast toast = Toast.makeText(getContext(), "New exercise added", Toast.LENGTH_LONG);
-                toast.show();
             }
         });
 
         buttonConfirmExercises.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast = Toast.makeText(getContext(), "Exercises updated", Toast.LENGTH_LONG);
-                toast.show();
                 dismiss();
             }
         });
@@ -253,11 +200,9 @@ public class ExercisesDialogFragment extends DialogFragment implements AdapterVi
                 break;
             }
         }
-
         if (sport != null) {
             spinnerSelectSport.setSelection(spinnerAdapter.getPosition(sport));
         }
-
         editTextUnits.setText(exercise.getExerciseUnits().toString());
 
         buttonConfirmExercises.setVisibility(View.GONE);
@@ -273,86 +218,64 @@ public class ExercisesDialogFragment extends DialogFragment implements AdapterVi
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Exercise exercise = exercisesAdapter.getItem(info.position);
-                viewModel.deleteExercise(exercise);
-                entry.getExercises().remove(exercise);
-                exercisesAdapter.remove(exercise);
-                Toast toast = Toast.makeText(getContext(), "Exercise deleted", Toast.LENGTH_LONG);
-                toast.show();
+                exercisesOfEntry.remove(exercise);
+                exercisesAdapter.updateExercises(exercisesOfEntry);
                 return true;
             }
         });
     }
 
-    public void setEntry(Entry entry) {
-        this.entry = entry;
-    }
-
-    public Entry getEntry() {
-        return this.entry;
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        final Activity activity = getActivity();
-        if (activity instanceof DialogInterface.OnDismissListener) {
-            ((DialogInterface.OnDismissListener) activity).onDismiss(dialog);
-        }
-        super.onDismiss(dialog);
-    }
-
-    public interface OnExercisesDialogFragmentListener {
-
-    }
-}
-
-class ExercisesArrayAdapter extends ArrayAdapter<Exercise> {
-
-    private Spinner spinner;
-    private List<Sport> sports;
-
-    public ExercisesArrayAdapter(@NonNull Context context, List<Exercise> exercises) {
-        super(context, 0, exercises);
-    }
-
-    public void setSpinner(Spinner spinner) {
-        this.spinner = spinner;
+    public void setExercisesOfEntry(List<Exercise> exercisesOfEntry) {
+        this.exercisesOfEntry = exercisesOfEntry;
     }
 
     public void setSports(List<Sport> sports) {
         this.sports = sports;
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        mListener.setExercises(exercisesOfEntry);
+        super.onDismiss(dialog);
+    }
+
+    public interface OnExercisesDialogFragmentListener {
+        void setExercises(List<Exercise> exercisesOfEntry);
+    }
+}
+
+class ExercisesArrayAdapter extends ArrayAdapter<Exercise> {
+    private List<Sport> sports;
+
+    public ExercisesArrayAdapter(@NonNull Context context, List<Exercise> exercises, List<Sport> sports) {
+        super(context, 0, exercises);
+        this.sports = sports;
+    }
     public void updateExercises(List<Exercise> exercises) {
         this.clear();
         this.addAll(exercises);
         notifyDataSetChanged();
     }
-
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
         if (getItem(position) != null) {
             Exercise exercise = getItem(position);
-
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_exercise, parent, false);
             }
-
             Sport sport = null;
             for (Sport s : sports) {
                 if (s.getsId().intValue() == exercise.getsIdF().intValue()) {
                     sport = s;
                 }
             }
-
             TextView textViewSportName = convertView.findViewById(R.id.textView_exercise_sport_name);
             TextView textViewExerciseUnits = convertView.findViewById(R.id.textView_exercise_units);
 
-            if (spinner != null) {
-                textViewSportName.setText(sport.getSportName());
-                textViewExerciseUnits.setText(exercise.getExerciseUnits().toString());
-            }
+            textViewSportName.setText(sport.getSportName());
+            textViewExerciseUnits.setText(exercise.getExerciseUnits().toString());
+
         }
         return convertView;
     }
@@ -362,12 +285,6 @@ class SpinnerArrayAdapter extends ArrayAdapter<Sport> {
 
     public SpinnerArrayAdapter(@NonNull Context context, List<Sport> sports) {
         super(context, 0, sports);
-    }
-
-    public void updateSports(List<Sport> sports) {
-        this.clear();
-        this.addAll(sports);
-        notifyDataSetChanged();
     }
 
     @Override
@@ -382,17 +299,12 @@ class SpinnerArrayAdapter extends ArrayAdapter<Sport> {
     }
 
     public View createItemView(int position, View convertView, ViewGroup parent) {
-
         Sport sport = getItem(position);
-
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_sport_in_exercises, parent, false);
         }
-
         TextView textViewName = convertView.findViewById(R.id.textView_sport_name_in_exercises);
-
         if (sport.getSportName() != null) textViewName.setText(sport.getSportName());
-
         return convertView;
     }
 }

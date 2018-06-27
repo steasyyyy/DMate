@@ -30,13 +30,13 @@ import de.dmate.marvin.dmate.fragments.PickerDialogFragments.TimePickerDialogFra
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Exercise;
-import de.dmate.marvin.dmate.util.RecyclerViewAdapterEntries;
+import de.dmate.marvin.dmate.roomDatabase.Entities.Sport;
 import de.dmate.marvin.dmate.util.Helper;
 
 public class NewEntryActivity extends AppCompatActivity implements
         TimePickerDialogFragment.OnTimePickerFragmentInteractionListener,
         DatePickerDialogFragment.OnDatePickerFragmentInteractionListener,
-        ExercisesDialogFragment.OnExercisesDialogFragmentListener, DialogInterface.OnDismissListener {
+        ExercisesDialogFragment.OnExercisesDialogFragmentListener {
 
     private int requestCode;
 
@@ -55,25 +55,17 @@ public class NewEntryActivity extends AppCompatActivity implements
     private ImageView slideUpImageView;
 
     private Calendar calendar;
-
     private DataViewModel viewModel;
+    private Entry entry;
 
-    private RecyclerViewAdapterEntries recyclerViewAdapterEntries;
+    private List<Exercise> exercisesAll;
+    private List<Exercise> exercisesOfEntry;
+    private List<Sport> sportsAll;
 
-    private Entry newEntry;
-    private Entry currentEntry;
-    private Long dateMillis;
-
-    private List<Exercise> exercisesInitial;
+    private Boolean entriesInitialized = false;
     private Boolean exercisesInitialized = false;
 
     private ExercisesDialogFragment exercisesDialogFragment;
-
-    //TODO following process still cause bugs:
-    //create a new entry, add exercises, save them and save the entry
-    //reopen the entry from HomeFragment
-    //open exercises dialog, add a new entry
-    //instead of only the new entry being added, the two existing entries are added again
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,78 +121,72 @@ public class NewEntryActivity extends AppCompatActivity implements
         });
 
         calendar = Calendar.getInstance();
-
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
-        recyclerViewAdapterEntries = Helper.getInstance().getRecyclerViewAdapterEntries();
+
+        viewModel.getEntries().observe(NewEntryActivity.this, new Observer<List<Entry>>() {
+            @Override
+            public void onChanged(@Nullable List<Entry> entries) {
+                //initialize new entry
+                if (requestCode == 1) {
+                    if (entry == null) {
+                        entry = new Entry();
+                        entry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
+                        dateButton.setText(Helper.formatMillisToDateString(calendar.getTimeInMillis()));
+                        timeButton.setText(Helper.formatMillisToTimeString(calendar.getTimeInMillis()));
+                    }
+                }
+                //initialize existing entry
+                if (requestCode == 2) {
+                    if (entry == null) {
+                        int entryId = getIntent().getIntExtra("ENTRY_ID", Integer.MAX_VALUE);
+                        for (Entry e : entries) {
+                            if (e.geteId().equals(entryId)) {
+                                entry = e;
+                            }
+                        }
+                        calendar.setTimeInMillis(entry.getTimestamp().getTime());
+                        dateButton.setText(Helper.formatMillisToDateString(entry.getTimestamp().getTime()));
+                        timeButton.setText(Helper.formatMillisToDateString(entry.getTimestamp().getTime()));
+                        if (entry.getBloodSugar() != null) ETbloodsugar.setText(entry.getBloodSugar().toString());
+                        else ETbloodsugar.setText("");
+                        if (entry.getBreadUnit() != null) ETbreadunit.setText(entry.getBreadUnit().toString());
+                        else ETbloodsugar.setText("");
+                        if (entry.getBolus() != null) ETbolus.setText(entry.getBolus().toString());
+                        else ETbolus.setText("");
+                        if (entry.getBasal() != null) ETbasal.setText(entry.getBasal().toString());
+                        else ETbasal.setText("");
+                        if (entry.getNote() != null) ETnote.setText(entry.getNote());
+                        else ETnote.setText("");
+                        switchDiseased.setChecked(entry.getDiseased());
+                    }
+                }
+                entriesInitialized = true;
+                if (entriesInitialized && exercisesInitialized) {
+                    finishInitialization();
+                }
+            }
+        });
 
         viewModel.getExercises().observe(NewEntryActivity.this, new Observer<List<Exercise>>() {
             @Override
             public void onChanged(@Nullable List<Exercise> exercises) {
-
-                if (!exercisesInitialized) {
-                    exercisesInitial = new ArrayList<>(exercises);
-                    exercisesInitialized = true;
+                exercisesAll = exercises;
+                exercisesInitialized = true;
+                if (entriesInitialized && exercisesInitialized) {
+                    finishInitialization();
                 }
-
-                if (requestCode == 2) {
-                    for (Exercise ex : exercises) {
-                        if (ex.geteIdF() != null && ex.geteIdF().intValue() == currentEntry.geteId()) {
-                            if (!currentEntry.getExercises().contains(ex)) currentEntry.getExercises().add(ex);
-                            exercisesInitial.add(ex);
-                        }
-                    }
-                }
-                updateButtonExercises();
             }
         });
 
-        //if requestCode == 1 -> initialize new entry
-        if (requestCode == 1) {
-            //save the current time (when the activity was started)
-            dateMillis = calendar.getTimeInMillis();
-            newEntry = new Entry();
-            newEntry.setTimestamp(new Timestamp(dateMillis));
-
-            //set the text on the dateButton to current date
-            dateButton.setText(Helper.formatMillisToDateString(dateMillis));
-
-            //get the timeButton and set the text to current time
-            timeButton.setText(Helper.formatMillisToTimeString(dateMillis));
-
-            switchDiseased.setChecked(false);
-        }
-
-        //if request code = 2 -> initialize existing entry
-        if (requestCode == 2) {
-            //get entry object to update
-            int position = getIntent().getIntExtra("POSITION", Integer.MAX_VALUE);
-            currentEntry = recyclerViewAdapterEntries.getItemByPosition(position);
-
-            dateMillis = currentEntry.getTimestamp().getTime();
-            calendar.setTimeInMillis(dateMillis);
-
-            //setText to all buttons and EditTexts
-            dateButton.setText(Helper.formatMillisToDateString(currentEntry.getTimestamp().getTime()));
-            timeButton.setText(Helper.formatMillisToTimeString(currentEntry.getTimestamp().getTime()));
-
-            Float bloodsugar = currentEntry.getBloodSugar();
-            if (bloodsugar != null) ETbloodsugar.setText(bloodsugar.toString());
-
-            Float breadunit = currentEntry.getBreadUnit();
-            if (breadunit != null) ETbreadunit.setText(breadunit.toString());
-
-            Float bolus = currentEntry.getBolus();
-            if (bolus != null) ETbolus.setText(bolus.toString());
-
-            Float basal = currentEntry.getBasal();
-            if (basal != null) ETbasal.setText(basal.toString());
-
-            String note = currentEntry.getNote();
-            if (note != null) ETnote.setText(note);
-
-            Boolean diseased = currentEntry.getDiseased();
-            switchDiseased.setChecked(diseased);
-        }
+        viewModel.getSports().observe(NewEntryActivity.this, new Observer<List<Sport>>() {
+            @Override
+            public void onChanged(@Nullable List<Sport> sports) {
+                sportsAll = sports;
+                if (sportsAll == null) {
+                    sportsAll = new ArrayList<>();
+                }
+            }
+        });
 
         //set OnClickListener for dateButton to open DatePickerDialogFragment
         dateButton.setOnClickListener(new View.OnClickListener() {
@@ -209,7 +195,7 @@ public class NewEntryActivity extends AppCompatActivity implements
                 //create fragment and show it
                 DatePickerDialogFragment datePickerDialogFragment = new DatePickerDialogFragment();
                 Bundle args = new Bundle();
-                args.putLong("dateMillis", dateMillis);
+                args.putLong("dateMillis", entry.getTimestamp().getTime());
                 datePickerDialogFragment.setArguments(args);
                 datePickerDialogFragment.show(getFragmentManager(), "datePicker");
             }
@@ -222,7 +208,7 @@ public class NewEntryActivity extends AppCompatActivity implements
                 //create fragment and show it
                 TimePickerDialogFragment timePickerDialogFragment = new TimePickerDialogFragment();
                 Bundle args = new Bundle();
-                args.putLong("dateMillis", dateMillis);
+                args.putLong("dateMillis", entry.getTimestamp().getTime());
                 timePickerDialogFragment.setArguments(args);
                 timePickerDialogFragment.show(getFragmentManager(), "timePicker");
             }
@@ -232,8 +218,7 @@ public class NewEntryActivity extends AppCompatActivity implements
         switchDiseased.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(requestCode == 1) newEntry.setDiseased(isChecked);
-                if (requestCode == 2) currentEntry.setDiseased(isChecked);
+                entry.setDiseased(isChecked);
             }
         });
 
@@ -242,9 +227,8 @@ public class NewEntryActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 exercisesDialogFragment = new ExercisesDialogFragment();
-                if (requestCode == 1) exercisesDialogFragment.setEntry(newEntry);
-                if(requestCode == 2) exercisesDialogFragment.setEntry(currentEntry);
-
+                exercisesDialogFragment.setExercisesOfEntry(exercisesOfEntry);
+                exercisesDialogFragment.setSports(sportsAll);
                 exercisesDialogFragment.show(getSupportFragmentManager(), "exercisesDialog");
             }
         });
@@ -255,57 +239,44 @@ public class NewEntryActivity extends AppCompatActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //new entry
                 if (requestCode == 1) {
-                    newEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
+                    entry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
 
-                    if (!ETbloodsugar.getText().toString().equals("")) newEntry.setBloodSugar(Float.parseFloat(ETbloodsugar.getText().toString()));
-                    else newEntry.setBloodSugar(null);
+                    if (!ETbloodsugar.getText().toString().equals("")) entry.setBloodSugar(Float.parseFloat(ETbloodsugar.getText().toString()));
+                    else entry.setBloodSugar(null);
 
-                    if (!ETbreadunit.getText().toString().equals("")) newEntry.setBreadUnit(Float.parseFloat(ETbreadunit.getText().toString()));
-                    else newEntry.setBreadUnit(null);
+                    if (!ETbreadunit.getText().toString().equals("")) entry.setBreadUnit(Float.parseFloat(ETbreadunit.getText().toString()));
+                    else entry.setBreadUnit(null);
 
-                    if (!ETbolus.getText().toString().equals("")) newEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
-                    else newEntry.setBolus(null);
+                    if (!ETbolus.getText().toString().equals("")) entry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
+                    else entry.setBolus(null);
 
-                    if (!ETbasal.getText().toString().equals("")) newEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
-                    else newEntry.setBasal(null);
+                    if (!ETbasal.getText().toString().equals("")) entry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
+                    else entry.setBasal(null);
 
-                    if (!ETnote.getText().toString().equals("")) newEntry.setNote(ETnote.getText().toString());
-                    else newEntry.setNote(null);
+                    if (!ETnote.getText().toString().equals("")) entry.setNote(ETnote.getText().toString());
+                    else entry.setNote(null);
 
-                    List<Exercise> exercisesToAdd = new ArrayList<>();
-                    for (Exercise e : newEntry.getExercises()) {
-                        if (!exercisesInitial.contains(e)) {
-                            exercisesToAdd.add(e);
-                            exercisesInitial.add(e);
-                        }
-                    }
-                    viewModel.addEntryWithExercises(newEntry, exercisesToAdd);
+                    viewModel.addEntryWithExercises(entry, exercisesOfEntry);
                 }
 
+                //existing entry
                 if (requestCode == 2) {
-                    currentEntry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
-                    if (!ETbloodsugar.getText().toString().equals("")) currentEntry.setBloodSugar(Float.parseFloat(ETbloodsugar.getText().toString()));
-                    else currentEntry.setBloodSugar(null);
-                    if (!ETbreadunit.getText().toString().equals("")) currentEntry.setBreadUnit(Float.parseFloat(ETbreadunit.getText().toString()));
-                    else currentEntry.setBreadUnit(null);
-                    if (!ETbolus.getText().toString().equals("")) currentEntry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
-                    else currentEntry.setBolus(null);
-                    if (!ETbasal.getText().toString().equals("")) currentEntry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
-                    else currentEntry.setBasal(null);
-                    if (!ETnote.getText().toString().equals("")) currentEntry.setNote(ETnote.getText().toString());
-                    else currentEntry.setNote(null);
+                    entry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
+                    if (!ETbloodsugar.getText().toString().equals("")) entry.setBloodSugar(Float.parseFloat(ETbloodsugar.getText().toString()));
+                    else entry.setBloodSugar(null);
+                    if (!ETbreadunit.getText().toString().equals("")) entry.setBreadUnit(Float.parseFloat(ETbreadunit.getText().toString()));
+                    else entry.setBreadUnit(null);
+                    if (!ETbolus.getText().toString().equals("")) entry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
+                    else entry.setBolus(null);
+                    if (!ETbasal.getText().toString().equals("")) entry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
+                    else entry.setBasal(null);
+                    if (!ETnote.getText().toString().equals("")) entry.setNote(ETnote.getText().toString());
+                    else entry.setNote(null);
 
-                    List<Exercise> exercisesToAdd = new ArrayList<>();
-                    for (Exercise e : currentEntry.getExercises()) {
-                        if (!exercisesInitial.contains(e)) {
-                            exercisesToAdd.add(e);
-                            exercisesInitial.add(e);
-                        }
-                    }
-                    viewModel.addEntryWithExercises(currentEntry, exercisesToAdd);
+                    viewModel.addEntryWithExercises(entry, exercisesOfEntry);
                 }
-
                 Intent intent = new Intent(NewEntryActivity.this, MainActivity.class);
                 startActivity(intent);
                 NewEntryActivity.this.finishAndRemoveTask();
@@ -313,12 +284,37 @@ public class NewEntryActivity extends AppCompatActivity implements
         });
     }
 
+    private void finishInitialization() {
+        if (exercisesOfEntry == null) {
+            exercisesOfEntry = new ArrayList<>();
+        }
+        if (requestCode == 2) {
+            for (Exercise exOfAll : exercisesAll) {
+                if (entry.geteId().equals(exOfAll.geteIdF())) {
+                    boolean alreadyExisting = false;
+                    for (Exercise exOfEntry : exercisesOfEntry) {
+                        if (exOfEntry.getExId() != null) {
+                            if (exOfEntry.getExId().equals(exOfAll.getExId())) {
+                                alreadyExisting = true;
+                            }
+                        }
+                    }
+                    if (!alreadyExisting) {
+                        exercisesOfEntry.add(exOfAll);
+                    }
+                }
+            }
+        }
+        updateButtonExercises();
+    }
+
     //defined and called by DatePickerDialogFragment (and nested interface)
     @Override
     public void updateDate(int year, int month, int dayOfMonth) {
-        calendar.set(year, month, dayOfMonth);
-        updateLocalValues();
-        dateButton.setText(Helper.formatMillisToDateString(dateMillis));
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        dateButton.setText(Helper.formatMillisToDateString(calendar.getTimeInMillis()));
     }
 
     //defined and called by TimePickerDialogFragment (and nested interface)
@@ -326,38 +322,19 @@ public class NewEntryActivity extends AppCompatActivity implements
     public void updateTime(int hourOfDay, int minute) {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
-        updateLocalValues();
-        timeButton.setText(Helper.formatMillisToTimeString(dateMillis));
-    }
-
-    //helper function to update dateMillis and the newEntry values
-    private void updateLocalValues() {
-        this.dateMillis = calendar.getTimeInMillis();
-        if (requestCode == 1) this.newEntry.setTimestamp(new Timestamp(dateMillis));
-        if (requestCode == 2) this.currentEntry.setTimestamp(new Timestamp(dateMillis));
-    }
-
-    //called when (or slightly before?) ExercisesDialogFragment is dismissed
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        //check if new exercises were added
-        if (requestCode == 1) this.newEntry = exercisesDialogFragment.getEntry();
-        if (requestCode == 2) this.currentEntry = exercisesDialogFragment.getEntry();
-        updateButtonExercises();
-
+        timeButton.setText(Helper.formatMillisToTimeString(calendar.getTimeInMillis()));
     }
 
     //update buttonExercises to indicate that there are exercises
     private void updateButtonExercises() {
-        if (requestCode == 1) {
-            buttonExercises.setText("Exercises" + " (" + newEntry.getExercises().size() + ")");
-            if (newEntry.getExercises().size() > 0) buttonExercises.setBackgroundResource(R.color.colorAccent);
-            else buttonExercises.setBackground(timeButton.getBackground());
-        }
-        if (requestCode == 2) {
-            buttonExercises.setText("Exercises" + " (" + currentEntry.getExercises().size() + ")");
-            if (currentEntry.getExercises().size() > 0) buttonExercises.setBackgroundResource(R.color.colorAccent);
-            else buttonExercises.setBackground(timeButton.getBackground());
-        }
+        buttonExercises.setText("Exercises" + " (" + exercisesOfEntry.size() + ")");
+        if (exercisesOfEntry.size() > 0) buttonExercises.setBackgroundResource(R.color.colorAccent);
+        else buttonExercises.setBackground(timeButton.getBackground());
+    }
+
+    @Override
+    public void setExercises(List<Exercise> exercisesOfEntry) {
+        this.exercisesOfEntry = exercisesOfEntry;
+        updateButtonExercises();
     }
 }

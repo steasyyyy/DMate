@@ -587,6 +587,9 @@ public class ExportDialogFragment extends DialogFragment {
                             if (s.getsId().equals(ex.getsIdF())) {
                                 tableEntries.addCell("Exercise " + counterEx);
                                 tableEntries.addCell("-");
+                                tableEntries.addCell("Exercise ID");
+                                if (ex.getExId() != null) tableEntries.addCell(ex.getExId().toString());
+                                else tableEntries.addCell("-");
                                 tableEntries.addCell("Kind of sport");
                                 tableEntries.addCell(s.getSportName());
                                 tableEntries.addCell("Effect per unit");
