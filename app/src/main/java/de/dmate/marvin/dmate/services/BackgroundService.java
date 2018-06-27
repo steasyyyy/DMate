@@ -164,7 +164,7 @@ public class BackgroundService extends Service {
                     //-> check if the new entry counts as an initial entry (has bread units and a bolus insulin injection) (IMPORTANT)
                     //-> -> update divergenceFromTarget in new entry
                     //-> -> update bolusCorrectionBS in new entry (CHECK)
-                    //-> -> update bolusCorrectionSport in new entry (WORKING ON IT)
+                    //-> -> update bolusCorrectionSport in new entry (CHECK, watch out though that only entries are updated that could be matched to a daytime)
                     //-> -> update buFactorConsulting in new entry
                     //-> -> update reqBolusConsulting in new entry
                     //-> check if the new entry counts as an initial entry of an existing entry (has bread units, a bolus insulin injection and an existing entry that counts as a result)
@@ -448,6 +448,10 @@ public class BackgroundService extends Service {
         executor.execute(RunnableHelper.getRunnableUpdateDivergenceFromTargetInAllEntries(viewModel, user, entries, notifications));
         executor.execute(RunnableHelper.getRunnableUpdateBolusCorrectionBSForAllEntries(viewModel, user, entries, notifications, daytimes));
         executor.execute(RunnableHelper.getRunnableUpdateBolusCorrectionSportForAllEntries(viewModel, entries, notifications, daytimes, exercises, sports));
+        executor.execute(RunnableHelper.getRunnableUpdateBuFactorRealInAllEntries(viewModel, entries));
+
+
+        executor.execute(RunnableHelper.getRunnableRemoveNotificationDuplicates(viewModel, notifications));
 
 
         //1 - general checks

@@ -9,6 +9,7 @@ import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Exercise;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Notification;
+import de.dmate.marvin.dmate.roomDatabase.Entities.Observation;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Sport;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
 
@@ -166,12 +167,20 @@ public class RunnableHelper {
         public void run() {
             for (Entry e : entries) {
                 if (e.getdIdF() != null && e.getBreadUnit() != null) {
+                    Float result = 0f;
                     for (Daytime d : daytimes) {
                         if (e.getdIdF().equals(d.getdId())) {
-                            float result = e.getBreadUnit()*d.getBuFactor();
-                            if (!(e.getReqBolusSimple().equals(result))) {
-                                e.setReqBolusSimple(result);
-                                viewModel.addEntry(e);
+                            result = e.getBreadUnit()*d.getBuFactor();
+                            if (!(result.equals(0f))) {
+                                if (e.getReqBolusSimple() == null) {
+                                    e.setReqBolusSimple(result);
+                                    viewModel.addEntry(e);
+                                } else {
+                                    if (!(e.getReqBolusSimple().equals(result))) {
+                                        e.setReqBolusSimple(result);
+                                        viewModel.addEntry(e);
+                                    }
+                                }
                             }
                         }
                     }
@@ -354,23 +363,28 @@ public class RunnableHelper {
                 } else {
                     for (Daytime d : daytimes) {
                         if (e.getdIdF().equals(d.getdId())) {
-                            float correctionBS = 0f;
+                            Float correctionBS = 0f;
                             if (e.getDivergenceFromTarget() != null) {
                                 if (e.getDivergenceFromTarget() > 0) correctionBS = (float)Math.ceil(e.getDivergenceFromTarget()/d.getCorrectionFactor());
                                 if (e.getDivergenceFromTarget() < 0) correctionBS = (float)Math.floor(e.getDivergenceFromTarget()/d.getCorrectionFactor());
                             }
-                            if (e.getBolusCorrectionByBloodSugar() == null) {
-                                e.setBolusCorrectionByBloodSugar(correctionBS);
-                                viewModel.addEntry(e);
-                            } else {
-                                if ((!e.getBolusCorrectionByBloodSugar().equals(correctionBS))) {
+                            if (!(correctionBS.equals(0f))) {
+                                if (e.getBolusCorrectionByBloodSugar() == null) {
                                     e.setBolusCorrectionByBloodSugar(correctionBS);
                                     viewModel.addEntry(e);
+                                } else {
+                                    if ((!e.getBolusCorrectionByBloodSugar().equals(correctionBS))) {
+                                        e.setBolusCorrectionByBloodSugar(correctionBS);
+                                        viewModel.addEntry(e);
+                                    }
                                 }
                             }
                         }
                     }
                 }
+            }
+            for (Entry e : entries) {
+                System.out.println("Bolus correction by blood sugar in entry " + e.geteId() + " was set to: " + e.getBolusCorrectionByBloodSugar());
             }
         }
     }
@@ -458,4 +472,118 @@ public class RunnableHelper {
             }
         }
     }
+
+    public static Runnable getRunnableRemoveNotificationDuplicates(DataViewModel viewModel, List<Notification> notifications) {
+        return new RemoveNotificationDuplicates(viewModel, notifications);
+    }
+    private static class RemoveNotificationDuplicates implements Runnable {
+
+        private final DataViewModel viewModel;
+        private final List<Notification> notifications;
+
+        RemoveNotificationDuplicates(DataViewModel viewModel, List<Notification> notifications) {
+            this.viewModel = viewModel;
+            this.notifications = notifications;
+        }
+
+        @Override
+        public void run() {
+            for (Notification n : notifications) {
+                if (!(n.getNotificationType().equals(Notification.BASAL_INJECTION_FORGOTTEN)) && !(n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST))) {
+                    for (Notification nn : notifications) {
+                        if (n.getNotificationType().equals(nn.getNotificationType()) && !(n.getnId().equals(nn.getnId()))) {
+                            viewModel.deleteNotification(nn);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static Runnable getRunnableUpdateBuFactorRealInAllEntries(DataViewModel viewModel, List<Entry> entries) {
+        return new UpdateBuFactorReakInAllEntries(viewModel, entries);
+    }
+    private static class UpdateBuFactorReakInAllEntries implements Runnable {
+
+        private final DataViewModel viewModel;
+        private final List<Entry> entries;
+
+        UpdateBuFactorReakInAllEntries(DataViewModel viewModel, List<Entry> entries) {
+            this.viewModel = viewModel;
+            this.entries = entries;
+        }
+
+        @Override
+        public void run() {
+            for (Entry e : entries) {
+                Float buFactorReal = 0f;
+                if (e.getBreadUnit() != null && e.getBolus() != null) {
+                    buFactorReal = e.getBolus()/e.getBreadUnit();
+                    if (e.getBolusCorrectionByBloodSugar() != null) {
+                        buFactorReal = (e.getBolus() + e.getBolusCorrectionByBloodSugar()) / e.getBreadUnit();
+                    }
+                    if (e.getBolusCorrectionBySport() != null) {
+                        buFactorReal = (e.getBolus() + e.getBolusCorrectionBySport()) / e.getBreadUnit();
+                    }
+                    if (e.getBolusCorrectionByBloodSugar() != null && e.getBolusCorrectionBySport() != null) {
+                        buFactorReal = (e.getBolus() + e.getBolusCorrectionByBloodSugar() + e.getBolusCorrectionBySport()) / e.getBreadUnit();
+                    }
+                }
+                if (!(buFactorReal.equals(0f))) {
+                    if (e.getBuFactorReal() == null) {
+                        e.setBuFactorReal(buFactorReal);
+                        viewModel.addEntry(e);
+                    } else {
+                        if (!(e.getBuFactorReal().equals(buFactorReal))) {
+                            e.setBuFactorReal(buFactorReal);
+                            viewModel.addEntry(e);
+                        }
+                    }
+                }
+            }
+            for (Entry e : entries) {
+                System.out.println("Bread unit factor real in entry " + e.geteId() + " was set to: " + e.getBuFactorReal());
+            }
+        }
+    }
+
+    public static Runnable getRunnableUpdateObservations(DataViewModel viewModel, User user, List<Observation> observations, List<Entry> entries, List<Notification> notifications) {
+        return new UpdateObservations(viewModel, user, observations, entries, notifications);
+    }
+    private static class UpdateObservations implements Runnable {
+
+        private final DataViewModel viewModel;
+        private final User user;
+        private final List<Observation> observations;
+        private final List<Entry> entries;
+        private final List<Notification> notifications;
+
+        UpdateObservations(DataViewModel viewModel, User user, List<Observation> observations, List<Entry> entries, List<Notification> notifications) {
+            this.viewModel = viewModel;
+            this.user = user;
+            this.observations = observations;
+            this.entries = entries;
+            this.notifications = notifications;
+        }
+
+        @Override
+        public void run() {
+            //create new observation if necessary
+
+
+
+
+
+            //add new observation and to the database
+
+            //update existing observations
+            for (Observation o : observations) {
+
+            }
+        }
+    }
 }
+
+
+
+
