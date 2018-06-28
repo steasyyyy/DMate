@@ -22,9 +22,6 @@ public class User {
     private Float targetMin;
     private Float targetMax;
 
-    private String minAcceptanceTime;
-    private String maxAcceptanceTime;
-
     private Boolean unitBu = true;
     private Boolean unitMgdl = true;
     private Boolean notificationsEnabled = true;
@@ -64,14 +61,6 @@ public class User {
 
     public Float getTargetMax() {
         return targetMax;
-    }
-
-    public String getMinAcceptanceTime() {
-        return minAcceptanceTime;
-    }
-
-    public String getMaxAcceptanceTime() {
-        return maxAcceptanceTime;
     }
 
     public Boolean getUnitBu() {
@@ -125,14 +114,6 @@ public class User {
 
     public void setTargetMax(Float targetMax) {
         this.targetMax = targetMax;
-    }
-
-    public void setMinAcceptanceTime(String minAcceptanceTime) {
-        this.minAcceptanceTime = minAcceptanceTime;
-    }
-
-    public void setMaxAcceptanceTime(String maxAcceptanceTime) {
-        this.maxAcceptanceTime = maxAcceptanceTime;
     }
 
     public void setUnitBu(Boolean unitBu) {

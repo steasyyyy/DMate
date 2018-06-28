@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -62,9 +63,7 @@ public class BackgroundService extends Service {
     private Observer<List<User>> obsUsers;
 
     private ExecutorService executor;
-    private RunnableHelper helper;
 
-    //empty default constructor
     public BackgroundService() {
 
     }
@@ -110,7 +109,7 @@ public class BackgroundService extends Service {
                     //update DaytimeID in all Entries (CHECK)
                     //trigger notification if some entries do not have a DaytimeID assigned (CHECK)
                     //update buFactorConsultingArithMean in Daytime (NOT TESTED YET)
-                    //update reqBolusSimple in ALL ENTRIES (NOT TESTED YET)
+                    //update reqBolusSimple in ALL ENTRIES (CHECK)
                     //update buFactorConsulting in ALL ENTRIES
                     //update reqBolusConsulting in ALL ENTRIES
                     //update more
@@ -409,8 +408,6 @@ public class BackgroundService extends Service {
                 } catch (IndexOutOfBoundsException e) {
                     BackgroundService.this.user = new User();
                     viewModel.addUser(user);
-                    Toast toast = Toast.makeText(getApplicationContext(), "Created new user", Toast.LENGTH_LONG);
-                    toast.show();
                 }
 
                 if (daytimesLoaded
@@ -436,28 +433,28 @@ public class BackgroundService extends Service {
         viewModel.getUsers().observeForever(obsUsers);
     }
 
+
+
     //conntrolling method of all calculations
     //gets called when onChanged of any LiveData is called and all other LiveData objects were initialized
     private void performCalculations() {
 
         executor.execute(RunnableHelper.getRunnableUpdateDaytimeIdsInAllEntries(viewModel, daytimes, entries));
         executor.execute(RunnableHelper.getRunnableTriggerNotificationIfDaytimesNotSetProperly(viewModel, entries, notifications));
-        executor.execute(RunnableHelper.getRunnableUpdateBuFactorConsultingArithMeanInDaytimes(viewModel, entriesFromPastTwoWeeks, daytimes));
         executor.execute(RunnableHelper.getRunnableUpdateReqBolusSimpleInAllEntries(viewModel, entries, daytimes));
         executor.execute(RunnableHelper.getRunnableUpdateBloodSugarArithMean(viewModel, user, entriesFromPastTwoWeeks));
         executor.execute(RunnableHelper.getRunnableUpdateDivergenceFromTargetInAllEntries(viewModel, user, entries, notifications));
         executor.execute(RunnableHelper.getRunnableUpdateBolusCorrectionBSForAllEntries(viewModel, user, entries, notifications, daytimes));
         executor.execute(RunnableHelper.getRunnableUpdateBolusCorrectionSportForAllEntries(viewModel, entries, notifications, daytimes, exercises, sports));
         executor.execute(RunnableHelper.getRunnableUpdateBuFactorRealInAllEntries(viewModel, entries));
-
-
+        executor.execute(RunnableHelper.getRunnableUpdateBuFactorConsultingAfterResult(viewModel, user, entries, notifications));
+        executor.execute(RunnableHelper.getRunnableUpdateBuFactorConsultingArithMeanInDaytimes(viewModel, entriesFromPastTwoWeeks, daytimes));
+        executor.execute(RunnableHelper.getRunnableUpdateBuFactorConsulting(viewModel, entries, daytimes));
+        executor.execute(RunnableHelper.getRunnableUpdateReqBolusConsultingInAllEntries(viewModel, entries, daytimes));
+        executor.execute(RunnableHelper.getRunnableUpdateObservations(viewModel, user, observations, entries, notifications));
+        executor.execute(RunnableHelper.getRunnableUpdateDivergenceFromStartValueArithMean(viewModel, user, entriesFromPastTwoWeeks, observations));
+        executor.execute(RunnableHelper.getRunnableRemoveObservationDuplicates(viewModel, observations));
         executor.execute(RunnableHelper.getRunnableRemoveNotificationDuplicates(viewModel, notifications));
-
-
-        //1 - general checks
-        //-> remove daytimes, entries etc. without IDs
-        //-> trigger notification if user information is missing (e.g. daytimes not defined completely)
-
     }
 
     @Override
@@ -685,9 +682,5 @@ public class BackgroundService extends Service {
 
     public void setExecutor(ExecutorService executor) {
         this.executor = executor;
-    }
-
-    public void setHelper(RunnableHelper helper) {
-        this.helper = helper;
     }
 }

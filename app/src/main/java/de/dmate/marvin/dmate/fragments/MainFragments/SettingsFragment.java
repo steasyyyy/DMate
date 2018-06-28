@@ -1,7 +1,14 @@
 package de.dmate.marvin.dmate.fragments.MainFragments;
 
+import android.app.Service;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
+import java.util.List;
 
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.BasalInsulinDialogFragment;
@@ -21,6 +31,12 @@ import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.NotificationsDial
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.SportiveActivitiesDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.TargetAreaDialogFragment;
 import de.dmate.marvin.dmate.fragments.SettingsDialogFragments.UnitsDialogFragment;
+import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
+import de.dmate.marvin.dmate.roomDatabase.Entities.User;
+import de.dmate.marvin.dmate.services.BackgroundService;
+import de.dmate.marvin.dmate.util.RunnableHelper;
+
+import static android.content.Context.BIND_AUTO_CREATE;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener{
 
@@ -36,6 +52,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
     private Button sportiveActivitiesButton;
     private Button notificationsButton;
     private Button exportButton;
+    private Button testDataButton;
+
+    private DataViewModel viewModel;
+    private User user;
 
 
     public SettingsFragment() {
@@ -77,6 +97,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         notificationsButton.setOnClickListener(this);
         exportButton = getView().findViewById(R.id.button_export);
         exportButton.setOnClickListener(this);
+        testDataButton = getView().findViewById(R.id.button_create_test_data);
+        testDataButton.setOnClickListener(this);
     }
 
     //manage button clicks in SettingsFragment and open dialog fragments
@@ -113,8 +135,29 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.button_planned_basal_injections:
                 new PlannedBasalInjectionsDialogFragment().show(getFragmentManager(), "plannedBasalInjectionsDialog");
+                break;
+            case R.id.button_create_test_data:
+                viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
+                viewModel.getUsers().observe(SettingsFragment.this, new Observer<List<User>>() {
+                    @Override
+                    public void onChanged(@Nullable List<User> users) {
+                        try {
+                            user = users.get(0);
+                        } catch (IndexOutOfBoundsException e) {
+                            user = new User();
+                            viewModel.addUser(user);
+                        }
+                        Thread t = new Thread(RunnableHelper.getRunnableCREATETESTDATA(viewModel, user));
+                        t.start();
+                        Toast toast = Toast.makeText(getContext(), "Test data created", Toast.LENGTH_LONG);
+                        toast.show();
+                        viewModel.getUsers().removeObserver(this);
+                    }
+                });
+                break;
             default:
                 System.out.println("Error! Could not find ID of this button.");
+                break;
         }
     }
 

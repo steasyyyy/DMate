@@ -38,4 +38,13 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/textView_sport_name"
         android:text="Effect per unit" />
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView_sport_name"
+        android:layout_marginTop="4dp"
+        android:background="?android:attr/listDivider" />
 </RelativeLayout>

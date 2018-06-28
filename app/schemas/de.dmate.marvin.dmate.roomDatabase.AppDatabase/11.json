@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 11,
-    "identityHash": "89685c2e554bc637829e0af8715a409b",
+    "identityHash": "0abfe823ea4f41beed9fef6bd41541f8",
     "entities": [
       {
         "tableName": "entries",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eId` INTEGER PRIMARY KEY AUTOINCREMENT, `dIdF` INTEGER, `timestamp` TEXT, `bloodSugar` REAL, `breadUnit` REAL, `bolus` REAL, `basal` REAL, `note` TEXT, `reliable` INTEGER, `diseased` INTEGER, `reqBolusSimple` REAL, `reqBolusConsulting` REAL, `buFactorReal` REAL, `buFactorConsulting` REAL, `divergenceFromTarget` REAL, `bolusCorrectionByBloodSugar` REAL, `bolusCorrectionBySport` REAL, FOREIGN KEY(`dIdF`) REFERENCES `daytimes`(`dId`) ON UPDATE SET NULL ON DELETE SET NULL )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eId` INTEGER PRIMARY KEY AUTOINCREMENT, `dIdF` INTEGER, `eIdResultF` INTEGER, `timestamp` TEXT, `bloodSugar` REAL, `breadUnit` REAL, `bolus` REAL, `basal` REAL, `note` TEXT, `reliable` INTEGER, `diseased` INTEGER, `reqBolusSimple` REAL, `reqBolusConsulting` REAL, `buFactorReal` REAL, `buFactorConsulting` REAL, `buFactorCunsultingAfterResult` REAL, `divergenceFromTarget` REAL, `bolusCorrectionByBloodSugar` REAL, `bolusCorrectionBySport` REAL, FOREIGN KEY(`dIdF`) REFERENCES `daytimes`(`dId`) ON UPDATE SET NULL ON DELETE SET NULL )",
         "fields": [
           {
             "fieldPath": "eId",
@@ -17,6 +17,12 @@
           {
             "fieldPath": "dIdF",
             "columnName": "dIdF",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "eIdResultF",
+            "columnName": "eIdResultF",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -89,6 +95,12 @@
           {
             "fieldPath": "buFactorConsulting",
             "columnName": "buFactorConsulting",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "buFactorCunsultingAfterResult",
+            "columnName": "buFactorCunsultingAfterResult",
             "affinity": "REAL",
             "notNull": false
           },
@@ -477,7 +489,7 @@
       },
       {
         "tableName": "observations",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`oId` INTEGER PRIMARY KEY AUTOINCREMENT, `timestamp` TEXT, `initialValue` REAL, `divergenceFromInitialValue` REAL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`oId` INTEGER PRIMARY KEY AUTOINCREMENT, `eIdStart` INTEGER, `eIdEnd` INTEGER, `divergenceFromStart` REAL)",
         "fields": [
           {
             "fieldPath": "oId",
@@ -486,20 +498,20 @@
             "notNull": false
           },
           {
-            "fieldPath": "timestamp",
-            "columnName": "timestamp",
-            "affinity": "TEXT",
+            "fieldPath": "eIdStart",
+            "columnName": "eIdStart",
+            "affinity": "INTEGER",
             "notNull": false
           },
           {
-            "fieldPath": "initialValue",
-            "columnName": "initialValue",
-            "affinity": "REAL",
+            "fieldPath": "eIdEnd",
+            "columnName": "eIdEnd",
+            "affinity": "INTEGER",
             "notNull": false
           },
           {
-            "fieldPath": "divergenceFromInitialValue",
-            "columnName": "divergenceFromInitialValue",
+            "fieldPath": "divergenceFromStart",
+            "columnName": "divergenceFromStart",
             "affinity": "REAL",
             "notNull": false
           }
@@ -516,7 +528,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"89685c2e554bc637829e0af8715a409b\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"0abfe823ea4f41beed9fef6bd41541f8\")"
     ]
   }
 }

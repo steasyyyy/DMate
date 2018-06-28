@@ -36,7 +36,7 @@ import de.dmate.marvin.dmate.roomDatabase.Entities.User;
                 Exercise.class,
                 Notification.class,
                 Observation.class},
-        version = 11)
+        version = 15)
 public abstract class AppDatabase extends RoomDatabase{
 
     private static AppDatabase INSTANCE;

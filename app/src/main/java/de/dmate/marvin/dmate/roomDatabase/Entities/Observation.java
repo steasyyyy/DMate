@@ -18,44 +18,40 @@ public class Observation {
     @PrimaryKey(autoGenerate = true)
     public Integer oId;
 
-    @TypeConverters(RoomConverter.class)
-    private Timestamp timestamp;
-
-    private Float initialValue;
-    private Float divergenceFromInitialValue;
+    private Integer eIdStart;
+    private Integer eIdEnd;
+    private Float divergenceFromStart;
 
 
-    //getter
-    public Integer getoId() {
+    public Integer getOId() {
         return oId;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    public Float getInitialValue() {
-        return initialValue;
-    }
-
-    public Float getDivergenceFromInitialValue() {
-        return divergenceFromInitialValue;
-    }
-
-    //setter
-    public void setoId(Integer oId) {
+    public void setOId(Integer oId) {
         this.oId = oId;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public Integer getEIdStart() {
+        return eIdStart;
     }
 
-    public void setInitialValue(Float initialValue) {
-        this.initialValue = initialValue;
+    public void setEIdStart(Integer eIdStart) {
+        this.eIdStart = eIdStart;
     }
 
-    public void setDivergenceFromInitialValue(Float divergenceFromInitialValue) {
-        this.divergenceFromInitialValue = divergenceFromInitialValue;
+    public Integer getEIdEnd() {
+        return eIdEnd;
+    }
+
+    public void setEIdEnd(Integer eIdEnd) {
+        this.eIdEnd = eIdEnd;
+    }
+
+    public Float getDivergenceFromStart() {
+        return divergenceFromStart;
+    }
+
+    public void setDivergenceFromStart(Float divergenceFromStart) {
+        this.divergenceFromStart = divergenceFromStart;
     }
 }

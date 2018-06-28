@@ -36,6 +36,8 @@ public class Entry {
 
     public Integer dIdF;
 
+    public Integer eIdResultF;
+
     @TypeConverters(RoomConverter.class)
     private Timestamp timestamp = null;
 
@@ -51,6 +53,7 @@ public class Entry {
     private Float reqBolusConsulting = null;
     private Float buFactorReal = null;
     private Float buFactorConsulting = null;
+    private Float buFactorCunsultingAfterResult = null;
     private Float divergenceFromTarget = null;
     private Float bolusCorrectionByBloodSugar = null;
     private Float bolusCorrectionBySport = null;
@@ -115,6 +118,10 @@ public class Entry {
         return buFactorConsulting;
     }
 
+    public Float getBuFactorCunsultingAfterResult() {
+        return buFactorCunsultingAfterResult;
+    }
+
     public Float getDivergenceFromTarget() {
         return divergenceFromTarget;
     }
@@ -129,6 +136,10 @@ public class Entry {
 
     public List<Exercise> getExercises() {
         return exercises;
+    }
+
+    public Integer geteIdResultF() {
+        return eIdResultF;
     }
 
     //setter
@@ -170,12 +181,6 @@ public class Entry {
 
     public void setDiseased(Boolean diseased) {
         this.diseased = diseased;
-        if (this.diseased == true) {
-            this.setReliable(false);
-        }
-        if (this.diseased == false) {
-            this.setReliable(true);
-        }
     }
 
     public void setReqBolusSimple(Float reqBolusSimple) {
@@ -194,6 +199,10 @@ public class Entry {
         this.buFactorConsulting = buFactorConsulting;
     }
 
+    public void setBuFactorCunsultingAfterResult(Float buFactorCunsultingAfterResult) {
+        this.buFactorCunsultingAfterResult = buFactorCunsultingAfterResult;
+    }
+
     public void setDivergenceFromTarget(Float divergenceFromTarget) {
         this.divergenceFromTarget = divergenceFromTarget;
     }
@@ -208,5 +217,9 @@ public class Entry {
 
     public void setExercises(List<Exercise> exercises) {
         this.exercises = exercises;
+    }
+
+    public void seteIdResultF(Integer eIdResultF) {
+        this.eIdResultF = eIdResultF;
     }
 }

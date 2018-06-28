@@ -104,4 +104,14 @@
         android:text="Planned basal insulin injections"
         android:textAlignment="viewStart"
         android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/button_create_test_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="Create test data"
+        android:textAllCaps="false" />
+
 </RelativeLayout>
