@@ -1,18 +1,29 @@
 package de.dmate.marvin.dmate.application;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
+import java.util.Calendar;
+
+import de.dmate.marvin.dmate.activities.MainActivity;
+import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.services.BackgroundService;
+import de.dmate.marvin.dmate.util.AlarmReceiver;
 
 public class DMateApplication extends Application {
 
     private BackgroundService service;
     private ServiceConnection serviceConnection;
 
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
 
     @Override
     public void onCreate() {
@@ -35,20 +46,4 @@ public class DMateApplication extends Application {
         Intent intent = new Intent(this, BackgroundService.class);
         getApplicationContext().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
     }
-
-
-
-    //check for Internet connection (not needed atm)
-    /*
-    public boolean isConnectingToInternet() {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork != null) { // connected to the internet
-            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI ||activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                return true;
-            }
-        }
-        return false;
-    }*/
-
 }

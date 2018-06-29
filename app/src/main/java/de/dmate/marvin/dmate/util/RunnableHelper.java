@@ -1,5 +1,7 @@
 package de.dmate.marvin.dmate.util;
 
+import android.content.Intent;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -409,7 +411,7 @@ public class RunnableHelper {
         @Override
         public void run() {
             for (Notification n : notifications) {
-                if (!(n.getNotificationType().equals(Notification.BASAL_INJECTION_FORGOTTEN)) && !(n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST))) {
+                if (!(n.getNotificationType().equals(Notification.BASAL_INJECTION_FORGOTTEN))) {
                     for (Notification nn : notifications) {
                         if (n.getNotificationType().equals(nn.getNotificationType()) && !(n.getnId().equals(nn.getnId()))) {
                             viewModel.deleteNotification(nn);
@@ -951,6 +953,78 @@ public class RunnableHelper {
         }
     }
 
+    public static Runnable getRunnableTriggerAdjustBasalNotification(DataViewModel viewModel, User user) {
+        return new TriggerAdjustBasalNotification(viewModel, user);
+    }
+    private static class TriggerAdjustBasalNotification implements Runnable {
+
+        private final DataViewModel viewModel;
+        private final User user;
+
+        TriggerAdjustBasalNotification(DataViewModel viewModel, User user) {
+            this.viewModel = viewModel;
+            this.user = user;
+        }
+
+        @Override
+        public void run() {
+            Float divergenceAllowedMin = 0f;
+            Float divergenceAllowedMax = 0f;
+
+            if (user.getBloodsugarArithMean() != null && user.getDivergenceFromInitialValueArithMean() != null) {
+                divergenceAllowedMin = user.getBloodsugarArithMean() * (-0.15f);
+                divergenceAllowedMax = user.getBloodsugarArithMean() * 0.15f;
+                if (user.getDivergenceFromInitialValueArithMean() < divergenceAllowedMin || user.getDivergenceFromInitialValueArithMean() > divergenceAllowedMax) {
+                    //trigger Notification if not existing already
+                }
+            }
+        }
+    }
+
+    public static Runnable getRunnableUpdateExternalNotificationTimePBI(DataViewModel viewModel, List<Entry> entries, List<PlannedBasalInjection> plannedBasalInjections, List<Notification> notifications) {
+        return new UpdateExternalNotificationTimePBI(viewModel, entries, plannedBasalInjections, notifications);
+    }
+    private static class UpdateExternalNotificationTimePBI implements Runnable {
+
+        private final DataViewModel viewModel;
+        private final List<Entry> entries;
+        private final List<PlannedBasalInjection> plannedBasalInjections;
+        private final List<Notification> notifications;
+
+        UpdateExternalNotificationTimePBI(DataViewModel viewModel, List<Entry> entries, List<PlannedBasalInjection> plannedBasalInjections, List<Notification> notifications) {
+            this.viewModel = viewModel;
+            this.entries = entries;
+            this.plannedBasalInjections = plannedBasalInjections;
+            this.notifications = notifications;
+        }
+
+        @Override
+        public void run() {
+            if (plannedBasalInjections.size() == 0) {
+                Boolean alreadyExisting = false;
+                for (Notification n : notifications) {
+                    if (n.getNotificationType().equals(Notification.PLANNED_BASAL_INJECTIONS_NOT_SET)) {
+                        alreadyExisting = true;
+                    }
+                }
+                if (!alreadyExisting) {
+                    Notification newN = new Notification();
+                    newN.setTimestamp(new Timestamp(System.currentTimeMillis()));
+                    newN.setNotificationType(Notification.PLANNED_BASAL_INJECTIONS_NOT_SET);
+                    newN.setMessage(Notification.MESSAGE_PLANNED_BASAL_INJECTIONS_NOT_SET);
+                    viewModel.addNotification(newN);
+                }
+            } else {
+                for (PlannedBasalInjection pbi : plannedBasalInjections) {
+                    Calendar c = Helper.getCalendarFromTimeString(pbi.getTimeOfDay());
+
+
+                    //add notification to the database and fire a notification in the system at c.getTime
+                }
+            }
+        }
+    }
+
     public static Runnable getRunnableCREATETESTDATA(DataViewModel viewModel, User user) {
         return new CREATETESTDATA(viewModel, user);
     }
@@ -1004,7 +1078,7 @@ public class RunnableHelper {
 
             PlannedBasalInjection p = new PlannedBasalInjection();
             p.setPbiId(1);
-            p.setTimeOfDay("23:00");
+            p.setTimeOfDay("15:00");
             p.setBasal(14f);
             viewModel.addPlannedBasalInjection(p);
 
@@ -1029,7 +1103,7 @@ public class RunnableHelper {
             Calendar c = Calendar.getInstance();
 
             Entry e1 = new Entry();
-            c.set(2018,6,22,13,22,21);
+            c.set(2018,5,22,13,22,21);
             e1.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e1.seteId(1);
             e1.setBloodSugar(97f);
@@ -1038,7 +1112,7 @@ public class RunnableHelper {
             viewModel.addEntry(e1);
 
             Entry e2 = new Entry();
-            c.set(2018,6,22,15,35,7);
+            c.set(2018,5,22,15,35,7);
             e2.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e2.seteId(2);
             e2.setBloodSugar(157f);
@@ -1046,14 +1120,14 @@ public class RunnableHelper {
             viewModel.addEntry(e2);
 
             Entry e3 = new Entry();
-            c.set(2018,6,22,18,11,50);
+            c.set(2018,5,22,18,11,50);
             e3.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e3.seteId(3);
             e3.setBloodSugar(123f);
             viewModel.addEntry(e3);
 
             Entry e4 = new Entry();
-            c.set(2018,6,22,19,47,13);
+            c.set(2018,5,22,19,47,13);
             e4.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e4.seteId(4);
             e4.setBloodSugar(115f);
@@ -1063,14 +1137,14 @@ public class RunnableHelper {
             viewModel.addEntry(e4);
 
             Entry e5 = new Entry();
-            c.set(2018,6,22,23,27,40);
+            c.set(2018,5,22,23,27,40);
             e5.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e5.setBloodSugar(137f);
             e5.setBasal(14f);
             viewModel.addEntry(e5);
 
             Entry e6 = new Entry();
-            c.set(2018,6,23,7,38,33);
+            c.set(2018,5,23,7,38,33);
             e6.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e6.seteId(6);
             e6.setBloodSugar(117f);
@@ -1079,7 +1153,7 @@ public class RunnableHelper {
             viewModel.addEntry(e6);
 
             Entry e7 = new Entry();
-            c.set(2018,6,23,10,01,16);
+            c.set(2018,5,23,10,01,16);
             e7.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e7.seteId(7);
             e7.setBloodSugar(196f);

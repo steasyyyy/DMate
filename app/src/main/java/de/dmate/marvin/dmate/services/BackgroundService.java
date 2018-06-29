@@ -25,6 +25,9 @@ import de.dmate.marvin.dmate.roomDatabase.Entities.Observation;
 import de.dmate.marvin.dmate.roomDatabase.Entities.PlannedBasalInjection;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Sport;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
+import de.dmate.marvin.dmate.util.AlarmReceiver;
+import de.dmate.marvin.dmate.util.Helper;
+import de.dmate.marvin.dmate.util.NotificationScheduler;
 import de.dmate.marvin.dmate.util.RunnableHelper;
 
 public class BackgroundService extends Service {
@@ -345,6 +348,11 @@ public class BackgroundService extends Service {
             public void onChanged(@Nullable List<PlannedBasalInjection> plannedBasalInjections) {
                 BackgroundService.this.plannedBasalInjections = plannedBasalInjections;
                 BackgroundService.this.plannedBasalInjectionsLoaded = true;
+
+                for (PlannedBasalInjection pbi : plannedBasalInjections) {
+                    Calendar c = Helper.getCalendarFromTimeString(pbi.getTimeOfDay());
+                    NotificationScheduler.setReminder(BackgroundService.this, AlarmReceiver.class, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
+                }
 
                 if (daytimesLoaded
                         && entriesLoaded

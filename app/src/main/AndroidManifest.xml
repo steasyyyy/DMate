@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".application.DMateApplication"
@@ -45,7 +46,10 @@
         <service
             android:name=".services.BackgroundService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="false"/>
+
+        <receiver
+            android:name=".util.AlarmReceiver"/>
     </application>
 
 </manifest>

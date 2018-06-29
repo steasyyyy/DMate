@@ -22,6 +22,8 @@ public class Notification {
     public static Integer TARGET_NOT_SET_WARNING = 4;
     @Ignore
     public static Integer BOLUS_DURATION_OF_ACTION_NOT_SET_WARNING = 5;
+    @Ignore
+    public static Integer PLANNED_BASAL_INJECTIONS_NOT_SET = 6;
 
     @Ignore
     public static String MESSAGE_DAYTIME_WARNING = "Some entries could not be matched with defined daytimes. Please define non-overlapping daytimes for the whole day (24h) as the ratio wizard will not be available as long as the daytimes have not been set properly";
@@ -29,6 +31,8 @@ public class Notification {
     public static String MESSAGE_TARGET_NOT_SET_WARNING = "Please define a blood sugar value target area in the settings as the ratio wizard will not be available as long as the target area has not been set";
     @Ignore
     public static String MESSAGE_BOLUS_DURATION_OF_ACTION_NOT_SET_WARNING = "Please define the duration of action of your bolus insulin as the ratio wizard will not be available as it has not been set";
+    @Ignore
+    public static String MESSAGE_PLANNED_BASAL_INJECTIONS_NOT_SET = "Please define planned basal insulin injections as otherwise DMate will not be able to remind you of forgotten basal insulin injections";
 
     public Notification() {
 
