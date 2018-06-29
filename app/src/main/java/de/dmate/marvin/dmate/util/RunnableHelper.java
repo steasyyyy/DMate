@@ -272,6 +272,9 @@ public class RunnableHelper {
                     }
                 }
             }
+            for (Entry e : entries) {
+                System.out.println("Divergence from target in entry " + e.geteId() + " was set to: " + e.getDivergenceFromTarget());
+            }
         }
     }
 
@@ -1071,10 +1074,18 @@ public class RunnableHelper {
             Daytime d3 = new Daytime();
             d3.setdId(3);
             d3.setDaytimeStart("17:00");
-            d3.setDaytimeEnd("05:00");
+            d3.setDaytimeEnd("23:59");
             d3.setCorrectionFactor(40f);
             d3.setBuFactor(2.0f);
             viewModel.addDaytime(d3);
+
+            Daytime d4 = new Daytime();
+            d4.setdId(4);
+            d4.setDaytimeStart("00:00");
+            d4.setDaytimeEnd("05:00");
+            d4.setCorrectionFactor(40f);
+            d4.setBuFactor(2.0f);
+            viewModel.addDaytime(d4);
 
             PlannedBasalInjection p = new PlannedBasalInjection();
             p.setPbiId(1);

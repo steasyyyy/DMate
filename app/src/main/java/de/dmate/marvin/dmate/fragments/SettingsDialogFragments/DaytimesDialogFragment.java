@@ -24,12 +24,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
+import de.dmate.marvin.dmate.util.Helper;
 
 public class DaytimesDialogFragment extends DialogFragment implements ListView.OnItemClickListener {
 
@@ -91,7 +93,7 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
 
         //initialize all views
         listViewDaytimes = view.findViewById(R.id.listView_daytimes);
@@ -259,13 +261,33 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
                 Float correctionFactor = Float.parseFloat(editTextCorrectionFactor.getText().toString());
                 Float buFactor = Float.parseFloat(editTextBuFactor.getText().toString());
 
-                Daytime daytime = new Daytime();
-                daytime.setDaytimeStart(daytimeStartString);
-                daytime.setDaytimeEnd(daytimeEndString);
-                daytime.setCorrectionFactor(correctionFactor);
-                daytime.setBuFactor(buFactor);
+                Timestamp daytimeStart = Helper.getTimestampFromTimeString(daytimeStartString);
+                Timestamp daytimeEnd = Helper.getTimestampFromTimeString(daytimeEndString);
+                if (daytimeStart.after(daytimeEnd)) {
+                    Daytime daytime1 = new Daytime();
+                    Daytime daytime2 = new Daytime();
 
-                viewModel.addDaytime(daytime);
+                    daytime1.setDaytimeStart(daytimeStartString);
+                    daytime1.setDaytimeEnd("23:59");
+                    daytime1.setCorrectionFactor(correctionFactor);
+                    daytime1.setBuFactor(buFactor);
+
+                    daytime2.setDaytimeStart("00:00");
+                    daytime2.setDaytimeEnd(daytimeEndString);
+                    daytime2.setCorrectionFactor(correctionFactor);
+                    daytime2.setBuFactor(buFactor);
+
+                    viewModel.addDaytime(daytime1);
+                    viewModel.addDaytime(daytime2);
+                } else {
+                    Daytime daytime = new Daytime();
+                    daytime.setDaytimeStart(daytimeStartString);
+                    daytime.setDaytimeEnd(daytimeEndString);
+                    daytime.setCorrectionFactor(correctionFactor);
+                    daytime.setBuFactor(buFactor);
+
+                    viewModel.addDaytime(daytime);
+                }
 
                 buttonConfirmDaytimes.setVisibility(View.VISIBLE);
                 buttonNewDaytime.setVisibility(View.VISIBLE);

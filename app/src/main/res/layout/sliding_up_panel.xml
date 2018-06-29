@@ -23,6 +23,138 @@
         android:layout_centerHorizontal="true"
         android:text="Slide up to show ratio wizard" />
 
+    <TextView
+        android:id="@+id/textView_static_usual_bu_factor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/slide_up_textview"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:padding="16dp"
+        android:text="Usual BU factor"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView_sup_bu_factor_usual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textView_static_usual_bu_factor"
+        android:layout_marginEnd="20dp"
+        android:padding="16dp"
+        android:text="- BU"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView_static_usual_bolus_insulin_dose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView_static_usual_bu_factor"
+        android:layout_below="@+id/textView_static_usual_bu_factor"
+        android:padding="16dp"
+        android:text="Usual bolus insulin dose"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView_sup_bolus_usual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView_sup_bu_factor_usual"
+        android:layout_below="@+id/textView_static_usual_bu_factor"
+        android:padding="16dp"
+        android:text="- IU"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView_static_consulting_bu_factor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView_static_usual_bu_factor"
+        android:layout_below="@+id/textView_static_usual_bolus_insulin_dose"
+        android:padding="16dp"
+        android:text="Recommended BU factor"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView_static_consulting_bolus_insulin_dose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView_static_usual_bu_factor"
+        android:layout_below="@+id/textView_static_consulting_bu_factor"
+        android:padding="16dp"
+        android:text="Recommended bolus insulin dose"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView_sup_bu_factor_consulting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView_sup_bu_factor_usual"
+        android:layout_below="@+id/textView_static_usual_bolus_insulin_dose"
+        android:padding="16dp"
+        android:text="- BU"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView_sup_bolus_consulting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView_sup_bu_factor_usual"
+        android:layout_below="@+id/textView_static_consulting_bu_factor"
+        android:padding="16dp"
+        android:text="- IU"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/divider7"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView_static_usual_bu_factor"
+        android:background="?android:attr/listDivider" />
+
+    <View
+        android:id="@+id/divider8"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView_static_usual_bolus_insulin_dose"
+        android:background="?android:attr/listDivider" />
+
+    <View
+        android:id="@+id/divider9"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView_static_consulting_bu_factor"
+        android:background="?android:attr/listDivider" />
+
+    <View
+        android:id="@+id/divider10"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView_static_consulting_bolus_insulin_dose"
+        android:background="?android:attr/listDivider" />
+
+    <View
+        android:id="@+id/divider11"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/textView_static_usual_bu_factor"
+        android:background="?android:attr/listDivider" />
+
+    <Button
+        android:id="@+id/button_sup_accept"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_static_consulting_bolus_insulin_dose"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:text="Accept"
+        android:textAllCaps="false" />
 
 
 </RelativeLayout>

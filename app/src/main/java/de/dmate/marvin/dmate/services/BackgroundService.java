@@ -351,7 +351,7 @@ public class BackgroundService extends Service {
 
                 for (PlannedBasalInjection pbi : plannedBasalInjections) {
                     Calendar c = Helper.getCalendarFromTimeString(pbi.getTimeOfDay());
-                    NotificationScheduler.setReminder(BackgroundService.this, AlarmReceiver.class, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
+                    NotificationScheduler.setReminder(BackgroundService.this, AlarmReceiver.class, c.get(Calendar.HOUR_OF_DAY) + 1, c.get(Calendar.MINUTE));
                 }
 
                 if (daytimesLoaded
