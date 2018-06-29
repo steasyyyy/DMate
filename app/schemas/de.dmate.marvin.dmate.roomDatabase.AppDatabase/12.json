@@ -1,0 +1,534 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 12,
+    "identityHash": "551cc5161d9c09b895ba076f038fec21",
+    "entities": [
+      {
+        "tableName": "entries",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eId` INTEGER PRIMARY KEY AUTOINCREMENT, `dIdF` INTEGER, `eIdResultF` INTEGER, `timestamp` TEXT, `bloodSugar` REAL, `breadUnit` REAL, `bolus` REAL, `basal` REAL, `note` TEXT, `reliable` INTEGER, `diseased` INTEGER, `reqBolusSimple` REAL, `reqBolusConsulting` REAL, `buFactorReal` REAL, `buFactorConsulting` REAL, `buFactorCunsultingAfterResult` REAL, `divergenceFromTarget` REAL, `bolusCorrectionByBloodSugar` REAL, `bolusCorrectionBySport` REAL, FOREIGN KEY(`dIdF`) REFERENCES `daytimes`(`dId`) ON UPDATE SET NULL ON DELETE SET NULL )",
+        "fields": [
+          {
+            "fieldPath": "eId",
+            "columnName": "eId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dIdF",
+            "columnName": "dIdF",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "eIdResultF",
+            "columnName": "eIdResultF",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bloodSugar",
+            "columnName": "bloodSugar",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "breadUnit",
+            "columnName": "breadUnit",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bolus",
+            "columnName": "bolus",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "basal",
+            "columnName": "basal",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "note",
+            "columnName": "note",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reliable",
+            "columnName": "reliable",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "diseased",
+            "columnName": "diseased",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reqBolusSimple",
+            "columnName": "reqBolusSimple",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reqBolusConsulting",
+            "columnName": "reqBolusConsulting",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "buFactorReal",
+            "columnName": "buFactorReal",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "buFactorConsulting",
+            "columnName": "buFactorConsulting",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "buFactorCunsultingAfterResult",
+            "columnName": "buFactorCunsultingAfterResult",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "divergenceFromTarget",
+            "columnName": "divergenceFromTarget",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bolusCorrectionByBloodSugar",
+            "columnName": "bolusCorrectionByBloodSugar",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bolusCorrectionBySport",
+            "columnName": "bolusCorrectionBySport",
+            "affinity": "REAL",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "eId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_entries_dIdF",
+            "unique": false,
+            "columnNames": [
+              "dIdF"
+            ],
+            "createSql": "CREATE  INDEX `index_entries_dIdF` ON `${TABLE_NAME}` (`dIdF`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "daytimes",
+            "onDelete": "SET NULL",
+            "onUpdate": "SET NULL",
+            "columns": [
+              "dIdF"
+            ],
+            "referencedColumns": [
+              "dId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "users",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uId` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `bolusName` TEXT, `bolusDuration` REAL, `basalName` TEXT, `basalDuration` REAL, `targetMin` REAL, `targetMax` REAL, `minAcceptanceTime` TEXT, `maxAcceptanceTime` TEXT, `unitBu` INTEGER, `unitMgdl` INTEGER, `notificationsEnabled` INTEGER, `bloodsugarArithMean` REAL, `divergenceFromInitialValueArithMean` REAL)",
+        "fields": [
+          {
+            "fieldPath": "uId",
+            "columnName": "uId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bolusName",
+            "columnName": "bolusName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bolusDuration",
+            "columnName": "bolusDuration",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "basalName",
+            "columnName": "basalName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "basalDuration",
+            "columnName": "basalDuration",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "targetMin",
+            "columnName": "targetMin",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "targetMax",
+            "columnName": "targetMax",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "minAcceptanceTime",
+            "columnName": "minAcceptanceTime",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "maxAcceptanceTime",
+            "columnName": "maxAcceptanceTime",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "unitBu",
+            "columnName": "unitBu",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "unitMgdl",
+            "columnName": "unitMgdl",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "notificationsEnabled",
+            "columnName": "notificationsEnabled",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bloodsugarArithMean",
+            "columnName": "bloodsugarArithMean",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "divergenceFromInitialValueArithMean",
+            "columnName": "divergenceFromInitialValueArithMean",
+            "affinity": "REAL",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "uId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "plannedBasalInjections",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`pbiId` INTEGER PRIMARY KEY AUTOINCREMENT, `timeOfDay` TEXT, `basal` REAL)",
+        "fields": [
+          {
+            "fieldPath": "pbiId",
+            "columnName": "pbiId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "timeOfDay",
+            "columnName": "timeOfDay",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "basal",
+            "columnName": "basal",
+            "affinity": "REAL",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "pbiId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "daytimes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`dId` INTEGER PRIMARY KEY AUTOINCREMENT, `daytimeStart` TEXT, `daytimeEnd` TEXT, `correctionFactor` REAL, `buFactor` REAL, `buFactorConsultingArithMean` REAL)",
+        "fields": [
+          {
+            "fieldPath": "dId",
+            "columnName": "dId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "daytimeStart",
+            "columnName": "daytimeStart",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "daytimeEnd",
+            "columnName": "daytimeEnd",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "correctionFactor",
+            "columnName": "correctionFactor",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "buFactor",
+            "columnName": "buFactor",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "buFactorConsultingArithMean",
+            "columnName": "buFactorConsultingArithMean",
+            "affinity": "REAL",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "dId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "sports",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sId` INTEGER PRIMARY KEY AUTOINCREMENT, `sportName` TEXT, `sportEffectPerUnit` REAL)",
+        "fields": [
+          {
+            "fieldPath": "sId",
+            "columnName": "sId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sportName",
+            "columnName": "sportName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sportEffectPerUnit",
+            "columnName": "sportEffectPerUnit",
+            "affinity": "REAL",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "sId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "exercises",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`exId` INTEGER PRIMARY KEY AUTOINCREMENT, `eIdF` INTEGER, `sIdF` INTEGER, `exerciseUnits` REAL, FOREIGN KEY(`eIdF`) REFERENCES `entries`(`eId`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`sIdF`) REFERENCES `sports`(`sId`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "exId",
+            "columnName": "exId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "eIdF",
+            "columnName": "eIdF",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sIdF",
+            "columnName": "sIdF",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "exerciseUnits",
+            "columnName": "exerciseUnits",
+            "affinity": "REAL",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "exId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_exercises_eIdF",
+            "unique": false,
+            "columnNames": [
+              "eIdF"
+            ],
+            "createSql": "CREATE  INDEX `index_exercises_eIdF` ON `${TABLE_NAME}` (`eIdF`)"
+          },
+          {
+            "name": "index_exercises_sIdF",
+            "unique": false,
+            "columnNames": [
+              "sIdF"
+            ],
+            "createSql": "CREATE  INDEX `index_exercises_sIdF` ON `${TABLE_NAME}` (`sIdF`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "entries",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "eIdF"
+            ],
+            "referencedColumns": [
+              "eId"
+            ]
+          },
+          {
+            "table": "sports",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "sIdF"
+            ],
+            "referencedColumns": [
+              "sId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "notifications",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`nId` INTEGER PRIMARY KEY AUTOINCREMENT, `timestamp` TEXT, `notificationType` INTEGER, `message` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "nId",
+            "columnName": "nId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "notificationType",
+            "columnName": "notificationType",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "message",
+            "columnName": "message",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "nId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "observations",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`oId` INTEGER, `eIdStart` INTEGER, `eIdEnd` INTEGER, `divergenceFromStart` REAL, PRIMARY KEY(`oId`))",
+        "fields": [
+          {
+            "fieldPath": "oId",
+            "columnName": "oId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "eIdStart",
+            "columnName": "eIdStart",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "eIdEnd",
+            "columnName": "eIdEnd",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "divergenceFromStart",
+            "columnName": "divergenceFromStart",
+            "affinity": "REAL",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "oId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"551cc5161d9c09b895ba076f038fec21\")"
+    ]
+  }
+}
