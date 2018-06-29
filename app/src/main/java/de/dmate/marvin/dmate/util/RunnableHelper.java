@@ -525,7 +525,7 @@ public class RunnableHelper {
                 long accMinMillis = (long)(accMin * 60 * 60 * 1000);
                 long accMaxMillis = (long)(accMax * 60 * 60 * 1000);
 
-                for (Entry e : entries) { //check if there are BE and Bolus first?
+                for (Entry e : entries) {
                     if (e.getBolus() != null && e.getBreadUnit() != null) {
                         Timestamp min = new Timestamp(e.getTimestamp().getTime() + accMinMillis);
                         Timestamp max = new Timestamp(e.getTimestamp().getTime() + accMaxMillis);
