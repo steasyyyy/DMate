@@ -412,19 +412,23 @@ public class RunnableHelper {
         @Override
         public void run() {
             for (Notification n : notifications) {
-                if (!(n.getNotificationType().equals(Notification.BASAL_INJECTION_FORGOTTEN)) && !(n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST))) {
+                if (!(n.getNotificationType().equals(Notification.BASAL_INJECTION_FORGOTTEN)) && !(n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST_INCREASE)) && !(n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST_REDUCE))) {
                     for (Notification nn : notifications) {
                         if (n.getNotificationType().equals(nn.getNotificationType()) && !(n.getnId().equals(nn.getnId()))) {
                             viewModel.deleteNotification(nn);
                         }
                     }
                 }
-                if (n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST)) {
+                if (n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST_INCREASE)) {
                     for (Notification nn : notifications) {
-                        if (n.getMessage().equals(nn.getMessage()) && !(n.getnId().equals(nn.getnId()))) {
+                        if (n.getNotificationType().equals(nn.getNotificationType()) && !(n.getnId().equals(nn.getnId()))) {
                             viewModel.deleteNotification(nn);
                         }
-                        if (n.getMessage().equals(nn.getMessage()) && !(n.getnId().equals(nn.getnId()))) {
+                    }
+                }
+                if (n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST_REDUCE)) {
+                    for (Notification nn : notifications) {
+                        if (n.getNotificationType().equals(nn.getNotificationType()) && !(n.getnId().equals(nn.getnId()))) {
                             viewModel.deleteNotification(nn);
                         }
                     }
@@ -986,48 +990,48 @@ public class RunnableHelper {
             if (user.getBloodsugarArithMean() != null && user.getDivergenceFromInitialValueArithMean() != null) {
                 divergenceAllowedMin = user.getBloodsugarArithMean() * (-0.15f);
                 divergenceAllowedMax = user.getBloodsugarArithMean() * 0.15f;
-                if (user.getDivergenceFromInitialValueArithMean() < divergenceAllowedMin || user.getDivergenceFromInitialValueArithMean() > divergenceAllowedMax) {
-                    Boolean alreadyExistingReduce = false;
-                    Boolean alreadyExistingIncrease = false;
+                Boolean alreadyExistingReduce = false;
+                if (user.getDivergenceFromInitialValueArithMean() < divergenceAllowedMin) {
                     for (Notification n : notifications) {
-                        if (n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST) && n.getMessage().equals(Notification.MESSAGE_BASAL_RATIO_ADJUST_REDUCE)) {
+                        if (n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST_REDUCE) && n.getMessage().equals(Notification.MESSAGE_BASAL_RATIO_ADJUST_REDUCE)) {
                             alreadyExistingReduce = true;
                         }
-                        if (n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST) && n.getMessage().equals(Notification.MESSAGE_BASAL_RATIO_ADJUST_INCREASE)) {
+                    }
+                }
+                Boolean alreadyExistingIncrease = false;
+                if (user.getDivergenceFromInitialValueArithMean() > divergenceAllowedMax) {
+                    for (Notification n : notifications) {
+                        if (n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST_INCREASE) && n.getMessage().equals(Notification.MESSAGE_BASAL_RATIO_ADJUST_INCREASE)) {
                             alreadyExistingIncrease = true;
                         }
                     }
-                    if (!(alreadyExistingReduce && user.getDivergenceFromInitialValueArithMean() < 0)) {
+                }
+                if (!alreadyExistingReduce && user.getDivergenceFromInitialValueArithMean() < divergenceAllowedMin) {
+                    if (alreadyExistingIncrease) {
+                        for (Notification n : notifications) {
+                            if (n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST_INCREASE)) {
+                                viewModel.deleteNotification(n);
+                            }
+                        }
+                    } else {
                         Notification n = new Notification();
                         n.setTimestamp(new Timestamp(System.currentTimeMillis()));
-                        n.setNotificationType(Notification.BASAL_RATIO_ADJUST);
+                        n.setNotificationType(Notification.BASAL_RATIO_ADJUST_REDUCE);
                         n.setMessage(Notification.MESSAGE_BASAL_RATIO_ADJUST_REDUCE);
                         viewModel.addNotification(n);
                     }
-                    if (alreadyExistingIncrease && user.getDivergenceFromInitialValueArithMean() < 0) {
-                        for (Notification nn : notifications) {
-                            if (nn.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST)) viewModel.deleteNotification(nn);
+                }
+                if (!alreadyExistingIncrease && user.getDivergenceFromInitialValueArithMean() > divergenceAllowedMax) {
+                    if (alreadyExistingReduce) {
+                        for (Notification n : notifications) {
+                            if (n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST_REDUCE)) {
+                                viewModel.deleteNotification(n);
+                            }
                         }
+                    } else {
                         Notification n = new Notification();
                         n.setTimestamp(new Timestamp(System.currentTimeMillis()));
-                        n.setNotificationType(Notification.BASAL_RATIO_ADJUST);
-                        n.setMessage(Notification.MESSAGE_BASAL_RATIO_ADJUST_REDUCE);
-                        viewModel.addNotification(n);
-                    }
-                    if (!(alreadyExistingIncrease && user.getDivergenceFromInitialValueArithMean() > 0)) {
-                        Notification n = new Notification();
-                        n.setTimestamp(new Timestamp(System.currentTimeMillis()));
-                        n.setNotificationType(Notification.BASAL_RATIO_ADJUST);
-                        n.setMessage(Notification.MESSAGE_BASAL_RATIO_ADJUST_INCREASE);
-                        viewModel.addNotification(n);
-                    }
-                    if (alreadyExistingReduce && user.getDivergenceFromInitialValueArithMean() > 0) {
-                        for (Notification nnn : notifications) {
-                            if (nnn.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST)) viewModel.deleteNotification(nnn);
-                        }
-                        Notification n = new Notification();
-                        n.setTimestamp(new Timestamp(System.currentTimeMillis()));
-                        n.setNotificationType(Notification.BASAL_RATIO_ADJUST);
+                        n.setNotificationType(Notification.BASAL_RATIO_ADJUST_INCREASE);
                         n.setMessage(Notification.MESSAGE_BASAL_RATIO_ADJUST_INCREASE);
                         viewModel.addNotification(n);
                     }

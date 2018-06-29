@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onItemClickCustomNotifications(View v, int position) {
         Notification notification = (Notification) v.getTag();
-        if (notification.getNotificationType().intValue() == Notification.BASAL_RATIO_ADJUST) {
+        if (notification.getNotificationType().intValue() == Notification.BASAL_RATIO_ADJUST_INCREASE) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.content, SettingsFragment.newInstance());
             transaction.commit();
