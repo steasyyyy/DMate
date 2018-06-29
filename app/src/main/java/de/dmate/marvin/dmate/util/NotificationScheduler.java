@@ -17,6 +17,8 @@ import de.dmate.marvin.dmate.roomDatabase.Entities.Notification;
 
 public class NotificationScheduler {
 
+    public static Boolean notificationsEnabled = true;
+
     public static void setReminder(Context context, Class<?> cls, int hour, int minute) {
 
         Calendar c = Calendar.getInstance();
@@ -58,25 +60,26 @@ public class NotificationScheduler {
 
     public static void showNotification(Context context, Class<?> cls) {
 
-        Intent notificationIntent = new Intent(context, cls);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        if (notificationsEnabled) {
+            Intent notificationIntent = new Intent(context, cls);
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addParentStack(cls);
-        stackBuilder.addNextIntent(notificationIntent);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addParentStack(cls);
+            stackBuilder.addNextIntent(notificationIntent);
 
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        android.app.Notification notification = builder.setContentTitle("DMate")
-                .setContentText("You might have forgotten a basal insulin injection")
-                .setAutoCancel(true)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setContentIntent(pendingIntent)
-                .build();
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+            android.app.Notification notification = builder.setContentTitle("DMate")
+                    .setContentText("You might have forgotten a basal insulin injection")
+                    .setAutoCancel(true)
+                    .setSmallIcon(R.mipmap.ic_launcher_round)
+                    .setContentIntent(pendingIntent)
+                    .build();
 
-        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, notification);
-
+            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.notify(0, notification);
+        }
     }
 }

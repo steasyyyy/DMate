@@ -418,6 +418,8 @@ public class BackgroundService extends Service {
                     viewModel.addUser(user);
                 }
 
+                NotificationScheduler.notificationsEnabled = user.getNotificationsEnabled();
+
                 if (daytimesLoaded
                         && entriesLoaded
                         && exercisesLoaded
@@ -449,6 +451,7 @@ public class BackgroundService extends Service {
 
         executor.execute(RunnableHelper.getRunnableUpdateDaytimeIdsInAllEntries(viewModel, daytimes, entries));
         executor.execute(RunnableHelper.getRunnableTriggerNotificationIfDaytimesNotSetProperly(viewModel, entries, notifications));
+        executor.execute(RunnableHelper.getRunnableTriggerPlannedBasalInjectionsNotSetWarning(viewModel, plannedBasalInjections, notifications));
         executor.execute(RunnableHelper.getRunnableUpdateReqBolusSimpleInAllEntries(viewModel, entries, daytimes));
         executor.execute(RunnableHelper.getRunnableUpdateBloodSugarArithMean(viewModel, user, entriesFromPastTwoWeeks));
         executor.execute(RunnableHelper.getRunnableUpdateDivergenceFromTargetInAllEntries(viewModel, user, entries, notifications));
@@ -461,6 +464,7 @@ public class BackgroundService extends Service {
         executor.execute(RunnableHelper.getRunnableUpdateReqBolusConsultingInAllEntries(viewModel, entries, daytimes));
         executor.execute(RunnableHelper.getRunnableUpdateObservations(viewModel, user, observations, entries, notifications));
         executor.execute(RunnableHelper.getRunnableUpdateDivergenceFromStartValueArithMean(viewModel, user, entriesFromPastTwoWeeks, observations));
+        executor.execute(RunnableHelper.getRunnableTriggerAdjustBasalNotification(viewModel, user, notifications));
         executor.execute(RunnableHelper.getRunnableRemoveObservationDuplicates(viewModel, observations));
         executor.execute(RunnableHelper.getRunnableRemoveNotificationDuplicates(viewModel, notifications));
     }

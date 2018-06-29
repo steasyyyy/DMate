@@ -1,7 +1,5 @@
 package de.dmate.marvin.dmate.util;
 
-import android.content.Intent;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,7 +80,7 @@ public class RunnableHelper {
         public void run() {
             boolean nAlreadyExisting = false;
             for (Notification n : notifications) {
-                if (n.getNotificationType().equals(Notification.DAYTIME_WARNING)) {
+                if (n.getNotificationType().equals(Notification.DAYTIMES_NOT_SET_WARNING)) {
                     nAlreadyExisting = true;
                     break;
                 }
@@ -91,8 +89,8 @@ public class RunnableHelper {
             for (Entry e : entries) {
                 if (e.getdIdF() == null && !nAlreadyExisting) {
                     Notification newN = new Notification();
-                    newN.setNotificationType(Notification.DAYTIME_WARNING);
-                    newN.setMessage(Notification.MESSAGE_DAYTIME_WARNING);
+                    newN.setNotificationType(Notification.DAYTIMES_NOT_SET_WARNING);
+                    newN.setMessage(Notification.MESSAGE_DAYTIMES_NOT_SET_WARNING);
                     newN.setTimestamp(new Timestamp(System.currentTimeMillis()));
                     viewModel.addNotification(newN);
                     System.out.println("NEW NOTIFICATION ADDED (DAYTIME WARNING)");
@@ -414,9 +412,19 @@ public class RunnableHelper {
         @Override
         public void run() {
             for (Notification n : notifications) {
-                if (!(n.getNotificationType().equals(Notification.BASAL_INJECTION_FORGOTTEN))) {
+                if (!(n.getNotificationType().equals(Notification.BASAL_INJECTION_FORGOTTEN)) && !(n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST))) {
                     for (Notification nn : notifications) {
                         if (n.getNotificationType().equals(nn.getNotificationType()) && !(n.getnId().equals(nn.getnId()))) {
+                            viewModel.deleteNotification(nn);
+                        }
+                    }
+                }
+                if (n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST)) {
+                    for (Notification nn : notifications) {
+                        if (n.getMessage().equals(nn.getMessage())) {
+                            viewModel.deleteNotification(nn);
+                        }
+                        if (n.getMessage().equals(nn.getMessage())) {
                             viewModel.deleteNotification(nn);
                         }
                     }
@@ -956,17 +964,19 @@ public class RunnableHelper {
         }
     }
 
-    public static Runnable getRunnableTriggerAdjustBasalNotification(DataViewModel viewModel, User user) {
-        return new TriggerAdjustBasalNotification(viewModel, user);
+    public static Runnable getRunnableTriggerAdjustBasalNotification(DataViewModel viewModel, User user, List<Notification> notifications) {
+        return new TriggerAdjustBasalNotification(viewModel, user, notifications);
     }
     private static class TriggerAdjustBasalNotification implements Runnable {
 
         private final DataViewModel viewModel;
         private final User user;
+        private final List<Notification> notifications;
 
-        TriggerAdjustBasalNotification(DataViewModel viewModel, User user) {
+        TriggerAdjustBasalNotification(DataViewModel viewModel, User user, List<Notification> notifications) {
             this.viewModel = viewModel;
             this.user = user;
+            this.notifications = notifications;
         }
 
         @Override
@@ -978,25 +988,46 @@ public class RunnableHelper {
                 divergenceAllowedMin = user.getBloodsugarArithMean() * (-0.15f);
                 divergenceAllowedMax = user.getBloodsugarArithMean() * 0.15f;
                 if (user.getDivergenceFromInitialValueArithMean() < divergenceAllowedMin || user.getDivergenceFromInitialValueArithMean() > divergenceAllowedMax) {
-                    //trigger Notification if not existing already
+                    Boolean alreadyExistingReduce = false;
+                    Boolean alreadyExistingIncrease = false;
+                    for (Notification n : notifications) {
+                        if (n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST) && n.getMessage().equals(Notification.MESSAGE_BASAL_RATIO_ADJUST_REDUCE)) {
+                            alreadyExistingReduce = true;
+                        }
+                        if (n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST) && n.getMessage().equals(Notification.MESSAGE_BASAL_RATIO_ADJUST_INCREASE)) {
+                            alreadyExistingIncrease = true;
+                        }
+                    }
+                    if (!(alreadyExistingReduce && user.getDivergenceFromInitialValueArithMean() < 0) || alreadyExistingIncrease && user.getDivergenceFromInitialValueArithMean() < 0) {
+                        Notification n = new Notification();
+                        n.setTimestamp(new Timestamp(System.currentTimeMillis()));
+                        n.setNotificationType(Notification.BASAL_RATIO_ADJUST);
+                        n.setMessage(Notification.MESSAGE_BASAL_RATIO_ADJUST_REDUCE);
+                        viewModel.addNotification(n);
+                    }
+                    if (!(alreadyExistingIncrease && user.getDivergenceFromInitialValueArithMean() > 0) || alreadyExistingReduce && user.getDivergenceFromInitialValueArithMean() > 0) {
+                        Notification n = new Notification();
+                        n.setTimestamp(new Timestamp(System.currentTimeMillis()));
+                        n.setNotificationType(Notification.BASAL_RATIO_ADJUST);
+                        n.setMessage(Notification.MESSAGE_BASAL_RATIO_ADJUST_INCREASE);
+                        viewModel.addNotification(n);
+                    }
                 }
             }
         }
     }
 
-    public static Runnable getRunnableUpdateExternalNotificationTimePBI(DataViewModel viewModel, List<Entry> entries, List<PlannedBasalInjection> plannedBasalInjections, List<Notification> notifications) {
-        return new UpdateExternalNotificationTimePBI(viewModel, entries, plannedBasalInjections, notifications);
+    public static Runnable getRunnableTriggerPlannedBasalInjectionsNotSetWarning(DataViewModel viewModel, List<PlannedBasalInjection> plannedBasalInjections, List<Notification> notifications) {
+        return new TriggerPlannedBasalInjectionsNotSetWarning(viewModel, plannedBasalInjections, notifications);
     }
-    private static class UpdateExternalNotificationTimePBI implements Runnable {
+    private static class TriggerPlannedBasalInjectionsNotSetWarning implements Runnable {
 
         private final DataViewModel viewModel;
-        private final List<Entry> entries;
         private final List<PlannedBasalInjection> plannedBasalInjections;
         private final List<Notification> notifications;
 
-        UpdateExternalNotificationTimePBI(DataViewModel viewModel, List<Entry> entries, List<PlannedBasalInjection> plannedBasalInjections, List<Notification> notifications) {
+        TriggerPlannedBasalInjectionsNotSetWarning(DataViewModel viewModel, List<PlannedBasalInjection> plannedBasalInjections, List<Notification> notifications) {
             this.viewModel = viewModel;
-            this.entries = entries;
             this.plannedBasalInjections = plannedBasalInjections;
             this.notifications = notifications;
         }
@@ -1016,13 +1047,6 @@ public class RunnableHelper {
                     newN.setNotificationType(Notification.PLANNED_BASAL_INJECTIONS_NOT_SET);
                     newN.setMessage(Notification.MESSAGE_PLANNED_BASAL_INJECTIONS_NOT_SET);
                     viewModel.addNotification(newN);
-                }
-            } else {
-                for (PlannedBasalInjection pbi : plannedBasalInjections) {
-                    Calendar c = Helper.getCalendarFromTimeString(pbi.getTimeOfDay());
-
-
-                    //add notification to the database and fire a notification in the system at c.getTime
                 }
             }
         }
@@ -1128,6 +1152,7 @@ public class RunnableHelper {
             e2.seteId(2);
             e2.setBloodSugar(157f);
             e2.setBolus(1f);
+            e2.setBasal(14f);
             viewModel.addEntry(e2);
 
             Entry e3 = new Entry();
@@ -1151,7 +1176,6 @@ public class RunnableHelper {
             c.set(2018,5,22,23,27,40);
             e5.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e5.setBloodSugar(137f);
-            e5.setBasal(14f);
             viewModel.addEntry(e5);
 
             Entry e6 = new Entry();
@@ -1168,6 +1192,108 @@ public class RunnableHelper {
             e7.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e7.seteId(7);
             e7.setBloodSugar(196f);
+            e7.setBolus(2f);
+            viewModel.addEntry(e7);
+
+            Entry e8 = new Entry();
+            c.set(2018,5,23,13,14,27);
+            e8.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e8.seteId(8);
+            e8.setBloodSugar(97f);
+            viewModel.addEntry(e8);
+
+            Entry e9 = new Entry();
+            c.set(2018,5,23,17,27,50);
+            e9.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e9.seteId(9);
+            e9.setBloodSugar(145f);
+            e9.setBreadUnit(11.5f);
+            e9.setBolus(23f);
+            viewModel.addEntry(e9);
+
+            Entry e10 = new Entry();
+            c.set(2018,5,23,19,25,3);
+            e10.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e10.seteId(10);
+            e10.setBloodSugar(79f);
+            e10.setBreadUnit(1f);
+            viewModel.addEntry(e10);
+
+            Entry e11 = new Entry();
+            c.set(2018,5,23,22,57,16);
+            e11.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e11.seteId(11);
+            e11.setBloodSugar(101f);
+            viewModel.addEntry(e11);
+
+            Entry e12 = new Entry();
+            c.set(2018,5,24,06,59,48);
+            e12.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e12.seteId(12);
+            e12.setBloodSugar(126f);
+            e12.setBreadUnit(9f);
+            e12.setBolus(16f);
+            viewModel.addEntry(e12);
+
+            Entry e13 = new Entry();
+            c.set(2018,5,24,9,48,18);
+            e13.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e13.seteId(13);
+            e13.setBloodSugar(54f);
+            e13.setBreadUnit(2.5f);
+            e13.setDiseased(true);
+            e13.setReliable(false);
+            viewModel.addEntry(e13);
+
+            Entry e14 = new Entry();
+            c.set(2018,5,24,13,1,5);
+            e14.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e14.seteId(14);
+            e14.setBloodSugar(78f);
+            e14.setBreadUnit(0.5f);
+            e14.setReliable(false);
+            e14.setDiseased(true);
+            viewModel.addEntry(e14);
+
+            Entry e15 = new Entry();
+            c.set(2018,5,24,14,37,2);
+            e15.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e15.seteId(15);
+            e15.setBasal(14f);
+            viewModel.addEntry(e15);
+
+            Entry e16 = new Entry();
+            c.set(2018,5,24,17,43,28);
+            e16.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e16.seteId(16);
+            e16.setBloodSugar(88f);
+            e16.setBreadUnit(16.5f);
+            e16.setBolus(33f);
+            viewModel.addEntry(e16);
+
+            Entry e17 = new Entry();
+            c.set(2018,5,24,20,0,18);
+            e17.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e17.seteId(17);
+            e17.setBloodSugar(65f);
+            e17.setBreadUnit(5.5f);
+            e17.setBolus(10f);
+            viewModel.addEntry(e17);
+
+            Entry e18 = new Entry();
+            c.set(2018,5,24,21,4,46);
+            e18.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e18.seteId(18);
+            e18.setBloodSugar(98f);
+            viewModel.addEntry(e18);
+
+            Entry e19 = new Entry();
+            c.set(2018,5,24,22,15,5);
+            e19.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e19.seteId(19);
+            e19.setBloodSugar(61f);
+            e19.setBreadUnit(1.5f);
+            viewModel.addEntry(e19);
         }
     }
 }

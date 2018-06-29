@@ -23,7 +23,10 @@ import android.widget.Toast;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -127,39 +130,34 @@ public class NewEntryActivity extends AppCompatActivity implements
             }
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                //when panel state changes, adjust labels from slide "up" to slide "down" and vice versa
                 if (supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
                     slideUpTextView.setText("Slide down to hide ratio wizard");
                     slideUpImageView.setImageResource(R.drawable.ic_action_down);
+                    if (daytimesInitialized && entriesInitialized && exercisesInitialized && sportsInitialized && userInitialized) {
+                        entry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
+
+                        if (!ETbloodsugar.getText().toString().equals("")) entry.setBloodSugar(Float.parseFloat(ETbloodsugar.getText().toString()));
+                        else entry.setBloodSugar(null);
+
+                        if (!ETbreadunit.getText().toString().equals("")) entry.setBreadUnit(Float.parseFloat(ETbreadunit.getText().toString()));
+                        else entry.setBreadUnit(null);
+
+                        if (!ETbolus.getText().toString().equals("")) entry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
+                        else entry.setBolus(null);
+
+                        if (!ETbasal.getText().toString().equals("")) entry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
+                        else entry.setBasal(null);
+
+                        if (!ETnote.getText().toString().equals("")) entry.setNote(ETnote.getText().toString());
+                        else entry.setNote(null);
+
+                        new UpdateRecommendationsAsyncTask(NewEntryActivity.this, daytimesAll, entry, user, sportsAll, exercisesOfEntry).execute();
+                    }
                 }
                 if (supl.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                     slideUpTextView.setText("Slide up to show ratio wizard");
                     slideUpImageView.setImageResource(R.drawable.ic_action_up);
                 }
-
-                if (daytimesInitialized && entriesInitialized && exercisesInitialized && sportsInitialized && userInitialized) {
-                    entry.setTimestamp(new Timestamp(calendar.getTimeInMillis()));
-
-                    if (!ETbloodsugar.getText().toString().equals("")) entry.setBloodSugar(Float.parseFloat(ETbloodsugar.getText().toString()));
-                    else entry.setBloodSugar(null);
-
-                    if (!ETbreadunit.getText().toString().equals("")) entry.setBreadUnit(Float.parseFloat(ETbreadunit.getText().toString()));
-                    else entry.setBreadUnit(null);
-
-                    if (!ETbolus.getText().toString().equals("")) entry.setBolus(Float.parseFloat(ETbolus.getText().toString()));
-                    else entry.setBolus(null);
-
-                    if (!ETbasal.getText().toString().equals("")) entry.setBasal(Float.parseFloat(ETbasal.getText().toString()));
-                    else entry.setBasal(null);
-
-                    if (!ETnote.getText().toString().equals("")) entry.setNote(ETnote.getText().toString());
-                    else entry.setNote(null);
-
-                    new UpdateRecommendationsAsyncTask(NewEntryActivity.this, daytimesAll, entry, user, sportsAll, exercisesOfEntry).execute();
-                }
-
-                //update recommendations in SUP
-                //because entry values could have been edited, update all TextViews!!!
             }
         });
         supUsualBUF = findViewById(R.id.textView_sup_bu_factor_usual);
@@ -623,15 +621,25 @@ class UpdateRecommendationsAsyncTask extends AsyncTask<Void, Void, Map<String, F
                 recBolusDose = entry.getBolusCorrectionByBloodSugar() + entry.getBolusCorrectionBySport();
             }
             if (entry.getBreadUnit() != null) {
-                if (entry.getBuFactorConsulting() != null) {
-                    recBolusDose += entry.getBreadUnit() * entry.getBuFactorConsulting();
+                if (map.get("recBuFactor") != 0f) {
+                    recBolusDose += entry.getBreadUnit() * map.get("recBuFactor");
                 } else {
                     recBolusDose = 0f;
                 }
             }
             map.put("recBolusInsulinDose", recBolusDose);
         }
+        map.put("usualBuFactor", round(map.get("usualBuFactor"), 2));
+        map.put("usualBolusInsulinDose", round(map.get("usualBolusInsulinDose"), 0));
+        map.put("recBuFactor", round(map.get("recBuFactor"), 2));
+        map.put("recBolusInsulinDose", round(map.get("recBolusInsulinDose"), 0));
         return map;
+    }
+
+    public static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
     @Override
