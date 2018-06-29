@@ -168,7 +168,21 @@ public class NewEntryActivity extends AppCompatActivity implements
         supAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //write recommendations to current Entry
+                if (supUsualBUF.getText().toString().equals("-")
+                        || supUsualBUDose.getText().toString().equals("-")
+                        || supRecBUF.getText().toString().equals("-")
+                        || supRecBUDose.getText().toString().equals("-")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Unable to accept recommendations as they are not complete", Toast.LENGTH_LONG);
+                    toast.show();
+                } else {
+                    if (!supRecBUDose.getText().toString().equals("-")) {
+                        entry.setBolus(Float.parseFloat(supRecBUDose.getText().toString()));
+                        ETbolus.setText(supRecBUDose.getText().toString());
+                        Toast toast = Toast.makeText(getApplicationContext(), "Recommendation accepted", Toast.LENGTH_LONG);
+                        toast.show();
+                        supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                    }
+                }
             }
         });
 

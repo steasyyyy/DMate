@@ -43,7 +43,7 @@
         android:layout_alignTop="@+id/textView_static_usual_bu_factor"
         android:layout_marginEnd="20dp"
         android:padding="16dp"
-        android:text="- BU"
+        android:text="-"
         android:textSize="16sp" />
 
     <TextView
@@ -63,7 +63,7 @@
         android:layout_alignStart="@+id/textView_sup_bu_factor_usual"
         android:layout_below="@+id/textView_static_usual_bu_factor"
         android:padding="16dp"
-        android:text="- IU"
+        android:text="-"
         android:textSize="16sp" />
 
     <TextView
@@ -93,7 +93,7 @@
         android:layout_alignStart="@+id/textView_sup_bu_factor_usual"
         android:layout_below="@+id/textView_static_usual_bolus_insulin_dose"
         android:padding="16dp"
-        android:text="- BU"
+        android:text="-"
         android:textSize="16sp" />
 
     <TextView
@@ -103,7 +103,7 @@
         android:layout_alignStart="@+id/textView_sup_bu_factor_usual"
         android:layout_below="@+id/textView_static_consulting_bu_factor"
         android:padding="16dp"
-        android:text="- IU"
+        android:text="-"
         android:textSize="16sp" />
 
     <View

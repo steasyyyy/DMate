@@ -1294,10 +1294,31 @@ public class RunnableHelper {
             e19.setBloodSugar(61f);
             e19.setBreadUnit(1.5f);
             viewModel.addEntry(e19);
+
+            Entry e20 = new Entry();
+            c.set(2018,5,25,7,15,15);
+            e20.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e20.setBloodSugar(100f);
+            viewModel.addEntry(e20);
+
+            Entry e21 = new Entry();
+            c.set(2018,5,25,10,30,31);
+            e21.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e21.setBloodSugar(145f);
+            viewModel.addEntry(e21);
+
+            Entry e22 = new Entry();
+            c.set(2018,5,25,14,48,21);
+            e22.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e22.setBloodSugar(165f);
+            e22.setBasal(14f);
+            viewModel.addEntry(e22);
+
+            Entry e23 = new Entry();
+            c.set(2018,5,25,18,1,33);
+            e23.setTimestamp(new Timestamp(c.getTimeInMillis()));
+            e23.setBloodSugar(177f);
+            viewModel.addEntry(e23);
         }
     }
 }
-
-
-
-
