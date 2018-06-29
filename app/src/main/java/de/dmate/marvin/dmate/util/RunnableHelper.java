@@ -421,10 +421,10 @@ public class RunnableHelper {
                 }
                 if (n.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST)) {
                     for (Notification nn : notifications) {
-                        if (n.getMessage().equals(nn.getMessage())) {
+                        if (n.getMessage().equals(nn.getMessage()) && !(n.getnId().equals(nn.getnId()))) {
                             viewModel.deleteNotification(nn);
                         }
-                        if (n.getMessage().equals(nn.getMessage())) {
+                        if (n.getMessage().equals(nn.getMessage()) && !(n.getnId().equals(nn.getnId()))) {
                             viewModel.deleteNotification(nn);
                         }
                     }
@@ -744,21 +744,22 @@ public class RunnableHelper {
 
         @Override
         public void run() {
-            long threeHoursInMillis = 3*60*60*1000; //10800000ms
-            long fiveHoursInMillis = 5*60*60*1000; //18000000ms
-            Observation oNew = null;
-
+            long threeHoursInMillis = 3 * 60 * 60 * 1000; //10800000ms
+            long fiveHoursInMillis = 5 * 60 * 60 * 1000; //18000000ms
             for (Entry start : entries) {
+                Observation oNew = null;
                 Timestamp min = new Timestamp(start.getTimestamp().getTime() + threeHoursInMillis);
                 Timestamp max = new Timestamp(start.getTimestamp().getTime() + fiveHoursInMillis);
                 Entry end = null;
                 if (start.getBloodSugar() != null && start.getBolus() == null) {
                     Boolean interruptedByBolus = false;
                     for (Entry e2 : entries) {
-                        if (e2.getTimestamp().after(start.getTimestamp()) && e2.getTimestamp().before(min)) {
-                            if (e2.getBolus() != null) {
-                                interruptedByBolus = true;
-                                break;
+                        if (!(start.geteId().equals(e2.geteId()))) {
+                            if (e2.getTimestamp().after(start.getTimestamp()) && e2.getTimestamp().before(min)) {
+                                if (e2.getBolus() != null) {
+                                    interruptedByBolus = true;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -774,33 +775,33 @@ public class RunnableHelper {
                         if (end == null) {
                             oNew = new Observation();
                             oNew.setEIdStart(start.geteId());
-                        }
-                    }
-                    if (end != null) {
-                        Float divergence = end.getBloodSugar() - start.getBloodSugar();
-                        oNew = new Observation();
-                        oNew.setEIdStart(start.geteId());
-                        oNew.setEIdEnd(end.geteId());
-                        oNew.setDivergenceFromStart(divergence);
-                    }
-                }
-            }
-            Boolean alreadyExisting = false;
-            if (oNew != null) {
-                for (Observation o : observations) {
-                    if (oNew.getEIdStart()!= null) {
-                        if (oNew.getEIdStart().equals(o.getEIdStart())) {
-                            alreadyExisting = true;
-                        }
-                    }
-                    if (oNew.getEIdEnd() != null) {
-                        if (oNew.getEIdEnd().equals(o.getEIdEnd())) {
-                            alreadyExisting = true;
+                        } else {
+                            Float divergence = end.getBloodSugar() - start.getBloodSugar();
+                            oNew = new Observation();
+                            oNew.setEIdStart(start.geteId());
+                            oNew.setEIdEnd(end.geteId());
+                            oNew.setDivergenceFromStart(divergence);
                         }
                     }
                 }
-                if (!alreadyExisting && oNew != null) {
-                    viewModel.addObservation(oNew);
+                Boolean alreadyExisting = false;
+                if (oNew != null) {
+                    for (Observation o : observations) {
+                        if (oNew.getEIdStart() != null) {
+                            if (oNew.getEIdStart().equals(o.getEIdStart())) {
+                                alreadyExisting = true;
+                            }
+                        }
+                        if (oNew.getEIdEnd() != null) {
+                            if (oNew.getEIdEnd().equals(o.getEIdEnd())) {
+                                alreadyExisting = true;
+                            }
+                        }
+                    }
+                    if (!alreadyExisting) {
+                        viewModel.addObservation(oNew); //dangerous, watch out how this works
+                        observations.add(oNew);
+                    }
                 }
             }
             for (Observation o : observations) {
@@ -812,50 +813,48 @@ public class RunnableHelper {
                         break;
                     }
                 }
-                if (start == null) {
-                    viewModel.deleteObservation(o);
-                } else {
-                    if (start.getBolus() != null) {
-                        viewModel.deleteObservation(o);
-                    }
-                    Timestamp min = new Timestamp(start.getTimestamp().getTime() + threeHoursInMillis);
-                    Timestamp max = new Timestamp(start.getTimestamp().getTime() + fiveHoursInMillis);
-                    if (start.getBloodSugar() != null && start.getBolus() == null) {
-                        Boolean interruptedByBolus = false;
-                        for (Entry e2 : entries) {
-                            if (e2.getTimestamp().after(start.getTimestamp()) && e2.getTimestamp().before(min)) {
-                                if (e2.getBolus() != null) {
-                                    interruptedByBolus = true;
+                if (start != null) {
+                    if (start.getBloodSugar() != null) {
+                        Timestamp min = new Timestamp(start.getTimestamp().getTime() + threeHoursInMillis);
+                        Timestamp max = new Timestamp(start.getTimestamp().getTime() + fiveHoursInMillis);
+                        if (start.getBloodSugar() != null && start.getBolus() == null) {
+                            Boolean interruptedByBolus = false;
+                            for (Entry e2 : entries) {
+                                if (e2.getTimestamp().after(start.getTimestamp()) && e2.getTimestamp().before(min)) {
+                                    if (e2.getBolus() != null) {
+                                        interruptedByBolus = true;
+                                    }
                                 }
                             }
-                        }
-                        if (interruptedByBolus) {
-                            viewModel.deleteObservation(o);
-                        } else {
-                            for (Entry e3 : entries) {
-                                if (e3.getTimestamp().after(min) && e3.getTimestamp().before(max)) {
-                                    if (e3.getBloodSugar() != null) {
+                            if (!interruptedByBolus) {
+                                for (Entry e3 : entries) {
+                                    if (e3.getTimestamp().after(min) && e3.getTimestamp().before(max)) {
                                         end = e3;
                                         break;
                                     }
                                 }
-                            }
-                            if (end != null) {
-                                if (o.getEIdEnd() == null) {
-                                    o.setEIdEnd(end.geteId());
-                                    if (o.getDivergenceFromStart() == null) {
-                                        o.setDivergenceFromStart(end.getBloodSugar() - start.getBloodSugar());
-                                        viewModel.addObservation(o);
-                                    } else {
-                                        if (!(o.getDivergenceFromStart().equals(end.getBloodSugar() - start.getBloodSugar()))) {
-                                            o.setDivergenceFromStart(end.getBloodSugar() - start.getBloodSugar());
-                                            viewModel.addObservation(o);
+                                if (end != null) {
+                                    if (end.getBloodSugar() != null) {
+                                        Float divergenceFromStart = end.getBloodSugar() - start.getBloodSugar();
+                                        if (divergenceFromStart != null) {
+                                            if (o.getEIdEnd() == null) {
+                                                o.setEIdEnd(end.geteId());
+                                                if (o.getDivergenceFromStart() == null) {
+                                                    o.setDivergenceFromStart(divergenceFromStart);
+                                                    viewModel.addObservation(o);
+                                                } else {
+                                                    if (!(o.getDivergenceFromStart().equals(divergenceFromStart))) {
+                                                        o.setDivergenceFromStart(divergenceFromStart);
+                                                        viewModel.addObservation(o);
+                                                    }
+                                                }
+                                            } else {
+                                                if (!(o.getEIdEnd().equals(end.geteId()))) {
+                                                    o.setEIdEnd(end.geteId());
+                                                    viewModel.addObservation(o);
+                                                }
+                                            }
                                         }
-                                    }
-                                } else {
-                                    if (!(o.getEIdEnd().equals(end.geteId()))) {
-                                        o.setEIdEnd(end.geteId());
-                                        viewModel.addObservation(o);
                                     }
                                 }
                             }
@@ -998,14 +997,34 @@ public class RunnableHelper {
                             alreadyExistingIncrease = true;
                         }
                     }
-                    if (!(alreadyExistingReduce && user.getDivergenceFromInitialValueArithMean() < 0) || alreadyExistingIncrease && user.getDivergenceFromInitialValueArithMean() < 0) {
+                    if (!(alreadyExistingReduce && user.getDivergenceFromInitialValueArithMean() < 0)) {
                         Notification n = new Notification();
                         n.setTimestamp(new Timestamp(System.currentTimeMillis()));
                         n.setNotificationType(Notification.BASAL_RATIO_ADJUST);
                         n.setMessage(Notification.MESSAGE_BASAL_RATIO_ADJUST_REDUCE);
                         viewModel.addNotification(n);
                     }
-                    if (!(alreadyExistingIncrease && user.getDivergenceFromInitialValueArithMean() > 0) || alreadyExistingReduce && user.getDivergenceFromInitialValueArithMean() > 0) {
+                    if (alreadyExistingIncrease && user.getDivergenceFromInitialValueArithMean() < 0) {
+                        for (Notification nn : notifications) {
+                            if (nn.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST)) viewModel.deleteNotification(nn);
+                        }
+                        Notification n = new Notification();
+                        n.setTimestamp(new Timestamp(System.currentTimeMillis()));
+                        n.setNotificationType(Notification.BASAL_RATIO_ADJUST);
+                        n.setMessage(Notification.MESSAGE_BASAL_RATIO_ADJUST_REDUCE);
+                        viewModel.addNotification(n);
+                    }
+                    if (!(alreadyExistingIncrease && user.getDivergenceFromInitialValueArithMean() > 0)) {
+                        Notification n = new Notification();
+                        n.setTimestamp(new Timestamp(System.currentTimeMillis()));
+                        n.setNotificationType(Notification.BASAL_RATIO_ADJUST);
+                        n.setMessage(Notification.MESSAGE_BASAL_RATIO_ADJUST_INCREASE);
+                        viewModel.addNotification(n);
+                    }
+                    if (alreadyExistingReduce && user.getDivergenceFromInitialValueArithMean() > 0) {
+                        for (Notification nnn : notifications) {
+                            if (nnn.getNotificationType().equals(Notification.BASAL_RATIO_ADJUST)) viewModel.deleteNotification(nnn);
+                        }
                         Notification n = new Notification();
                         n.setTimestamp(new Timestamp(System.currentTimeMillis()));
                         n.setNotificationType(Notification.BASAL_RATIO_ADJUST);

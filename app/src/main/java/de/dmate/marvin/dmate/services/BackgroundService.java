@@ -3,9 +3,11 @@ package de.dmate.marvin.dmate.services;
 import android.app.Service;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
+import android.arch.persistence.room.InvalidationTracker;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
@@ -13,9 +15,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import de.dmate.marvin.dmate.roomDatabase.AppDatabase;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
@@ -87,6 +91,16 @@ public class BackgroundService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
+        db.getInvalidationTracker().addObserver(new InvalidationTracker.Observer("entries", "daytimes", "exercises", "notifications", "observations", "plannedBasalInjections", "sports", "users") {
+            @Override
+            public void onInvalidated(@NonNull Set<String> tables) {
+                for (String s : tables) {
+                    System.out.println(s + "HAS CHANGED 1234");
+                }
+            }
+        });
 
         executor = Executors.newSingleThreadExecutor();
 
@@ -465,7 +479,7 @@ public class BackgroundService extends Service {
         executor.execute(RunnableHelper.getRunnableUpdateObservations(viewModel, user, observations, entries, notifications));
         executor.execute(RunnableHelper.getRunnableUpdateDivergenceFromStartValueArithMean(viewModel, user, entriesFromPastTwoWeeks, observations));
         executor.execute(RunnableHelper.getRunnableTriggerAdjustBasalNotification(viewModel, user, notifications));
-        executor.execute(RunnableHelper.getRunnableRemoveObservationDuplicates(viewModel, observations));
+//        executor.execute(RunnableHelper.getRunnableRemoveObservationDuplicates(viewModel, observations));
         executor.execute(RunnableHelper.getRunnableRemoveNotificationDuplicates(viewModel, notifications));
     }
 
