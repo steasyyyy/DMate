@@ -23,7 +23,7 @@ import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
-import de.dmate.marvin.dmate.util.RecyclerViewAdapterEntries;
+import de.dmate.marvin.dmate.util.recyclerViewAdapter.RecyclerViewAdapterEntries;
 import de.dmate.marvin.dmate.util.Helper;
 
 public class HomeFragment extends Fragment implements RecyclerViewAdapterEntries.OnItemClickedListener, RecyclerViewAdapterEntries.OnContextMenuCreatedListener {

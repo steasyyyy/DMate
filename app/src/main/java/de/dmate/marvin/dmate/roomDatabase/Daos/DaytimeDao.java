@@ -14,7 +14,6 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface DaytimeDao {
-
     //get all daytimes
     @Query("SELECT * FROM daytimes ORDER BY daytimeStart ASC")
     LiveData<List<Daytime>> getAllDaytimes();
@@ -28,5 +27,4 @@ public interface DaytimeDao {
 
     @Delete
     void deleteDaytime(Daytime daytime);
-
 }

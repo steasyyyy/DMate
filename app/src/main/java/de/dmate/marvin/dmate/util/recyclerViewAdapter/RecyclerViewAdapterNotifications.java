@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate.util;
+package de.dmate.marvin.dmate.util.recyclerViewAdapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

@@ -211,51 +211,6 @@ public class DaytimesDialogFragment extends DialogFragment implements ListView.O
                     return;
                 }
 
-                //TODO validate that there are no overlapping daytimes
-//                //validate that there are no overlapping Daytimes
-//                Integer daytimeStartHH = Integer.parseInt(editTextDaytimeStartHH.getText().toString());
-//                Integer daytimeStartMM = Integer.parseInt(editTextDaytimeStartMM.getText().toString());
-//                Integer daytimeEndHH = Integer.parseInt(editTextDaytimeEndHH.getText().toString());
-//                Integer daytimeEndMM = Integer.parseInt(editTextDaytimeEndMM.getText().toString());
-//
-//                Calendar calStart = Calendar.getInstance();
-//                calStart.set(Calendar.HOUR_OF_DAY, daytimeStartHH);
-//                calStart.set(Calendar.MINUTE, daytimeStartMM);
-//                Long startMillis = calStart.getTimeInMillis();
-//
-//                Calendar calEnd = Calendar.getInstance();
-//                calEnd.set(Calendar.HOUR_OF_DAY, daytimeEndHH);
-//                calEnd.set(Calendar.MINUTE, daytimeEndMM);
-//                Long endMillis = calEnd.getTimeInMillis();
-//
-//                for (int i=0; i<arrayAdapter.getCount(); i++) {
-//                    Daytime daytimeTemp = arrayAdapter.getItem(i);
-//
-//                    Calendar calStartTemp = Calendar.getInstance();
-//                    calStartTemp.set(Calendar.HOUR_OF_DAY, Integer.parseInt(daytimeTemp.getDaytimeStart().charAt(0) + "" + daytimeTemp.getDaytimeStart().charAt(1)));
-//                    calStartTemp.set(Calendar.MINUTE, Integer.parseInt(daytimeTemp.getDaytimeStart().charAt(3) + "" + daytimeTemp.getDaytimeStart().charAt(4)));
-//                    Long startMillisTemp = calStartTemp.getTimeInMillis();
-//
-//                    Calendar calEndTemp = Calendar.getInstance();
-//                    calEndTemp.set(Calendar.HOUR_OF_DAY, Integer.parseInt(daytimeTemp.getDaytimeEnd().charAt(0) + "" + daytimeTemp.getDaytimeEnd().charAt(1)));
-//                    calEndTemp.set(Calendar.MINUTE, Integer.parseInt(daytimeTemp.getDaytimeEnd().charAt(4) + "" + daytimeTemp.getDaytimeEnd().charAt(4)));
-//                    Long endMillisTemp = calEndTemp.getTimeInMillis();
-//
-//                    //CONDITIONS FOR OVERLAP
-//                    //1) time range of the new Daytime is completely between start and end of an existing Daytime
-//                    //2) time range of the new Daytime starts in an existing Daytime and ends outside of it
-//                    //3) time range of the new Daytime starts before an existing Daytime but ends inside of it
-//                    //4) time range of the new Daytime covers up an existing Daytime completely
-//                    if ((startMillisTemp < startMillis && endMillisTemp > endMillis)
-//                            || (startMillisTemp < startMillis && endMillisTemp < endMillis)
-//                            || (startMillisTemp > startMillis && endMillisTemp > endMillis)
-//                            || (startMillisTemp > startMillis && endMillisTemp < endMillis)) {
-//                        Toast toast = Toast.makeText(getContext(), "Overlapping daytimes are not allowed", Toast.LENGTH_LONG);
-//                        toast.show();
-//                        return;
-//                    }
-//                }
-
                 String daytimeStartString = editTextDaytimeStartHH.getText().toString() + ":" + editTextDaytimeStartMM.getText().toString();
                 String daytimeEndString = editTextDaytimeEndHH.getText().toString() + ":" + editTextDaytimeEndMM.getText().toString();
                 Float correctionFactor = Float.parseFloat(editTextCorrectionFactor.getText().toString());

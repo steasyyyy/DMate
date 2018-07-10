@@ -2,11 +2,9 @@ package de.dmate.marvin.dmate.activities;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -22,11 +20,8 @@ import android.widget.Toast;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Timestamp;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -34,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.dmate.marvin.dmate.R;
+import de.dmate.marvin.dmate.fragments.OtherFragments.ExercisesDialogFragment;
 import de.dmate.marvin.dmate.fragments.PickerDialogFragments.DatePickerDialogFragment;
 import de.dmate.marvin.dmate.fragments.PickerDialogFragments.TimePickerDialogFragment;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Daytime;

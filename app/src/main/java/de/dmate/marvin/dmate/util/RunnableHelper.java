@@ -1159,9 +1159,13 @@ public class RunnableHelper {
             viewModel.addSport(s3);
 
             Calendar c = Calendar.getInstance();
+            Long dayMillis = 24*60*60*1000l;
 
             Entry e1 = new Entry();
-            c.set(2018,5,22,13,22,21);
+            c.setTimeInMillis(c.getTimeInMillis() - 5*dayMillis);
+            c.set(Calendar.HOUR_OF_DAY,13);
+            c.set(Calendar.MINUTE,22);
+            c.set(Calendar.SECOND, 21);
             e1.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e1.seteId(1);
             e1.setBloodSugar(97f);
@@ -1170,7 +1174,9 @@ public class RunnableHelper {
             viewModel.addEntry(e1);
 
             Entry e2 = new Entry();
-            c.set(2018,5,22,15,35,7);
+            c.set(Calendar.HOUR_OF_DAY,15);
+            c.set(Calendar.MINUTE,35);
+            c.set(Calendar.SECOND, 7);
             e2.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e2.seteId(2);
             e2.setBloodSugar(157f);
@@ -1179,14 +1185,18 @@ public class RunnableHelper {
             viewModel.addEntry(e2);
 
             Entry e3 = new Entry();
-            c.set(2018,5,22,18,11,50);
+            c.set(Calendar.HOUR_OF_DAY,18);
+            c.set(Calendar.MINUTE,11);
+            c.set(Calendar.SECOND, 50);
             e3.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e3.seteId(3);
             e3.setBloodSugar(123f);
             viewModel.addEntry(e3);
 
             Entry e4 = new Entry();
-            c.set(2018,5,22,19,47,13);
+            c.set(Calendar.HOUR_OF_DAY,19);
+            c.set(Calendar.MINUTE,47);
+            c.set(Calendar.SECOND, 13);
             e4.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e4.seteId(4);
             e4.setBloodSugar(115f);
@@ -1196,13 +1206,20 @@ public class RunnableHelper {
             viewModel.addEntry(e4);
 
             Entry e5 = new Entry();
-            c.set(2018,5,22,23,27,40);
+            c.set(Calendar.HOUR_OF_DAY,23);
+            c.set(Calendar.MINUTE,27);
+            c.set(Calendar.SECOND, 40);
             e5.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e5.setBloodSugar(137f);
             viewModel.addEntry(e5);
 
+            //SWITCH------------------------------------------------------------------------------
+
             Entry e6 = new Entry();
-            c.set(2018,5,23,7,38,33);
+            c.setTimeInMillis(c.getTimeInMillis() - dayMillis);
+            c.set(Calendar.HOUR_OF_DAY,7);
+            c.set(Calendar.MINUTE,38);
+            c.set(Calendar.SECOND, 33);
             e6.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e6.seteId(6);
             e6.setBloodSugar(117f);
@@ -1211,7 +1228,9 @@ public class RunnableHelper {
             viewModel.addEntry(e6);
 
             Entry e7 = new Entry();
-            c.set(2018,5,23,10,01,16);
+            c.set(Calendar.HOUR_OF_DAY,10);
+            c.set(Calendar.MINUTE,1);
+            c.set(Calendar.SECOND, 16);
             e7.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e7.seteId(7);
             e7.setBloodSugar(196f);
@@ -1219,14 +1238,18 @@ public class RunnableHelper {
             viewModel.addEntry(e7);
 
             Entry e8 = new Entry();
-            c.set(2018,5,23,13,14,27);
+            c.set(Calendar.HOUR_OF_DAY,13);
+            c.set(Calendar.MINUTE,14);
+            c.set(Calendar.SECOND, 27);
             e8.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e8.seteId(8);
             e8.setBloodSugar(97f);
             viewModel.addEntry(e8);
 
             Entry e9 = new Entry();
-            c.set(2018,5,23,17,27,50);
+            c.set(Calendar.HOUR_OF_DAY,17);
+            c.set(Calendar.MINUTE,27);
+            c.set(Calendar.SECOND,50);
             e9.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e9.seteId(9);
             e9.setBloodSugar(145f);
@@ -1235,7 +1258,9 @@ public class RunnableHelper {
             viewModel.addEntry(e9);
 
             Entry e10 = new Entry();
-            c.set(2018,5,23,19,25,3);
+            c.set(Calendar.HOUR_OF_DAY,19);
+            c.set(Calendar.MINUTE,25);
+            c.set(Calendar.SECOND, 3);
             e10.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e10.seteId(10);
             e10.setBloodSugar(79f);
@@ -1243,14 +1268,21 @@ public class RunnableHelper {
             viewModel.addEntry(e10);
 
             Entry e11 = new Entry();
-            c.set(2018,5,23,22,57,16);
+            c.set(Calendar.HOUR_OF_DAY,22);
+            c.set(Calendar.MINUTE,57);
+            c.set(Calendar.SECOND,16);
             e11.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e11.seteId(11);
             e11.setBloodSugar(101f);
             viewModel.addEntry(e11);
 
+            //SWITCH------------------------------------------------------------------------------
+
             Entry e12 = new Entry();
-            c.set(2018,5,24,06,59,48);
+            c.setTimeInMillis(c.getTimeInMillis() - dayMillis);
+            c.set(Calendar.HOUR_OF_DAY,6);
+            c.set(Calendar.MINUTE,59);
+            c.set(Calendar.SECOND,48);
             e12.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e12.seteId(12);
             e12.setBloodSugar(126f);
@@ -1259,7 +1291,9 @@ public class RunnableHelper {
             viewModel.addEntry(e12);
 
             Entry e13 = new Entry();
-            c.set(2018,5,24,9,48,18);
+            c.set(Calendar.HOUR_OF_DAY,9);
+            c.set(Calendar.MINUTE,48);
+            c.set(Calendar.SECOND,18);
             e13.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e13.seteId(13);
             e13.setBloodSugar(54f);
@@ -1269,7 +1303,9 @@ public class RunnableHelper {
             viewModel.addEntry(e13);
 
             Entry e14 = new Entry();
-            c.set(2018,5,24,13,1,5);
+            c.set(Calendar.HOUR_OF_DAY,13);
+            c.set(Calendar.MINUTE,1);
+            c.set(Calendar.SECOND,5);
             e14.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e14.seteId(14);
             e14.setBloodSugar(78f);
@@ -1279,14 +1315,18 @@ public class RunnableHelper {
             viewModel.addEntry(e14);
 
             Entry e15 = new Entry();
-            c.set(2018,5,24,14,37,2);
+            c.set(Calendar.HOUR_OF_DAY,14);
+            c.set(Calendar.MINUTE,37);
+            c.set(Calendar.SECOND,2);
             e15.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e15.seteId(15);
             e15.setBasal(14f);
             viewModel.addEntry(e15);
 
             Entry e16 = new Entry();
-            c.set(2018,5,24,17,43,28);
+            c.set(Calendar.HOUR_OF_DAY,17);
+            c.set(Calendar.MINUTE,43);
+            c.set(Calendar.SECOND,28);
             e16.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e16.seteId(16);
             e16.setBloodSugar(88f);
@@ -1295,7 +1335,9 @@ public class RunnableHelper {
             viewModel.addEntry(e16);
 
             Entry e17 = new Entry();
-            c.set(2018,5,24,20,0,18);
+            c.set(Calendar.HOUR_OF_DAY,20);
+            c.set(Calendar.MINUTE,0);
+            c.set(Calendar.SECOND,18);
             e17.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e17.seteId(17);
             e17.setBloodSugar(65f);
@@ -1304,41 +1346,56 @@ public class RunnableHelper {
             viewModel.addEntry(e17);
 
             Entry e18 = new Entry();
-            c.set(2018,5,24,21,4,46);
+            c.set(Calendar.HOUR_OF_DAY,21);
+            c.set(Calendar.MINUTE,4);
+            c.set(Calendar.SECOND,46);
             e18.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e18.seteId(18);
             e18.setBloodSugar(98f);
             viewModel.addEntry(e18);
 
             Entry e19 = new Entry();
-            c.set(2018,5,24,22,15,5);
+            c.set(Calendar.HOUR_OF_DAY,22);
+            c.set(Calendar.MINUTE,15);
+            c.set(Calendar.SECOND,5);
             e19.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e19.seteId(19);
             e19.setBloodSugar(61f);
             e19.setBreadUnit(1.5f);
             viewModel.addEntry(e19);
 
+            //SWITCH------------------------------------------------------------------------------
+
             Entry e20 = new Entry();
-            c.set(2018,5,25,7,15,15);
+            c.setTimeInMillis(c.getTimeInMillis() - dayMillis);
+            c.set(Calendar.HOUR_OF_DAY,7);
+            c.set(Calendar.MINUTE,15);
+            c.set(Calendar.SECOND,15);
             e20.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e20.setBloodSugar(100f);
             viewModel.addEntry(e20);
 
             Entry e21 = new Entry();
-            c.set(2018,5,25,10,30,31);
+            c.set(Calendar.HOUR_OF_DAY,10);
+            c.set(Calendar.MINUTE,30);
+            c.set(Calendar.SECOND,31);
             e21.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e21.setBloodSugar(145f);
             viewModel.addEntry(e21);
 
             Entry e22 = new Entry();
-            c.set(2018,5,25,14,48,21);
+            c.set(Calendar.HOUR_OF_DAY,14);
+            c.set(Calendar.MINUTE,48);
+            c.set(Calendar.SECOND,21);
             e22.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e22.setBloodSugar(165f);
             e22.setBasal(14f);
             viewModel.addEntry(e22);
 
             Entry e23 = new Entry();
-            c.set(2018,5,25,18,1,33);
+            c.set(Calendar.HOUR_OF_DAY,18);
+            c.set(Calendar.MINUTE,1);
+            c.set(Calendar.SECOND,33);
             e23.setTimestamp(new Timestamp(c.getTimeInMillis()));
             e23.setBloodSugar(177f);
             viewModel.addEntry(e23);

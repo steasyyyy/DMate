@@ -1,6 +1,5 @@
-package de.dmate.marvin.dmate.activities;
+package de.dmate.marvin.dmate.fragments.OtherFragments;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,7 +24,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.dmate.marvin.dmate.R;

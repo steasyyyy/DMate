@@ -21,10 +21,9 @@ import java.util.List;
 
 import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
-import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Notification;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
-import de.dmate.marvin.dmate.util.RecyclerViewAdapterNotifications;
+import de.dmate.marvin.dmate.util.recyclerViewAdapter.RecyclerViewAdapterNotifications;
 
 public class NotificationsFragment extends Fragment implements RecyclerViewAdapterNotifications.OnItemClickedListener, RecyclerViewAdapterNotifications.OnContextMenuCreatedListener{
 

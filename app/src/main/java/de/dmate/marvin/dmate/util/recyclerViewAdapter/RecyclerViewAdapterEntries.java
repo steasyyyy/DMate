@@ -1,4 +1,4 @@
-package de.dmate.marvin.dmate.util;
+package de.dmate.marvin.dmate.util.recyclerViewAdapter;
 
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
@@ -16,6 +16,7 @@ import de.dmate.marvin.dmate.R;
 import de.dmate.marvin.dmate.roomDatabase.DataViewModel;
 import de.dmate.marvin.dmate.roomDatabase.Entities.Entry;
 import de.dmate.marvin.dmate.roomDatabase.Entities.User;
+import de.dmate.marvin.dmate.util.Helper;
 
 //This RecyclerViewAdapterEntries is my own implementation of RecyclerView.Adapter
 //It manages the RecyclerView in MainActivity and feeds data to it.

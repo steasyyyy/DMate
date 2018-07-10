@@ -28,21 +28,15 @@ public class DMateApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder iBinder) {
                 service = ((BackgroundService.LocalBinder) iBinder ).getService();
             }
-
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                //possibility to restart service on disconnect (behaviour not tested yet)
-//                Intent intent = new Intent(DMateApplication.this, BackgroundService.class);
-//                getApplicationContext().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
             }
         };
-
         Intent intent = new Intent(this, BackgroundService.class);
         getApplicationContext().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
     }

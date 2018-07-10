@@ -20,8 +20,9 @@ import de.dmate.marvin.dmate.roomDatabase.Entities.User;
 //ACCESS AND MANIPULATE DATA IN THE DATABASE FROM HERE
 //functions are available for inserting into db, deleting from db and getting a complete list of entries to certain tables as LiveData<List<T>>
 public class DataViewModel extends AndroidViewModel {
-
+    //.....
     private final LiveData<List<Daytime>> daytimes;
+    //...
     private final LiveData<List<Entry>> entries;
     private final LiveData<List<Exercise>> exercises;
     private final LiveData<List<Notification>> notifications;
@@ -52,16 +53,15 @@ public class DataViewModel extends AndroidViewModel {
     public LiveData<List<Daytime>> getDaytimes() {
         return daytimes;
     }
-
     //add a daytime to the database
     public void addDaytime(Daytime daytime) {
         new addDaytimeAsyncTask(appDatabase).execute(daytime);
     }
-
     //delete a daytime from the database
     public void deleteDaytime(Daytime daytime) {
         new deleteDaytimeAsyncTask(appDatabase).execute(daytime);
     }
+    //.....
 
 
     //ENTRIES
@@ -201,31 +201,27 @@ public class DataViewModel extends AndroidViewModel {
     //DAYTIMES
     private static class addDaytimeAsyncTask extends AsyncTask<Daytime, Void, Void> {
         private AppDatabase db;
-
         addDaytimeAsyncTask(AppDatabase db) {
             this.db = db;
         }
-
         @Override
         protected Void doInBackground(Daytime... params) {
             db.daytimeDao().insertDaytime(params[0]);
             return null;
         }
     }
-
     private static class deleteDaytimeAsyncTask extends AsyncTask<Daytime, Void, Void> {
         private AppDatabase db;
-
         deleteDaytimeAsyncTask(AppDatabase db) {
             this.db = db;
         }
-
         @Override
         protected Void doInBackground(Daytime... params) {
             db.daytimeDao().deleteDaytime(params[0]);
             return null;
         }
     }
+    //.....
 
 
     //ENTRIES
